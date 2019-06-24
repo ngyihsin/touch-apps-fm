@@ -1,0 +1,47 @@
+{
+  "name": "FM Radio",
+  "description": "Gaia FM Radio",
+  "type": "certified",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "The Gaia Team",
+    "url": "https://github.com/mozilla-b2g/gaia"
+  },
+  "permissions": {
+    "themeable":{},
+    "fmradio":{},
+    "speaker-control":{},
+    "volumemanager": {},
+    "feature-detection": {},
+    "storage":{ "access": "readwrite" },
+    "settings":{ "access": "readwrite" },
+    "device-storage:sdcard":{ "access": "readwrite" },
+    "audio-channel-content":{}
+  },
+  "activities": {
+    "open": {
+      "filters": {
+        "type": "fm/play"
+       },
+      "disposition": "window",
+      "href": "/index.html",
+      "returnValue": false
+    }
+  },
+  "theme_color": "#a517ba",
+  "locales": {
+    "en-US": {
+      "name": "FM Radio",
+      "description": "Gaia FM Radio"
+    }
+  },
+  "chrome": {
+    "statusbar": "overlap"
+  },
+  "default_locale": "en-US",
+  "icons": {
+    "56": "/style/icons/fm_56.png",
+    "84": "/style/icons/fm_84.png"
+  },
+  "orientation": "default"
+}
