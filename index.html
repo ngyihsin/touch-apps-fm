@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="rgb(255, 255, 255)">
+  <title>FM Radio</title>
+  <link rel="stylesheet" href="style/fm.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="shared/elements/gaia-icons/gaia-icons.css">
+  <link rel="stylesheet" type="text/css" href="shared/elements/gaia-theme/gaia-theme.css">
+  <link rel="stylesheet" type="text/css" href="shared/elements/gaia-theme/gaia-font.css">
+  <meta name="defaultLanguage" content="en-US">
+  <link rel="localization" href="locales/fm.{locale}.properties">
+
+  <script src="shared/js/lazy_loader.js"></script>
+  <script defer src="js/startup.js"></script>
+</head>
+
+<body class="theme-media">
+  <section>
+    <div id="action-header">
+      <div id="header-title">
+        FM RADIO
+      </div>
+      <div id="action-button">
+        <div id="speaker-action" class="hidden">
+          <a aria-label="Speaker" id="speaker-switch" href="#speaker" data-speaker-on="false"
+            data-l10n-id="speaker-switch" role="button" aria-pressed="false"></a>
+          <a aria-label="Headphone" id="headphone-switch" href="#headphone" data-speaker-on="true"
+            data-l10n-id="speaker-switch" role="button" aria-pressed="false" class="hidden"></a>
+        </div>
+        <div id="power-action" class="dim">
+          <a aria-label="Off" id="power-switch" href="#power-switch" data-enabled="false" data-enabling="false"
+            data-l10n-id="power-switch-on" role="button"></a>
+        </div>
+      </div>
+    </div>
+    <div id="fm-container" dir="ltr" class="dim">
+      <div id="fm-header">
+        <div id="frequency-bar">
+          <div>
+            <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-l10n-id="frequency-op-seekdown"
+              role="button"></a>
+          </div>
+          <div id="frequency-display">
+            <div id="frequency" role="status">87.5</div>
+          </div>
+          <div>
+            <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-l10n-id="frequency-op-seekup"
+              role="button"></a>
+          </div>
+        </div>
+        <div id="station-action" data-l10n-id="scan-stations" class="hidden">
+          RECAN
+        </div>
+      </div>
+      <div id="frequency-list" class="favorites-list">
+        <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container"></div>
+        <div id="favoritelist-warning">
+          <div class="warning">
+            <div id="favoritelist-warning-body" class="p warning-body" data-l10n-id="noFavoritelistMsg">
+              Add favorite stations here!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="footer-action">
+        <div id="favorate-station" class="button-press" data-l10n-id="favorites"><span
+            class="icon favorite-icon"></span>FAVORITE</div>
+        <div id='all-stations' data-l10n-id="allstations">ALL</div>
+      </div>
+    </div>
+  </section>
+  <div id="dialog-container" class="dialog-container hidden" tabindex="-1">
+    <div role="heading" class="dialog">
+      <div id="dialog-header" class="header h1" data-l10n-id="scan-stations"></div>
+      <div class="content p-pri" tabindex="-1"></div>
+    </div>
+  </div>
+  <div id="antenna-warning" class="warning" hidden="">
+    <div></div>
+    <div id="antenna-warning-header" class="warning-header" data-l10n-id="noAntenna">Plug in a headset</div>
+    <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg">FM Radio requires a plugged in
+      headset to receive radio signals.</div>
+  </div>
+  <div id="airplane-mode-warning" class="warning" hidden="">
+    <div class="warning-header" data-l10n-id="airplaneModeHeader">Airplane mode is on</div>
+    <div class="warning-body" data-l10n-id="airplaneModeMsg">Turn off Airplane mode to use FM Radio.</div>
+  </div>
+  <script src="js/cache_restore.js"></script>
+</body>
+
+</html>
