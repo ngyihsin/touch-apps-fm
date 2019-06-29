@@ -15,8 +15,8 @@
     FMElementFrequencyDialer.innerHTML = 
      ` ${this.currentFreqency.toFixed(1)}
       ${favorite 
-      ? '<span id="favorite-star-icon" class="favorite-icon"></span>'
-      : '<span id="favorite-star-icon" class="favorite-icon hidden"></span>'}`;
+      ? '<span id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></span>'
+      : '<span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>'}`;
 
     // No need update focus while FM Radio disabled
     if (!mozFMRadio.enabled) {
@@ -35,7 +35,7 @@
 
     // No need update focus while current frequency dialer UI is focused
     let focusedItem = FocusManager.getCurrentFocusElement();
-    if (focusedItem.id === 'frequency') {
+    if (focusedItem.id === 'frequency-display') {
       return;
     }
 

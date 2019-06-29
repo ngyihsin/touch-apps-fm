@@ -8,9 +8,8 @@
   function initialize() {
     window.FMElementFMContainer = document.getElementById('fm-container');
     window.FMElementFrequencyBar = document.getElementById('frequency-bar');
-    window.FMElementFrequencyDialer = document.getElementById('frequency');
+    window.FMElementFrequencyDialer = document.getElementById('frequency-display');
     window.FMElementFrequencyListUI = document.getElementById('frequency-list');
-    window.FMElementAirplaneModeWarning = document.getElementById('airplane-mode-warning');
     window.FMElementAntennaUnplugWarning = document.getElementById('antenna-warning');
     window.FMElementFavoriteListWarning = document.getElementById('favoritelist-warning');
     window.FMElementFrequencyListContainer = document.getElementById('frequency-list-container');
@@ -20,7 +19,6 @@
     setTimeout(() => {
       let lazyFiles = [
         '/shared/js/airplane_mode_helper.js',
-        '/shared/elements/gaia-progress/dist/gaia-progress.js',
         '/shared/js/mediadb.js',
         'js/headphone_state.js',
         'js/fm_action.js',

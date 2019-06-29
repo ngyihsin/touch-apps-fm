@@ -25,7 +25,7 @@
     FMElementFavoriteListWarning.hidden = true;
 
     let stationslist = FrequencyManager.getStationsFrequencyList();
-    let currentFrequency = document.getElementById('frequency').textContent;
+    let currentFrequency = document.getElementById('frequency-display').textContent;
     let fixed = 0;
     stationslist.some((frequency, i) => {
       let frequencyCompare = (frequency.frequency == currentFrequency);

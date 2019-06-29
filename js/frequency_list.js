@@ -11,20 +11,19 @@
     if (!frequencyObject) {
       return;
     }
-
     let html = `
     <div id=${this.formatFrequencyElementId(frequencyObject.frequency)} 
-    class="frequency-list-item" role="option" data-l10n-id="Tab-frequency">
+    class="frequency-list-item" role="option">
       ${frequencyObject.favorite
-        ? '<div class="frequency-list-favorite-icon favorite-icon"></div>'
-        : '<div class="frequency-list-favorite-icon favorite-icon-hidden"></div>'}
-        <div class="frequency-list-frequency p-pri">
-          ${frequencyObject.name}
+        ? '<div class="frequency-list-favorite-icon favorite-on"></div>'
+        : '<div class="frequency-list-favorite-icon hidden"></div>'}
+        <div class="frequency-list-frequency" data-l10n-id="Tab-frequency">
+          ${frequencyObject.frequency}
         </div>
         <div id="frequency-action-item" class="frequency-action-container hidden">
         ${frequencyObject.favorite
-          ? '<div class="frequency-action-favorite" data-l10n-id="tcl-station-removed">Remove from favorite</div>'
-          : '<div class="frequency-action-favorite" data-l10n-id="tcl-station-added">Add to favorite</div>'}
+          ? '<div class="frequency-action-favorite" data-l10n-id="station-removed">Remove from favorite</div>'
+          : '<div class="frequency-action-favorite" data-l10n-id="station-added">Add to favorite</div>'}
           <div class="frequency-action-rename">
             Rename Station
           </div>

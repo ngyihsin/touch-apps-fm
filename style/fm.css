@@ -1,6 +1,7 @@
 /* constant variables define*/
 .theme-media{
-  --frequencybar-height: 10.8rem;
+  --frequencybar-height: 11rem;
+  --stationactionbar-height:9rem;
   } 
   @media only screen and (orientation: landscape) {
     .theme-media{
@@ -15,9 +16,8 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  color: #FFF;
-  font-size: 10px;
 }
+
 
 /**
  * 1. No content inside the app
@@ -27,20 +27,6 @@ html, body {
   -moz-user-select: none; /* 1 */
 }
 
-a {
-  outline: 0 none;
-  text-decoration: none;
-  color: #FFF;
-}
-
-a:active {
-  color: #000;
-  background-color: #00ABCD;
-}
-
-.hidden-block {
-  visibility: hidden;
-}
 .hidden {
   display: none !important;
 }
@@ -53,14 +39,14 @@ body > section {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--color-gs00);
   font-size: 1.7rem;
+  color: var(--color-gs100);
+  background-color: var(--color-gs00);
 }
 
 #fm-container {
-  height:  calc(100% - 9rem);
+  height: 92%;
   width: 100%;
-  background-color: rgb(240, 243, 247);
   display: flex;
   flex-direction: column;
 }
@@ -77,66 +63,31 @@ body > section {
   bottom: 0;
   right: 0;
   left: 0;
-  background: var(--color-gs100);
+  background: var(--color-gs00);
   z-index: 1;
   opacity: 0.9;
 }
 
 /****** styles for fm Header **********/
+
 #fm-header {
-  width: 100%;
-  background-color: rgb(54, 62, 71);
-}
-
-
-#action-header {
-  width: 100%;
-  height: 9rem;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  background-color: rgb(54, 62, 71);
+  justify-content: center;
 }
 
-#action-header > div {
-  text-align: center;
-  padding: 1rem 2rem 0;
-  width: 50%;
-}
-
-#action-header > div:first-child {
-  text-align: left;
-}
-
-#action-header > div:last-child {
-  text-align: right;
-}
-
-#action-header a {
-  display: inline-block;
-  border: none;
-  font-size: 2.5rem;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  text-align: center;
-  box-shadow: 0 .1rem .1rem #A8A8A8 inset, 0 .2rem 0 #1e2226;
-}
-
-#action-header a:active {
-  color: #FFF;
-  background-color: #00ABCD;
-  box-shadow: 0 .1rem .1rem #3F6978 inset, 0 .2rem 0 #1e2226;
+.header.kai-header > .power-switch-off{
+  color: var(--color-pink);
 }
 
 #frequency-bar {
   box-sizing: border-box;
-  height: 11rem;
+  height: var(--frequencybar-height);
   width: 100%;
-  background-color: #353A41;
   transition: background-color 680ms ease;
   display: flex;
+  font-size: 5rem;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -147,27 +98,36 @@ body > section {
   text-align: center;
 }
 
-#frequency-bar.dim {
-  background-color: #232323;
+#frequency-display {
+  position: relative;
+  font-size: 5rem;
+}
+
+#frequency-display > span {
+  display: inline-block;
+  position: absolute;
+  width: 2.4rem;
+  height: 2.2rem;
+  top: 13%;
+  transform: translateY(-50%);
+  background-size: 100%;
+  background-position: center;
+  right: 0;
+  font-size: 4rem;
+}
+
+#frequency-display > .remove-to-favorites {
+  color: var(--color-pink);
 }
 
 #frequency-bar a {
-  z-index: 1;
-  line-height: 4rem;
-  width: 3.8rem;
-  height: 3.8rem;
-  font-size: 1.4rem;
-  border-radius: 50%;
-  display: inline-block;
-  margin-top: 3rem;
-  box-shadow: 0 -.1rem .1rem #111;
+  font-size: 3rem;
+  color: var(--color-gs20);
 }
 
 #station-action {
-  width: 100%;
-  height: 9rem;
-  background-color: rgb(34, 35, 36);
-  font-size: 2rem;
+  width: 40%;
+  height: var(--stationactionbar-height);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -183,10 +143,6 @@ div#frequency-list {
   overflow-y: scroll;
 }
 
-div#frequency-list-container {
-  background-color: rgb(56, 65, 77)
-}
-
 div#frequency-list-container > div:before {
   content: "";
   position: absolute;
@@ -195,7 +151,6 @@ div#frequency-list-container > div:before {
   right: 2rem;
   width: calc(100% - 4rem);
   height: .1rem;
-  background-color: #3D4045;
 }
 
 div#frequency-list-container > div {
@@ -203,17 +158,8 @@ div#frequency-list-container > div {
   font-size: 2.3rem;
   font-weight: 300;
   height: 4.4rem;
-  padding-bottom: 0.2rem;
+  padding:0.2rem 2rem 0 2rem;
   clear: both;
-}
-
-div#frequency-list-container > div:active {
-  background-color: rgba(52,140,158, .6);
-}
-
-div#frequency-list-container > div:active:before,
-div#frequency-list-container > div:active + div:before {
-  background-color: transparent;
 }
 
 div#favoritelist-warning {
@@ -221,21 +167,24 @@ div#favoritelist-warning {
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
-  background-color: rgb(0,0,0);
+}
+
+div#favoritelist-warning-body > h1 {
+  text-align: center;
+  font-size: 3rem;
 }
 /***** end *****/
 
 /***** styles for footer bars *****/
 #footer-action {
   width: 100%;
-  height: 6rem;
-  background-color: rgb(34, 35, 36);
+  height: 8rem;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-#footer-action > div{
+#footer-action > kai-pillbutton{
   width: 50%;
   text-align: center;
 }
@@ -250,31 +199,6 @@ div#favoritelist-warning {
   }
 }
 
-a#frequency-op-seekdown {
-  width: 5rem;
-  height: 5rem;
-  margin: 1rem 0;
-  background-repeat: no-repeat, no-repeat;
-  background-color: transparent;
-  background-position: center center;
-  background-size: 5.6rem;
-}
-
-a#frequency-op-seekup {
-  width: 5rem;
-  height: 5rem;
-  margin: 1rem 0;
-  background-repeat: no-repeat, no-repeat;
-  background-color: transparent;
-  background-position: center center;
-  background-size: 5.6rem;
-}
-
-a#frequency-op-seekup:active {
-  background-image: url(images/seekup.png);
-}
-/**** end ****/
-
 /***  styles for  warning box ****/
 .warning {
   position: absolute;
@@ -282,8 +206,10 @@ a#frequency-op-seekup:active {
   height: 100%;
   top: 0;
   left: 0;
-  color: #FFF;
-  background: url(images/popup-texture.png) transparent repeat 0 0 / 100% 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .warning .warning-header {
@@ -297,57 +223,10 @@ a#frequency-op-seekup:active {
   font-weight: 300;
   font-size: 2.5rem;
   padding: .5rem;
-  border-top: .1rem solid #686868;
   margin: 0 2.5rem;
 }
 
-/* Press (default & recommend) */
-.warning .menu button:active {
-  border-color: #008aaa;
-  color: #333;
-}
 /**** end ****/
-/* Dialog, should move to some place else later */
-
-.dialog-container {
-  z-index: 9999;
-  width: 100%;
-  height: calc(100% - 29rem);
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0，0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.dialog-container .dialog {
-  width: 100%;
-  max-height: calc(100% - 2rem);
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-}
-
-.dialog-container .dialog > .header {
-  padding: .5rem 1rem;
-  background-color: var(--color-gs20);
-  color: var(--color-gs90);
-  text-align: center;
-}
-
-.dialog-container .dialog > .content {
-  height: auto;
-  overflow-y: auto;
-  word-wrap: break-word;
-  white-space: pre-line;
-  padding: 1rem;
-  background-color: var(--color-gs00);
-  color: var(--color-gs90);
-}
-/*******   end ***********/
 
 /***  styles for antenna warning box ****/
 #antenna-warning {
@@ -364,12 +243,4 @@ a#frequency-op-seekup:active {
 }
 /******* end *******/
 
-/***  styles for airplane mode warning box ****/
-#airplane-mode-warning {
-  z-index: 3;
-}
 
-#airplane-mode-warning .warning-header {
-  margin-top: 50%;
-}
-/******* end *******/
