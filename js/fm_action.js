@@ -38,10 +38,33 @@
 
   // Handle 'add-to-favorites' clicked
   function onAddToFavoritesClicked() {
+    if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
+      // Update current frequency as favorite to data base
+      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true);
+      // Update favorite list UI
+      FrequencyList.updateFavoriteListUI();
+      // Update frequency dialer UI
+      FrequencyDialer.updateFrequency();
+      WarningUI.update();
+      FocusManager.update();
+    }
+    // Update status to update softkeys
+    StatusManager.update();
   }
 
   // Handle 'unfavorite' clicked
   function onUnfavoriteClicked() {
+    if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
+      // Update current frequency as unfavorite to data base
+      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false);
+      // Update favorite list UI
+      FrequencyList.updateFavoriteListUI();
+      FrequencyDialer.updateFrequency();
+      WarningUI.update();
+      FocusManager.update();
+    }
+    // Update status to update softkeys
+    StatusManager.update();
   }
 
   // Handle 'rename' clicked
@@ -66,6 +89,27 @@
 
   }
 
+  // Handle 'Tab-frequency' clicked
+  function onsetFrequency(e) {
+    let frequency = e.target.innerText;
+    mozFMRadio.setFrequency(frequency)
+  }
+  
+  // Handle 'settings' clicked
+  function onSettingsClicked () {
+    try {
+      new MozActivity({
+        name: 'configure',
+        data: {
+          target: 'device',
+          section: 'connectivity-settings'
+        }
+      });
+    } catch (e) {
+      console.error('Failed to create an activity: ' + e);
+    }
+  }
+
   // Indicate corresponding handle function mapping table
   const FunctionList = {
     'allstations': onAllStationsClicked,
@@ -74,13 +118,13 @@
     'power-switch-on': onPlayClicked,
     'power-switch-off': onStopClicked,
     'abort': onAbortClicked,
-    'scan': onScanClicked,
     'add-to-favorites': onAddToFavoritesClicked,
     'unfavorite': onUnfavoriteClicked,
     'rename': onRenameClicked,
     'scan-stations': onScanStationsClicked,
     'switchToHeadphones': onSwitchToHeadphonesClicked,
     'switchToSpeaker': onSwitchToSpeakerClicked,
+    'Tab-frequency': onsetFrequency
   };
 
   // FMAction Constructor
@@ -92,17 +136,18 @@
     this.timerLongScan = 1500;
     this.timeOutEvent = 0;
 
-    this.HeaderTitle = document.getElementById('header-title');
+    this.HeaderTitle = document.getElementById('header');
+    this.speakSwitch = document.getElementById('speaker-switch');
+    this.fmPowerKey = document.getElementById('power-switch');
+
     this.station_action = document.getElementById('station-action');
-    this.favorite = document.getElementById('favorate-station');
+    this.favorite_station = document.getElementById('favorate-station');
     this.allStation = document.getElementById('all-stations');
 
     this.fmLeftKey = document.getElementById('frequency-op-seekdown');
-    this.fmPowerKey = document.getElementById('power-switch');
     this.fmRightKey = document.getElementById('frequency-op-seekup');
 
-    this.fmDialogContainer = document.querySelector('.dialog-container');
-    this.fmDialogContent = this.fmDialogContainer.querySelector('.content');
+    this.dialog = document.getElementById('myDialog');
 
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
@@ -113,7 +158,9 @@
 
   FMAction.prototype.callFunByClick = function(e) {
     let clickId = e.target.getAttribute('data-l10n-id');
-    FunctionList[clickId]();
+    if (clickId) {
+      FunctionList[clickId](e);
+    }
   }
 
   FMAction.prototype.callFunByLongPress = function(e) {
@@ -185,17 +232,33 @@
   };
 
   // Show dialog
-  FMAction.prototype.showDialog = function (l10nId) {
+  FMAction.prototype.showDialog = function (l10nIdHeader,l10nIdMsg,l10nIdButton) {
     this.hideDialog();
-    this.fmDialogContent.setAttribute('data-l10n-id', l10nId);
-    this.fmDialogContainer.classList.remove('hidden');
-    this.fmDialogContainer.focus();
+    this.dialog.setAttribute('title',l10nIdHeader)
+    this.dialog.setAttribute('message',l10nIdMsg);
+    this.dialog.primarybtntext = l10nIdButton;
+    this.dialog.classList.remove('hidden');
+    this.dialog.open = true;
+    this.dialog.focus();
+    document.addEventListener('dialogSecondaryBtnClick', e => {
+      if (l10nIdButton === 'SCAN') {
+        StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
+        this.dialog.open = false;
+      } else {
+        window.close();
+      }
+    });
+    document.addEventListener('dialogPrimaryBtnClick', e => {
+      l10nIdButton === 'SCAN' ? onScanClicked() : onSettingsClicked();
+    });
+    
   };
 
   // Hide dialog
   FMAction.prototype.hideDialog = function () {
-    if (!this.fmDialogContainer.classList.contains('hidden')) {
-      this.fmDialogContainer.classList.add('hidden');
+    if (!this.dialog.classList[0]){
+      this.dialog.classList.add('hidden');
+      this.dialog.open = false;
     }
   };
 
@@ -203,32 +266,40 @@
     let status = StatusManager.status;
     switch (status) {
       case StatusManager.STATUS_WARNING_SHOWING:
-        this.HeaderTitle.innerText = 'FM RADIO';
+        this.HeaderTitle.title = 'FM RADIO';
         this.FMElementFMContainer.classList.add('hidden');
         break;
       case StatusManager.STATUS_FAVORITE_SHOWING:
-        this.HeaderTitle.innerText = 'FAVORITES';
+        this.HeaderTitle.title = 'FAVORITES';
         this.station_action.classList.add('hidden');
-        this.favorite.classList.add('favorite-icon');
+        this.favorite_station.setAttribute('icon','favorite-on');  
+        this.favorite_station.text = '';
+        this.allStation.setAttribute('icon','');
+        this.allStation.text = 'ALL';
         break;
       case StatusManager.STATUS_STATIONS_SCANING:
-        this.HeaderTitle.innerText = 'STATIONS';
+        this.HeaderTitle.title = 'STATIONS';
         this.station_action.classList.remove('hidden');
-        this.station_action.innerHTML = 'ABORT';
+        this.station_action.level = 'secondary';
+        this.station_action.text = 'ABORT';
         this.station_action.setAttribute('data-l10n-id', 'abort');
+        this.allStation.setAttribute('icon','fm-radio');
+        this.allStation.text = '';
+        this.favorite_station.setAttribute('icon','');  
+        this.favorite_station.text = 'FAVORITES';
         break;
       case StatusManager.STATUS_STATIONS_SHOWING:
-        this.HeaderTitle.innerText = 'STATIONS';
-        this.station_action.classList.remove('hidden');
-        this.station_action.innerHTML = 'RESCAN';
+        this.HeaderTitle.title = 'STATIONS';
+        this.station_action.classList.remove('hidden','scan');
+        this.station_action.level = 'secondary';
+        this.station_action.text = 'RESCAN';
         this.station_action.setAttribute('data-l10n-id', 'scan-stations');
-        this.allStation.classList.add('icon-back');
+        this.allStation.setAttribute('icon','fm-radio');
+        this.allStation.text = '';
+        this.favorite_station.setAttribute('icon','');  
+        this.favorite_station.text = 'FAVORITES';
         break;
-      case StatusManager.STATUS_DIALOG_FIRST_INIT:
-        this.station_action.classList.remove('hidden');
-        this.station_action.innerHTML = 'SCAN';
-        this.station_action.setAttribute('data-l10n-id', 'scan');
-        this.allStation.classList.add('icon-back');
+      case StatusManager.STATUS_DIALOG_FIRST_INIT:        
         break;
     }
   }

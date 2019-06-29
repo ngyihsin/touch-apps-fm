@@ -16,7 +16,8 @@
     "storage":{ "access": "readwrite" },
     "settings":{ "access": "readwrite" },
     "device-storage:sdcard":{ "access": "readwrite" },
-    "audio-channel-content":{}
+    "audio-channel-content":{},
+    "webapps-manage":{}
   },
   "activities": {
     "open": {

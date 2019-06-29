@@ -4,91 +4,106 @@
 <head>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
   <meta charset="utf-8" />
-  <meta name="theme-color" content="rgb(255, 255, 255)">
+  <meta name="theme-color" content="#FFF">
   <title>FM Radio</title>
   <link rel="stylesheet" href="style/fm.css" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="shared/elements/gaia-icons/gaia-icons.css">
-  <link rel="stylesheet" type="text/css" href="shared/elements/gaia-theme/gaia-theme.css">
-  <link rel="stylesheet" type="text/css" href="shared/elements/gaia-theme/gaia-font.css">
+  <!-- Theme -->
+  <link rel="stylesheet" type="text/css" href="app://theme.gaiamobile.org/theme.css">
+  <link rel="stylesheet" type="text/css" href="app://shared.gaiamobile.org/style/gaia-icons-embedded.css">
   <meta name="defaultLanguage" content="en-US">
   <link rel="localization" href="locales/fm.{locale}.properties">
 
-  <script src="shared/js/lazy_loader.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/webcomponents-loader.js"></script>
+  <script src="app://shared.gaiamobile.org/js/lazy_loader.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/base.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-radio.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-dialog.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-header.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-pillbutton.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-textbutton.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-progress.js"></script>
+  <script src="shared/js/airplane_mode_helper.js"></script>
+  
   <script defer src="js/startup.js"></script>
 </head>
 
 <body class="theme-media">
   <section>
-    <div id="action-header">
-      <div id="header-title">
-        FM RADIO
-      </div>
-      <div id="action-button">
-        <div id="speaker-action" class="hidden">
-          <a aria-label="Speaker" id="speaker-switch" href="#speaker" data-speaker-on="false"
-            data-l10n-id="speaker-switch" role="button" aria-pressed="false"></a>
-          <a aria-label="Headphone" id="headphone-switch" href="#headphone" data-speaker-on="true"
-            data-l10n-id="speaker-switch" role="button" aria-pressed="false" class="hidden"></a>
-        </div>
-        <div id="power-action" class="dim">
-          <a aria-label="Off" id="power-switch" href="#power-switch" data-enabled="false" data-enabling="false"
-            data-l10n-id="power-switch-on" role="button"></a>
-        </div>
-      </div>
-    </div>
+    <kai-header id="header" title="FAVORITES" type="large">
+      <i slot="header-right-slot" id="speaker-switch" class="hidden" href="#speaker" data-speaker-on="false"
+        data-l10n-id="speaker-switch" data-icon="headphones"></i>
+      <i slot="header-right-slot" class="power-switch-on" id="power-switch" data-l10n-id="power-switch-on" data-icon="on"></i>
+    </kai-header>
     <div id="fm-container" dir="ltr" class="dim">
       <div id="fm-header">
         <div id="frequency-bar">
           <div>
-            <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-l10n-id="frequency-op-seekdown"
-              role="button"></a>
+            <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-icon="skip-back"
+              data-l10n-id="frequency-op-seekdown" role="button"></a>
           </div>
           <div id="frequency-display">
-            <div id="frequency" role="status">87.5</div>
+            87.5
+            <span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>
           </div>
           <div>
-            <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-l10n-id="frequency-op-seekup"
-              role="button"></a>
+            <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-icon="skip-forward"
+              data-l10n-id="frequency-op-seekup" role="button"></a>
           </div>
         </div>
-        <div id="station-action" data-l10n-id="scan-stations" class="hidden">
-          RECAN
-        </div>
+        <kai-pillbutton class="hidden" id="station-action" data-l10n-id="scan-stations" text="RESCAN" level="primary"></kai-pillbutton>
       </div>
       <div id="frequency-list" class="favorites-list">
-        <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container"></div>
+        <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">
+        </div>
+        <kai-progress id="myProgress" value="50" max="100"></kai-progress>
         <div id="favoritelist-warning">
           <div class="warning">
-            <div id="favoritelist-warning-body" class="p warning-body" data-l10n-id="noFavoritelistMsg">
-              Add favorite stations here!
+            <div id="favoritelist-warning-body" class="p warning-body">
+              <h1>No Favorites</h1>
+              press <span data-icon="favorite-off"></span> to add favorite stations.
             </div>
           </div>
         </div>
       </div>
       <div id="footer-action">
-        <div id="favorate-station" class="button-press" data-l10n-id="favorites"><span
-            class="icon favorite-icon"></span>FAVORITE</div>
-        <div id='all-stations' data-l10n-id="allstations">ALL</div>
+        <kai-pillbutton id="favorate-station" class="style-scope kai-dialog" data-l10n-id="favorites" text="" icon="favorite-on" level="secondary"></kai-pillbutton>
+        <kai-pillbutton id="all-stations" class="style-scope kai-dialog" data-l10n-id="allstations" text="ALL" icon="" level="secondary"></kai-pillbutton>
+        <!-- <div id="favorate-station" class="button-press" data-icon="favorite-off" data-l10n-id="favorites">
+          <span data-icon="favorite-off"></span>
+          FAVORITE
+        </div> -->
+        <!-- <div id='all-stations' data-l10n-id="allstations">
+            <span data-icon="fm-radio"></span>
+          ALL
+        </div> -->
       </div>
     </div>
   </section>
-  <div id="dialog-container" class="dialog-container hidden" tabindex="-1">
-    <div role="heading" class="dialog">
-      <div id="dialog-header" class="header h1" data-l10n-id="scan-stations"></div>
-      <div class="content p-pri" tabindex="-1"></div>
-    </div>
-  </div>
-  <div id="antenna-warning" class="warning" hidden="">
+  <kai-dialog 
+    id="myDialog" 
+    class = "hidden"
+    title="" 
+    message="" 
+    primarybtntext="Enabled" 
+    secondarybtntext="Cancel">
+    <!-- <kai-loader slot="custom-view"></kai-loader> -->
+  </kai-dialog>
+  <!-- <div id="antenna-warning" class="warning" hidden="">
     <div></div>
     <div id="antenna-warning-header" class="warning-header" data-l10n-id="noAntenna">Plug in a headset</div>
     <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg">FM Radio requires a plugged in
       headset to receive radio signals.</div>
-  </div>
-  <div id="airplane-mode-warning" class="warning" hidden="">
+  </div> -->
+  <kai-emptypage
+    id="antenna-warning" 
+    class="warning hidden" 
+    src="images/headset.png"
+    titletext="Title align center"
+    description="Plug in a headset to receive radio signals."
+></kai-emptypage>
+  <!-- <div id="airplane-mode-warning" class="warning" hidden="">
     <div class="warning-header" data-l10n-id="airplaneModeHeader">Airplane mode is on</div>
     <div class="warning-body" data-l10n-id="airplaneModeMsg">Turn off Airplane mode to use FM Radio.</div>
-  </div>
-  <script src="js/cache_restore.js"></script>
+  </div> -->
 </body>
-
 </html>

@@ -15,8 +15,8 @@
 
     // If current airplane mode is enabled,
     // airplane mode warning UI should be shown
-    hiddenState = !FMRadio.airplaneModeEnabled;
-    FMElementAirplaneModeWarning.hidden = hiddenState;
+    // hiddenState = !FMRadio.airplaneModeEnabled;
+    // FMElementAirplaneModeWarning.hidden = hiddenState;
 
     // If current airplane mode is enabled, or current device has no valid antenna,
     // fm container element should be hidden
