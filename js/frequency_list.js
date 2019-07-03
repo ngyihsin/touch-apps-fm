@@ -75,6 +75,32 @@
     }
   };
 
+    // Update current single frequency list item element
+  FrequencyList.prototype.updateCurrentFrequencyElement = function(element) {
+      if (!element) {
+        return;
+      }
+  
+      var frequency = this.getFrequencyByElement(element);
+      if (element.id === 'frequency-display') {
+        FrequencyDialer.updateFrequency();
+      } else {
+        var frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
+        element.innerHTML = this.formatFrequencyElementInnerHTML(frequencyObject);
+      }
+    };
+
+      // Get the frequency of current frequency list item
+  FrequencyList.prototype.getFrequencyByElement = function(element) {
+    if (!element) {
+      return;
+    }
+
+    var isParentListItem = element.parentNode.classList.contains('frequency-list-item');
+    var listItem = isParentListItem ? element.parentNode : element;
+    return parseFloat(listItem.id.substring(listItem.id.indexOf('-') + 1));
+  };
+
   // Update stations list UI
   FrequencyList.prototype.updateStationsListUI = function() {
     let stationslist = FrequencyManager.getStationsFrequencyList();

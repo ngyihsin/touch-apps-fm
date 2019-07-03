@@ -18,9 +18,8 @@
   function lazyload() {
     setTimeout(() => {
       let lazyFiles = [
-        '/shared/js/airplane_mode_helper.js',
-        '/shared/js/mediadb.js',
         'js/headphone_state.js',
+        'js/speaker_state.js',
         'js/fm_action.js',
         'js/history_frequency.js',
         'js/stations_list.js',

@@ -27,6 +27,8 @@ html, body {
   -moz-user-select: none; /* 1 */
 }
 
+*[hidden] { display: none; }
+
 .hidden {
   display: none !important;
 }
@@ -89,40 +91,104 @@ body > section {
   display: flex;
   font-size: 5rem;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-}
-
-#frequency-bar > div {
-  width: 33.3%;
-  text-align: center;
+  padding: 0 1rem;
 }
 
 #frequency-display {
   position: relative;
-  font-size: 5rem;
 }
 
 #frequency-display > span {
   display: inline-block;
   position: absolute;
-  width: 2.4rem;
-  height: 2.2rem;
-  top: 13%;
-  transform: translateY(-50%);
-  background-size: 100%;
-  background-position: center;
-  right: 0;
+  top: -35%;
+  right: -50%;
   font-size: 4rem;
 }
 
 #frequency-display > .remove-to-favorites {
   color: var(--color-pink);
 }
+/* 
+#frequency-list-container >.focus {
+  color: var(--color-pink);
+} */
+
+#dialer-bar {
+  width: 100%;
+  height: var(--stationactionbar-height);
+  overflow: hidden;
+}
+
+#dialer-container {
+  position: relative;
+  padding-left: 50%;
+  margin: 0 2rem;
+  height: 100%;
+}
 
 #frequency-bar a {
   font-size: 3rem;
   color: var(--color-gs20);
+}
+
+#frequency-indicator {
+  border-radius: 50%/0.1rem;
+  height: 8.6rem;
+  width: 1.6rem;
+  margin: 0.6rem 0 0 -0.8rem;
+  position: absolute;
+  z-index: 1;
+  background: url(images/selector.png) no-repeat center center / 1.6rem;
+  top: 0;
+  left: 50%;
+}
+
+div.animation-on > div {
+  transition: -moz-transform var(--transition-duration) ease 0s;
+}
+
+#frequency-dialer {
+  display: inline-block;
+  display: -moz-inline-box;
+  -moz-user-select: none;
+  width: 100%;
+  margin-left: -2.2rem;
+  position: absolute;
+  top: 0;
+}
+
+#frequency-dialer .dialer-unit-mark-box {
+  background: url(images/dial-notches.png) no-repeat 0 3.4rem / 32rem;
+  overflow: hidden;
+  height: 5.5rem;
+}
+
+#frequency-dialer .dialer-unit {
+  text-align: left;
+  position: absolute;
+  width: 32rem;
+}
+
+/* The beginning and end of the dial are masked to hide notches that
+are out of range. */
+.dialer-unit-mark-mask-start,
+.dialer-unit-mark-mask-end {
+  display: block;
+  height: 5.5rem;
+  position: absolute;
+}
+/* The mask at the end should be jogged left by 0.3rem, since the
+mask is intended to cover everything except the first notch. */
+.dialer-unit-mark-mask-end {
+  margin-left: .3rem;
+}
+
+#frequency-dialer .dialer-unit-floor {
+  color: #AAA;
+  float: left;
 }
 
 #station-action {
@@ -141,6 +207,13 @@ body > section {
 div#frequency-list {
   flex: 1;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div#frequency-list-container {
+  width: 100%;
 }
 
 div#frequency-list-container > div:before {
@@ -167,11 +240,23 @@ div#favoritelist-warning {
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
+  width: 100%;
 }
 
 div#favoritelist-warning-body > h1 {
   text-align: center;
   font-size: 3rem;
+}
+
+div#favoritelist-warning-body  {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 /***** end *****/
 
@@ -206,22 +291,17 @@ div#favoritelist-warning-body > h1 {
   height: 100%;
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .warning .warning-header {
   padding: 1rem 3rem 1rem 3rem;
   font-weight: normal;
   font-size: 1.9rem;
-  color: #fff;
 }
 
 .warning .warning-body {
+  text-align: center;
   font-weight: 300;
-  font-size: 2.5rem;
   padding: .5rem;
   margin: 0 2.5rem;
 }
@@ -231,6 +311,7 @@ div#favoritelist-warning-body > h1 {
 /***  styles for antenna warning box ****/
 #antenna-warning {
   z-index: 2;
+  color: var(--color-gs100);
 }
 
 #antenna-warning > div:first-child {
