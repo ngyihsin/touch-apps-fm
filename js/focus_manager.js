@@ -17,10 +17,10 @@
     switch (this.focus) {
       case StatusManager.STATUS_FAVORITE_SHOWING:
       case StatusManager.STATUS_DIALOG_FIRST_INIT:
-        elements.push(FMElementFrequencyDialer);
       case StatusManager.STATUS_FAVORITE_RENAMING:
       case StatusManager.STATUS_STATIONS_SCANING:
       case StatusManager.STATUS_STATIONS_SHOWING:
+        elements.push(FMElementFrequencyDialer);
         [].forEach.call(FMElementFrequencyListContainer.children, function(element) {
           elements.push(element);
         });

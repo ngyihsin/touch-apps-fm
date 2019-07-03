@@ -77,6 +77,7 @@
   StationsList.prototype.startScanStations = function() {
     // Add 'scanning' to update stations list UI
     FMElementFrequencyListUI.classList.add('scanning');
+    FrequencyDialer.progressOn();
 
     // Update StatusManager to update UI
     StatusManager.update(StatusManager.STATUS_STATIONS_SCANING);
@@ -178,6 +179,7 @@
     // Hidden scan progress UI
     // FMElementScanProgress.className = 'hidden';
     // Remove 'scanning' to update stations list UI
+    FrequencyDialer.progressOff();
     FMElementFrequencyListUI.classList.remove('scanning');
 
     // Mark flag 'scanningAborted' as false

@@ -44,11 +44,16 @@
       // Update favorite list UI
       FrequencyList.updateFavoriteListUI();
       // Update frequency dialer UI
-      FrequencyDialer.updateFrequency();
       WarningUI.update();
-      FocusManager.update();
+    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
+      // Update current frequency as favorite to data base,
+      // and mark current frequency is a station
+      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true, true);
+      // Just update current frequency element is OK
+      var currentFocusedElement = FocusManager.getCurrentFocusElement();
+      FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
-    // Update status to update softkeys
+    FrequencyDialer.updateFrequency();
     StatusManager.update();
   }
 
@@ -59,11 +64,16 @@
       FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false);
       // Update favorite list UI
       FrequencyList.updateFavoriteListUI();
-      FrequencyDialer.updateFrequency();
       WarningUI.update();
-      FocusManager.update();
+    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
+      // Update current frequency as unfavorite to data base,
+      // and mark current frequency is a station
+      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false, true);
+      // Just update current frequency element is OK
+      var currentFocusedElement = FocusManager.getCurrentFocusElement();
+      FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
-    // Update status to update softkeys
+    FrequencyDialer.updateFrequency();
     StatusManager.update();
   }
 
@@ -73,15 +83,18 @@
 
   // Handle 'scan-stations' clicked
   function onScanStationsClicked() {
+    FrequencyDialer.progressOn();
     StationsList.startScanStations();
   }
 
   // Handle 'switchToHeadphones' clicked
   function onSwitchToHeadphonesClicked() {
+    SpeakerState.state = false;
   }
 
   // Handle 'switchToSpeaker' clicked
   function onSwitchToSpeakerClicked() {
+    SpeakerState.state = true;
   }
 
   // Handle'frequency item ' clicked
@@ -123,7 +136,7 @@
     'rename': onRenameClicked,
     'scan-stations': onScanStationsClicked,
     'switchToHeadphones': onSwitchToHeadphonesClicked,
-    'switchToSpeaker': onSwitchToSpeakerClicked,
+    'speaker-switch': onSwitchToSpeakerClicked,
     'Tab-frequency': onsetFrequency
   };
 
@@ -148,7 +161,8 @@
     this.fmRightKey = document.getElementById('frequency-op-seekup');
 
     this.dialog = document.getElementById('myDialog');
-
+    this.freDialer = document.getElementById('dialer-bar');
+    
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     window.addEventListener('click', this.callFunByClick.bind(this), false);
@@ -174,11 +188,6 @@
         this.onLongClickSeek(clickId);
       }, this.timerLongScan);
     }
-    click.addEventListener('touchmove', () => {
-      clearTimeout(this.timeOutEvent);
-      timeOutEvent = null;
-      e.preventDefault();
-    });
     click.addEventListener('touchend', () => {
       clearTimeout(this.timeOutEvent);
       if (this.timeOutEvent && !this.isLongPress) {
@@ -267,11 +276,11 @@
     switch (status) {
       case StatusManager.STATUS_WARNING_SHOWING:
         this.HeaderTitle.title = 'FM RADIO';
-        this.FMElementFMContainer.classList.add('hidden');
         break;
       case StatusManager.STATUS_FAVORITE_SHOWING:
         this.HeaderTitle.title = 'FAVORITES';
         this.station_action.classList.add('hidden');
+        this.freDialer.classList.remove('hidden');
         this.favorite_station.setAttribute('icon','favorite-on');  
         this.favorite_station.text = '';
         this.allStation.setAttribute('icon','');
@@ -280,6 +289,7 @@
       case StatusManager.STATUS_STATIONS_SCANING:
         this.HeaderTitle.title = 'STATIONS';
         this.station_action.classList.remove('hidden');
+        this.freDialer.classList.add('hidden');
         this.station_action.level = 'secondary';
         this.station_action.text = 'ABORT';
         this.station_action.setAttribute('data-l10n-id', 'abort');
@@ -291,6 +301,7 @@
       case StatusManager.STATUS_STATIONS_SHOWING:
         this.HeaderTitle.title = 'STATIONS';
         this.station_action.classList.remove('hidden','scan');
+        this.freDialer.classList.add('hidden');
         this.station_action.level = 'secondary';
         this.station_action.text = 'RESCAN';
         this.station_action.setAttribute('data-l10n-id', 'scan-stations');

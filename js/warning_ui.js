@@ -12,6 +12,13 @@
     // antenna warning UI should be shown
     hiddenState = HeadphoneState.deviceWithValidAntenna;
     FMElementAntennaUnplugWarning.hidden = hiddenState;
+    if(hiddenState) {
+      FMElementFMContainer.classList.remove('hidden')
+      document.getElementById('power-switch').classList.remove('hidden');
+    } else {
+      FMElementFMContainer.classList.add('hidden')
+      document.getElementById('power-switch').classList.add('hidden');
+    } 
 
     // If current airplane mode is enabled,
     // airplane mode warning UI should be shown
