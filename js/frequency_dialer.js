@@ -13,19 +13,14 @@
   FrequencyDialer.prototype.update = function() {
     // Update both frequency and favorite indicate icon if needed
     let favorite = FrequencyManager.checkFrequencyIsFavorite(this.currentFreqency);
-    FMElementFrequencyDialer.innerHTML = 
-     ` ${this.currentFreqency.toFixed(1)}
-      ${favorite 
-      ? '<span id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></span>'
-      : '<span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>'}`;
+    FMElementFrequencyDialer.innerHTML =
+      ` ${this.currentFreqency.toFixed(1)}
+        ${favorite
+        ? '<span id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></span>'
+        : '<span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>'}`;
 
     // No need update focus while FM Radio disabled
     if (!mozFMRadio.enabled) {
-      return;
-    }
-
-    // No need update focus while favorite list UI is not shown
-    if (StatusManager.status !== StatusManager.STATUS_FAVORITE_SHOWING) {
       return;
     }
 
@@ -34,13 +29,8 @@
       return;
     }
 
-    // No need update focus while current frequency dialer UI is focused
-    let focusedItem = FocusManager.getCurrentFocusElement();
-    if (focusedItem.id === 'frequency-display') {
-      return;
-    }
-
     // No need update focus while current frequency playing is focused
+    let focusedItem = FocusManager.getCurrentFocusElement();
     let focusedFreqency = FrequencyList.getFrequencyByElement(focusedItem);
     if (focusedFreqency === this.currentFreqency) {
       return;
@@ -51,11 +41,11 @@
   };
 
   // Update current frequency dialer UI with specified frequency
-  FrequencyDialer.prototype.updateFrequency = function(frequency){
+  FrequencyDialer.prototype.updateFrequency = function(frequency) {
     if (frequency) {
       this.currentFreqency = frequency;
+      this.updateDialerUI(frequency);
     }
-    this.updateDialerUI(frequency);
     this.update();
   };
 
@@ -82,11 +72,11 @@
     }
 
     // cache the size of dialer
-    var _dialerUnits =document.getElementsByClassName('dialer-unit');
+    var _dialerUnits = document.getElementsByClassName('dialer-unit');
     var _dialerUnitWidth = _dialerUnits[0].clientWidth;
     this._dialerWidth = _dialerUnitWidth * _dialerUnits.length;
     this._space = this._dialerWidth /
-                    (this._maxFrequency - this._minFrequency);
+      (this._maxFrequency - this._minFrequency);
 
     for (i = 0; i < _dialerUnits.length; i++) {
       _dialerUnits[i].style.left = i * _dialerUnitWidth + 'px';
@@ -124,7 +114,6 @@
       var markEnd = document.createElement('div');
       markEnd.classList.add('dialer-unit-mark-mask-end');
       markEnd.style.width = endMaskWidth + 'px';
-
       container.appendChild(markEnd);
     }
 

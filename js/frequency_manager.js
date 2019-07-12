@@ -75,7 +75,6 @@
         && (updatedObject.station !== frequencyObject.station);
       favoriteTimeShouldUpdate = this.checkIsValidBoolValue(frequencyObject.favorite)
         && (updatedObject.favorite !== frequencyObject.favorite);
-      updatedObject.name = frequencyObject.name ? frequencyObject.name : updatedObject.name;
       updatedObject.frequency = frequencyObject.frequency;
       updatedObject.favorite = this.checkIsValidBoolValue(frequencyObject.favorite)
         ? frequencyObject.favorite : updatedObject.favorite;
@@ -86,8 +85,6 @@
       updatedObject = {};
       stationTimeShouldUpdate = frequencyObject.station;
       favoriteTimeShouldUpdate = frequencyObject.favorite;
-      updatedObject.name = frequencyObject.name
-        ? frequencyObject.name : (frequencyObject.frequency.toFixed(1) + ' MHz');
       updatedObject.frequency = frequencyObject.frequency;
       updatedObject.favorite = this.checkIsValidBoolValue(frequencyObject.favorite)
         ? frequencyObject.favorite : false;
@@ -152,7 +149,7 @@
   // parameter station: true/false, indicate current frequency is station or not
   FrequencyManager.prototype.updateFrequencyFavorite = function(frequency, favorite, station) {
     // Update current frequency to frequency list
-    this.updateFrequencyToFrequencyList({frequency: frequency, favorite: favorite, station: station});
+    this.updateFrequencyToFrequencyList({ frequency: frequency, favorite: favorite, station: station });
     // Update favorite list after frequency list updated
     this.updateFavoriteFrequencyList();
     // Update stations list after frequency list updated
@@ -175,7 +172,7 @@
   // Update frequency as station or not
   FrequencyManager.prototype.updateFrequencyStation = function(frequency, station) {
     // Update current frequency to frequency list
-    this.updateFrequencyToFrequencyList({frequency: frequency, station: station});
+    this.updateFrequencyToFrequencyList({ frequency: frequency, station: station });
     // Update stations list after frequency list updated
     this.updateStationsFrequencyList();
   };

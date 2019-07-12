@@ -21,6 +21,8 @@
     this.STATUS_STATIONS_SHOWING = 4;
     // Update only show FTU dialog
     this.STATUS_DIALOG_FIRST_INIT = 5;
+    // Update only station list is empty
+    this.STATUS_STATIONS_EMPTY = 6;
   };
 
   // Update current status
@@ -33,6 +35,7 @@
       case this.STATUS_STATIONS_SCANING:
       case this.STATUS_STATIONS_SHOWING:
       case this.STATUS_DIALOG_FIRST_INIT:
+      case this.STATUS_STATIONS_EMPTY:
         this.status = status;
         break;
       default:

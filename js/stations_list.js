@@ -25,27 +25,17 @@
     FMElementFavoriteListWarning.hidden = true;
 
     let stationslist = FrequencyManager.getStationsFrequencyList();
-    let currentFrequency = document.getElementById('frequency-display').textContent;
-    let fixed = 0;
-    stationslist.some((frequency, i) => {
-      let frequencyCompare = (frequency.frequency == currentFrequency);
-      if (frequencyCompare) {
-        fixed = i;
-      }
-      return frequencyCompare;
-    });
+    StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
     if (stationslist.length === 0) {
-      // Scan stations if no stations
-      this.startScanStations();
+      StatusManager.update(StatusManager.STATUS_STATIONS_EMPTY);
     } else {
       // Update StatusManager to update UI
-      StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
       // Show stations lit UI
       FrequencyList.updateStationsListUI();
     }
 
     // Update current focus
-    FocusManager.update(fixed);
+    FocusManager.update();
     // Update warning UI
     // in case of favorite list warning UI is showing
     WarningUI.update();
@@ -53,7 +43,8 @@
 
   // Switch from station list UI to favorite list UI
   StationsList.prototype.switchToFavoriteListUI = function() {
-    if (StatusManager.status !== StatusManager.STATUS_STATIONS_SHOWING) {
+    if (StatusManager.status !== StatusManager.STATUS_STATIONS_SHOWING
+      && StatusManager.status !== StatusManager.STATUS_STATIONS_EMPTY) {
       // Only in station list UI can switch to favorite list UI
       return;
     }
@@ -150,7 +141,7 @@
 
     if (this.previousFrequency > this.currentFrequency) {
       // Scanning finished if scanned frequency is smaller
-      this.scanFinished(true, 'tcl-scanning-completed');
+      this.scanFinished(true);
       return;
     }
 
@@ -175,7 +166,7 @@
   };
 
   // Stations scanning operation finished
-  StationsList.prototype.scanFinished = function(needupdate, message){
+  StationsList.prototype.scanFinished = function(needupdate) {
     // Hidden scan progress UI
     // FMElementScanProgress.className = 'hidden';
     // Remove 'scanning' to update stations list UI
@@ -221,12 +212,12 @@
   };
 
   StationsList.prototype.retryCancel = (retryTime = this.CANCEL_RETRY_TIMES, cancelCB, continueCB) => {
-    retryTime --;    
+    retryTime--;
     if (retryTime <= 0) {
       cancelCB && cancelCB();
     } else {
       continueCB && continueCB(retryTime);
-    }    
+    }
   }
 
   // Abort stations scanning operation for headphone has been unplugged
@@ -258,7 +249,7 @@
     request.onerror = () => {
       this.retryCancel(retryTime, () => {
         this.scanningAborted = true;
-        this.scanFinished(true);      
+        this.scanFinished(true);
       }, (retryTime) => {
         this.scanAbortOnBrowserBack(retryTime);
       })

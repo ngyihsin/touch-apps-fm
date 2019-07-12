@@ -90,11 +90,13 @@
   // Handle 'switchToHeadphones' clicked
   function onSwitchToHeadphonesClicked() {
     SpeakerState.state = false;
+    FMAction.speakerUpdate(false);
   }
 
   // Handle 'switchToSpeaker' clicked
   function onSwitchToSpeakerClicked() {
     SpeakerState.state = true;
+    FMAction.speakerUpdate(true);
   }
 
   // Handle'frequency item ' clicked
@@ -107,9 +109,9 @@
     let frequency = e.target.innerText;
     mozFMRadio.setFrequency(frequency)
   }
-  
+
   // Handle 'settings' clicked
-  function onSettingsClicked () {
+  function onSettingsClicked() {
     try {
       new MozActivity({
         name: 'configure',
@@ -144,7 +146,7 @@
   function FMAction() { };
 
   // Initialize FMAction
-  FMAction.prototype.init = function () {
+  FMAction.prototype.init = function() {
     this.isLongPress = false;
     this.timerLongScan = 1500;
     this.timeOutEvent = 0;
@@ -154,18 +156,20 @@
     this.fmPowerKey = document.getElementById('power-switch');
 
     this.station_action = document.getElementById('station-action');
-    this.favorite_station = document.getElementById('favorate-station');
-    this.allStation = document.getElementById('all-stations');
 
     this.fmLeftKey = document.getElementById('frequency-op-seekdown');
     this.fmRightKey = document.getElementById('frequency-op-seekup');
 
     this.dialog = document.getElementById('myDialog');
     this.freDialer = document.getElementById('dialer-bar');
-    
+
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     window.addEventListener('click', this.callFunByClick.bind(this), false);
+    document.addEventListener('categorybarSelect', e => {
+      let clickId = e.detail.selected;
+      FunctionList[clickId]();
+    });
   };
 
 
@@ -209,17 +213,17 @@
     }
   }
 
-  FMAction.prototype.onclickSeek= function(seekUpDirection) {    
+  FMAction.prototype.onclickSeek = function(seekUpDirection) {
     if (mozFMRadio.enabled) {
       if (!this.isLongPress) {
         let frequency = mozFMRadio.frequency;
-        frequency = seekUpDirection === 'frequency-op-seekdown' 
-        ? frequency - 0.1 : frequency + 0.1;
-        if (seekUpDirection === 'frequency-op-seekdown' 
-        && frequency < mozFMRadio.frequencyLowerBound) {
+        frequency = seekUpDirection === 'frequency-op-seekdown'
+          ? frequency - 0.1 : frequency + 0.1;
+        if (seekUpDirection === 'frequency-op-seekdown'
+          && frequency < mozFMRadio.frequencyLowerBound) {
           mozFMRadio.setFrequency(mozFMRadio.frequencyUpperBound);
-        } else if (seekUpDirection === 'frequency-op-seekup' 
-        && frequency > mozFMRadio.frequencyUpperBound) {
+        } else if (seekUpDirection === 'frequency-op-seekup'
+          && frequency > mozFMRadio.frequencyUpperBound) {
           mozFMRadio.setFrequency(mozFMRadio.frequencyLowerBound);
         } else {
           mozFMRadio.setFrequency(frequency);
@@ -231,20 +235,20 @@
     }
   }
 
-  FMAction.prototype.startStationScan = function (seekUpDirection) {
+  FMAction.prototype.startStationScan = function(seekUpDirection) {
     this.fmPowerKey.dataset.seeking = true;
-    let request = seekUpDirection === 'frequency-op-seekdown' 
-    ? mozFMRadio.seekDown() : mozFMRadio.seekUp();
+    let request = seekUpDirection === 'frequency-op-seekdown'
+      ? mozFMRadio.seekDown() : mozFMRadio.seekUp();
     request.onsuccess = () => {
       this.fmPowerKey.removeAttribute('data-seeking');
     };
   };
 
   // Show dialog
-  FMAction.prototype.showDialog = function (l10nIdHeader,l10nIdMsg,l10nIdButton) {
+  FMAction.prototype.showDialog = function(l10nIdHeader, l10nIdMsg, l10nIdButton) {
     this.hideDialog();
-    this.dialog.setAttribute('title',l10nIdHeader)
-    this.dialog.setAttribute('message',l10nIdMsg);
+    this.dialog.setAttribute('title', l10nIdHeader)
+    this.dialog.setAttribute('message', l10nIdMsg);
     this.dialog.primarybtntext = l10nIdButton;
     this.dialog.classList.remove('hidden');
     this.dialog.open = true;
@@ -260,18 +264,28 @@
     document.addEventListener('dialogPrimaryBtnClick', e => {
       l10nIdButton === 'SCAN' ? onScanClicked() : onSettingsClicked();
     });
-    
+
   };
 
   // Hide dialog
-  FMAction.prototype.hideDialog = function () {
-    if (!this.dialog.classList[0]){
+  FMAction.prototype.hideDialog = function() {
+    if (!this.dialog.classList[0]) {
       this.dialog.classList.add('hidden');
       this.dialog.open = false;
     }
   };
 
-  FMAction.prototype.updateStatusUI = function () {
+  FMAction.prototype.speakerUpdate = function(state) {
+    if (state) {
+      this.speakSwitch.setAttribute('data-l10n-id', 'switchToHeadphones');
+      this.speakSwitch.setAttribute('data-icon', 'speaker-on');
+    } else {
+      this.speakSwitch.setAttribute('data-l10n-id', 'speaker-switch');
+      this.speakSwitch.setAttribute('data-icon', 'headphones');
+    }
+  }
+
+  FMAction.prototype.updateStatusUI = function() {
     let status = StatusManager.status;
     switch (status) {
       case StatusManager.STATUS_WARNING_SHOWING:
@@ -281,10 +295,6 @@
         this.HeaderTitle.title = 'FAVORITES';
         this.station_action.classList.add('hidden');
         this.freDialer.classList.remove('hidden');
-        this.favorite_station.setAttribute('icon','favorite-on');  
-        this.favorite_station.text = '';
-        this.allStation.setAttribute('icon','');
-        this.allStation.text = 'ALL';
         break;
       case StatusManager.STATUS_STATIONS_SCANING:
         this.HeaderTitle.title = 'STATIONS';
@@ -293,24 +303,18 @@
         this.station_action.level = 'secondary';
         this.station_action.text = 'ABORT';
         this.station_action.setAttribute('data-l10n-id', 'abort');
-        this.allStation.setAttribute('icon','fm-radio');
-        this.allStation.text = '';
-        this.favorite_station.setAttribute('icon','');  
-        this.favorite_station.text = 'FAVORITES';
         break;
       case StatusManager.STATUS_STATIONS_SHOWING:
         this.HeaderTitle.title = 'STATIONS';
-        this.station_action.classList.remove('hidden','scan');
+        this.station_action.classList.remove('hidden', 'scan');
         this.freDialer.classList.add('hidden');
         this.station_action.level = 'secondary';
         this.station_action.text = 'RESCAN';
         this.station_action.setAttribute('data-l10n-id', 'scan-stations');
-        this.allStation.setAttribute('icon','fm-radio');
-        this.allStation.text = '';
-        this.favorite_station.setAttribute('icon','');  
-        this.favorite_station.text = 'FAVORITES';
         break;
-      case StatusManager.STATUS_DIALOG_FIRST_INIT:        
+      case StatusManager.STATUS_STATIONS_EMPTY:
+        this.station_action.level = 'primary';
+        this.station_action.text = 'SCAN';
         break;
     }
   }

@@ -3,7 +3,7 @@
 
 (function(exports) {
 
-  var WarningUI = function() {};
+  var WarningUI = function() { };
 
   WarningUI.prototype.update = function() {
     let hiddenState = false;
@@ -12,17 +12,19 @@
     // antenna warning UI should be shown
     hiddenState = HeadphoneState.deviceWithValidAntenna;
     FMElementAntennaUnplugWarning.hidden = hiddenState;
-    if(hiddenState) {
+    if (hiddenState) {
       FMElementFMContainer.classList.remove('hidden')
       document.getElementById('power-switch').classList.remove('hidden');
     } else {
       FMElementFMContainer.classList.add('hidden')
       document.getElementById('power-switch').classList.add('hidden');
-    } 
+    }
 
     // If current airplane mode is enabled,
     // airplane mode warning UI should be shown
-    // hiddenState = !FMRadio.airplaneModeEnabled;
+    hiddenState = !FMRadio.airplaneModeEnabled;
+    hiddenState 
+      ? '' : FMAction.showDialog('Airplane Mode On', ' Trun off airplabe mode to use FM Radio', 'SETTINGS');
     // FMElementAirplaneModeWarning.hidden = hiddenState;
 
     // If current airplane mode is enabled, or current device has no valid antenna,

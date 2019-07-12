@@ -12,7 +12,7 @@
   };
 
   // Update current list should be focued in current screen
-  FocusManager.prototype.updateCurrentFocusList =  function() {
+  FocusManager.prototype.updateCurrentFocusList = function() {
     let elements = [];
     switch (this.focus) {
       case StatusManager.STATUS_FAVORITE_SHOWING:
@@ -20,8 +20,7 @@
       case StatusManager.STATUS_FAVORITE_RENAMING:
       case StatusManager.STATUS_STATIONS_SCANING:
       case StatusManager.STATUS_STATIONS_SHOWING:
-        elements.push(FMElementFrequencyDialer);
-        [].forEach.call(FMElementFrequencyListContainer.children, function(element) {
+        [].forEach.call(FMElementFrequencyListContainer.children, function (element) {
           elements.push(element);
         });
         break;
@@ -69,17 +68,10 @@
         this.backOff = false;
       }
     }
-
-    // Dispatch 'index-changed' event
-    window.dispatchEvent(new CustomEvent('index-changed', {
-      detail: {
-        focusedItem: focusedItem
-      }
-    }));
   };
 
   // Update current focus
-  FocusManager.prototype.update = function(fixed) {
+  FocusManager.prototype.update = function() {
     switch (StatusManager.status) {
       case StatusManager.STATUS_FAVORITE_SHOWING:
       case StatusManager.STATUS_FAVORITE_RENAMING:
@@ -95,8 +87,23 @@
       default:
         return;
     }
-
-    this.resetCurrentFocusedItems(fixed);
+    let currentFrequency = FrequencyDialer.getFrequency();
+    let stationslist = this.focus === StatusManager.STATUS_FAVORITE_SHOWING
+      ? FrequencyManager.getFavoriteFrequencyList() 
+      : FrequencyManager.getStationsFrequencyList();
+    let fixed = 0;
+    let update = stationslist.some((frequency, i) => {
+      let frequencyCompare = (frequency.frequency == currentFrequency);
+      if (frequencyCompare) {
+        fixed = i;
+      }
+      return frequencyCompare;
+    });
+    if (update) {
+      this.resetCurrentFocusedItems(fixed);
+    } else {
+      this.dismissFocus();
+    }
   };
 
   // Reset and update current focused items
@@ -108,8 +115,14 @@
     }
 
     let index = 0;
-    if (this.focus === StatusManager.STATUS_STATIONS_SHOWING) {
-      // @fixed: if fixed is station index ,should update currentFocus index.
+    if (this.focus === StatusManager.STATUS_STATIONS_SCANING) {
+      if (currentFocusList.elements.length === 0) {
+        return;
+      }
+      // Always focus the last item while scanning
+      index = currentFocusList.elements.length - 1;
+    } else if (this.focus === StatusManager.STATUS_STATIONS_SHOWING
+      || this.focus === StatusManager.STATUS_FAVORITE_SHOWING) {
       if (fixed) {
         if (typeof fixed === 'number') {
           currentFocusList.index = fixed;
@@ -118,12 +131,6 @@
       } else {
         index = 0;
       }
-    } else if (this.focus === StatusManager.STATUS_STATIONS_SCANING) {
-      if (currentFocusList.elements.length === 0) {
-        return;
-      }
-      // Always focus the last item while scanning
-      index = currentFocusList.elements.length - 1;
     }
 
     // Update the specified index item to focus
@@ -141,7 +148,6 @@
 
     if (index >= 0 && index < focusList.elements.length) {
       this.dismissFocus();
-
       let toFocused = focusList.elements[index];
       toFocused.classList.add('focus');
       toFocused.focus();
@@ -150,23 +156,6 @@
     this.updateCurrentFocusIndex(index);
   };
 
-  // Change the focus to the next item
-  FocusManager.prototype.focusNext = function(next) {
-    let focusList = this.getCurrentFocusList();
-    if (!focusList || focusList.elements.length <= 1) {
-      return;
-    }
-
-    let toFocusedIndex = next ? (this.previousFocusedIndex + 1) : (this.previousFocusedIndex - 1);
-    if (toFocusedIndex < 0) {
-      toFocusedIndex = focusList.elements.length - 1;
-    } else if (toFocusedIndex >= focusList.elements.length) {
-      toFocusedIndex = 0;
-    }
-
-    this.updateFocus(toFocusedIndex);
-    this.previousFocusedItem.scrollIntoView(false);
-  };
 
   // Remove current focus
   FocusManager.prototype.dismissFocus = function() {

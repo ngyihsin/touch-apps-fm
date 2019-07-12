@@ -47,7 +47,7 @@ body > section {
 }
 
 #fm-container {
-  height: 92%;
+  height: calc(100% - 8rem);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -111,10 +111,10 @@ body > section {
 #frequency-display > .remove-to-favorites {
   color: var(--color-pink);
 }
-/* 
+
 #frequency-list-container >.focus {
   color: var(--color-pink);
-} */
+}
 
 #dialer-bar {
   width: 100%;
@@ -216,16 +216,6 @@ div#frequency-list-container {
   width: 100%;
 }
 
-div#frequency-list-container > div:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 2rem;
-  right: 2rem;
-  width: calc(100% - 4rem);
-  height: .1rem;
-}
-
 div#frequency-list-container > div {
   position: relative;
   font-size: 2.3rem;
@@ -233,6 +223,12 @@ div#frequency-list-container > div {
   height: 4.4rem;
   padding:0.2rem 2rem 0 2rem;
   clear: both;
+}
+
+.frequency-list-item > .favorite-icon {
+  position: absolute;
+  top: 0;
+  right: 5rem;
 }
 
 div#favoritelist-warning {
@@ -260,21 +256,6 @@ div#favoritelist-warning-body  {
 }
 /***** end *****/
 
-/***** styles for footer bars *****/
-#footer-action {
-  width: 100%;
-  height: 8rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#footer-action > kai-pillbutton{
-  width: 50%;
-  text-align: center;
-}
-
-/*** end ***/
 @keyframes spinner-animation {
   from {
     transform: rotate(1deg);

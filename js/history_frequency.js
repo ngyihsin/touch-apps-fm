@@ -39,7 +39,7 @@
     try {
       window.localStorage.setItem(this.KEYNAME, this.historyFrequency);
     } catch (e) {
-      console.error('Failed set history frequency :'+ e);
+      console.error('Failed set history frequency :' + e);
     }
   };
 

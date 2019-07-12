@@ -1,0 +1,50 @@
+# (c) 2017 KAI OS TECHNOLOGIES (HONG KONG) LIMITED All rights reserved. This
+# file or any portion thereof may not be reproduced or used in any manner
+# whatsoever without the express written permission of KAI OS TECHNOLOGIES
+# (HONG KONG) LIMITED. KaiOS is the trademark of KAI OS TECHNOLOGIES (HONG KONG)
+# LIMITED or its affiliate company and may be registered in some jurisdictions.
+# All other trademarks are the property of their respective owners.
+
+image: quay.io/kaici/gaia
+
+variables:
+  GAIA_DIR: 'gaia'
+  CI_UTILS: 'ci-utils'
+  # Use this as a solution for caching gaia/ instead of the built-in cache mechanism.
+  # See Bug 33658 for details.
+  CACHE_DIR: '/cache'
+  TERM: 'dumb'
+
+before_script:
+  # Install ssh-agent if not already installed, it is required by Docker.
+  # (change apt-get to yum if you use a CentOS-based image)
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+  # For Docker builds disable host key checking. Be aware that by adding that
+  # you are suspectible to man-in-the-middle attacks.
+  # WARNING: Use this only with the Docker executor, if you use it with shell
+  # you will overwrite your user's SSH config.
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+build:
+  stage: build
+
+  script:
+  # Sync Gaia
+  - git clone --depth 1 git@git.kaiostech.com:shared/ci-utils.git "$CI_UTILS"
+  - chmod +x "$CI_UTILS/sync_gaia.sh"
+  - ' "$CI_UTILS/sync_gaia.sh" "$CACHE_DIR/$GAIA_DIR" "$CI_PROJECT_DIR" '
+  - cd "$CACHE_DIR/$GAIA_DIR"
+  # We should always reset Gaia profile first.
+  - make clean
+  # Test production build
+  - PRODUCTION=1 APP="$CI_PROJECT_NAME" make
+  # Do clean again to prevent those files get cached.
+  - make clean
