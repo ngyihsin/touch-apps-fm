@@ -3,7 +3,7 @@
 
 (function(exports) {
 
-  var SpeakerState = {
+  const SpeakerState = {
     _speakerManager: null,
 
     init: function() {

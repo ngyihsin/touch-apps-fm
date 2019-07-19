@@ -4,7 +4,7 @@
 (function(exports) {
 
   // FrequencyList Constructor
-  var FrequencyList = function() { };
+  const FrequencyList = function() {};
 
   // Format frequency list item element innerHTML
   FrequencyList.prototype.formatFrequencyElementInnerHTML = function(frequencyObject) {
@@ -13,25 +13,20 @@
     }
     let html = `
     <div id=${this.formatFrequencyElementId(frequencyObject.frequency)} 
-    class="frequency-list-item" role="option">
-      <div class="frequency-list-frequency" data-l10n-id="Tab-frequency">
-        ${frequencyObject.frequency}
-      </div>
-      ${ StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING
-      || StatusManager.status === StatusManager.STATUS_STATIONS_SCANING
-      ? frequencyObject.favorite
-        ? '<span class="favorite-icon" data-icon="favorite-on"></span>'
-        : '' : ''
-      }
-      <div id="frequency-action-item" class="frequency-action-container hidden">
-      ${frequencyObject.favorite
-      ? '<div class="frequency-action-favorite" data-l10n-id="station-removed">Remove from favorite</div>'
-      : '<div class="frequency-action-favorite" data-l10n-id="station-added">Add to favorite</div>'}
-        <div class="frequency-action-rename">
-          Rename Station
+    class="frequency-list-item">
+        <div id=${'detail' + this.formatFrequencyElementId(frequencyObject.frequency)} 
+        class="frequency-list-frequency" data-l10n-id="Tab-frequency">
+          ${frequencyObject.name}
         </div>
-      </div>
-    </div>`
+        ${ StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING
+        || StatusManager.status === StatusManager.STATUS_STATIONS_SCANING
+        ? frequencyObject.favorite
+          ? '<span class="favorite-icon" data-icon="favorite-on"></span>'
+          : '' : ''
+      }
+        <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>
+    </div>
+     `
     return html;
   };
 
@@ -50,7 +45,9 @@
     if (!frequencyObject) {
       return;
     }
+
     FMElementFrequencyListContainer.innerHTML += this.formatFrequencyElementInnerHTML(frequencyObject);
+
   };
 
   // Update current frequency list UI, favorite list UI, rename UI or stations list UI
@@ -81,11 +78,11 @@
       return;
     }
 
-    var frequency = this.getFrequencyByElement(element);
+    let frequency = this.getFrequencyByElement(element);
     if (element.id === 'frequency-display') {
       FrequencyDialer.updateFrequency();
     } else {
-      var frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
+      let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
       element.innerHTML = this.formatFrequencyElementInnerHTML(frequencyObject);
     }
   };

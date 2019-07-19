@@ -50,7 +50,7 @@
       // and mark current frequency is a station
       FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true, true);
       // Just update current frequency element is OK
-      var currentFocusedElement = FocusManager.getCurrentFocusElement();
+      let currentFocusedElement = FocusManager.getCurrentFocusElement();
       FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
     FrequencyDialer.updateFrequency();
@@ -70,7 +70,7 @@
       // and mark current frequency is a station
       FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false, true);
       // Just update current frequency element is OK
-      var currentFocusedElement = FocusManager.getCurrentFocusElement();
+      let currentFocusedElement = FocusManager.getCurrentFocusElement();
       FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
     FrequencyDialer.updateFrequency();
@@ -78,7 +78,13 @@
   }
 
   // Handle 'rename' clicked
-  function onRenameClicked() {
+  function onSaveRenameClicked() {
+    FMAction.saveRename();
+  }
+
+  // Handle 'rename' clicked
+  function onCancelRenameClicked() {
+    FMAction.undoRename();
   }
 
   // Handle 'scan-stations' clicked
@@ -106,8 +112,13 @@
 
   // Handle 'Tab-frequency' clicked
   function onsetFrequency(e) {
-    let frequency = e.target.innerText;
+    let frequency = FrequencyList.getFrequencyByElement(e.target);
     mozFMRadio.setFrequency(frequency)
+  }
+
+  //Handle 'option-menu clicked
+  function onoptionMenu(e) {
+    FMAction.optionMenuShow(e);
   }
 
   // Handle 'settings' clicked
@@ -135,22 +146,27 @@
     'abort': onAbortClicked,
     'add-to-favorites': onAddToFavoritesClicked,
     'unfavorite': onUnfavoriteClicked,
-    'rename': onRenameClicked,
+    'save-rename': onSaveRenameClicked,
+    'cancel-rename': onCancelRenameClicked,
     'scan-stations': onScanStationsClicked,
     'switchToHeadphones': onSwitchToHeadphonesClicked,
     'speaker-switch': onSwitchToSpeakerClicked,
-    'Tab-frequency': onsetFrequency
+    'Tab-frequency': onsetFrequency,
+    'option-menu': onoptionMenu,
   };
 
   // FMAction Constructor
-  function FMAction() { };
+  function FMAction() {};
 
   // Initialize FMAction
   FMAction.prototype.init = function() {
     this.isLongPress = false;
     this.timerLongScan = 1500;
     this.timeOutEvent = 0;
+    this.editValue = '';
+    this.frequencyToRenameElement = null;
 
+    this.mainBody = document.querySelector('section');
     this.HeaderTitle = document.getElementById('header');
     this.speakSwitch = document.getElementById('speaker-switch');
     this.fmPowerKey = document.getElementById('power-switch');
@@ -162,6 +178,9 @@
 
     this.dialog = document.getElementById('myDialog');
     this.freDialer = document.getElementById('dialer-bar');
+
+    this.optionMenu = document.querySelector('kai-optionmenu');
+    this.inputDialog = document.getElementById('input-dialog');
 
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
@@ -253,7 +272,7 @@
     this.dialog.classList.remove('hidden');
     this.dialog.open = true;
     this.dialog.focus();
-    document.addEventListener('dialogSecondaryBtnClick', e => {
+    document.addEventListener('dialogSecondaryBtnClick', () => {
       if (l10nIdButton === 'SCAN') {
         StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
         this.dialog.open = false;
@@ -261,10 +280,9 @@
         window.close();
       }
     });
-    document.addEventListener('dialogPrimaryBtnClick', e => {
+    document.addEventListener('dialogPrimaryBtnClick', () => {
       l10nIdButton === 'SCAN' ? onScanClicked() : onSettingsClicked();
     });
-
   };
 
   // Hide dialog
@@ -281,9 +299,50 @@
       this.speakSwitch.setAttribute('data-icon', 'speaker-on');
     } else {
       this.speakSwitch.setAttribute('data-l10n-id', 'speaker-switch');
-      this.speakSwitch.setAttribute('data-icon', 'headphones');
+      this.speakSwitch.setAttribute('data-icon', 'audio-output');
     }
   }
+
+  FMAction.prototype.optionMenuShow = function(e) {
+    this.optionMenu.position = { from: 0, to: e.clientY };
+    this.optionMenu.open = true;
+    let currentValue = e.rangeParent.innerText;
+    this.frequencyToRenameElement = e.rangeParent;
+    let input = document.getElementById('textfield');
+    let inputLength = document.getElementById('input-num');
+    document.addEventListener('optionmenuSelect', () => {
+      this.inputDialog.setAttribute('class', '');
+      input.value = currentValue;
+      inputLength.innerText = currentValue.length;
+      document.addEventListener('inputChanged', e => {
+        this.editValue = e.detail.value;
+        inputLength.innerText = this.editValue.length;
+      });
+    });
+  }
+
+  // Cancel current rename operation
+  FMAction.prototype.undoRename = function() {
+    this.inputDialog.setAttribute('class', 'hidden');
+  };
+
+  // Save the renamed station name
+  FMAction.prototype.saveRename = function() {
+    // // Get renamed frequency name from input UI
+    let frequencyName = this.editValue;
+    let frequency = FrequencyList.getFrequencyByElement(this.frequencyToRenameElement);
+    if (!frequencyName) {
+      frequencyName = frequency.toFixed(1);
+    }
+
+    // Update renamed frequency name to data base
+    FrequencyManager.updateFrequencyName(frequency, frequencyName);
+
+    // Update renamed frequency name to UI
+    this.frequencyToRenameElement.querySelector('.frequency-list-frequency').textContent = frequencyName;
+    FrequencyDialer.update();
+    this.undoRename();
+  };
 
   FMAction.prototype.updateStatusUI = function() {
     let status = StatusManager.status;

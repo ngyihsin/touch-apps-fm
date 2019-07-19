@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
   <meta charset="utf-8" />
@@ -20,8 +21,9 @@
   <script src="app://shared.gaiamobile.org/elements/kai-pillbutton.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-loader.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-categorybar.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-optionmenu.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-switch.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-optionmenu.js"></script>
+  <script src="app://shared.gaiamobile.org/elements/kai-textfield.js"></script>
   <script src="shared/js/airplane_mode_helper.js"></script>
 
   <script defer src="js/startup.js"></script>
@@ -31,23 +33,24 @@
   <section>
     <kai-header id="header" title="FAVORITES" type="large">
       <i slot="header-right-slot" id="speaker-switch" class="hidden" data-l10n-id="speaker-switch"
-        data-icon="headphones"></i>
+        data-icon="audio-output"></i>
       <kai-switch id="power-switch" data-l10n-id="power-switch-on" slot="header-right-slot"></kai-switch>
     </kai-header>
     <div id="fm-container" dir="ltr" class="dim">
       <div id="fm-header">
         <div id="frequency-bar">
           <div>
-            <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-icon="skip-back"
+            <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-icon="media-back"
               data-l10n-id="frequency-op-seekdown" role="button"></a>
           </div>
           <div id="frequency-display">
             87.5
+            <div class="frequency-rename"></div>
             <span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites"
               data-icon="favorite-off"></span>
           </div>
           <div>
-            <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-icon="skip-forward"
+            <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-icon="media-forward"
               data-l10n-id="frequency-op-seekup" role="button"></a>
           </div>
         </div>
@@ -63,6 +66,7 @@
       <div id="frequency-list" class="favorites-list">
         <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">
         </div>
+        <kai-optionmenu options='[{"label":"Rename Station","value":"rename"}]'></kai-optionmenu>
         <kai-loader id="myProgress" class="hidden"></kai-loader>
         <div id="favoritelist-warning">
           <div class="warning">
@@ -85,5 +89,23 @@
   </section>
   <kai-dialog id="myDialog" class="hidden" title="" message="" primarybtntext="Enabled" secondarybtntext="Cancel">
   </kai-dialog>
+  <div id="input-dialog" class="hidden">
+    <div id="input-content">
+      <div class="h3 title style-scope kai-dialog">Rename Station</div>
+      <div id="input-field" class="subtilte-1 content style-scope kai-dialog">
+        <kai-textfield id="textfield" maxLength="20"></kai-textfield>
+        <div>
+          <span id="input-num"></span>
+          /20
+        </div>
+      </div>
+      <div class="buttons style-scope kai-dialog">
+        <kai-pillbutton class="style-scope kai-dialog" text="CANCEL" level="secondary" data-l10n-id="cancel-rename">
+        </kai-pillbutton>
+        <kai-pillbutton class="style-scope kai-dialog" text="SAVE" data-l10n-id="save-rename"></kai-pillbutton>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

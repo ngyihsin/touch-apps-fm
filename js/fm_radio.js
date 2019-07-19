@@ -4,7 +4,7 @@
 (function(exports) {
 
   // FMRadio Constructor
-  var FMRadio = function() {
+  const FMRadio = function() {
     this.KEYNAME_FIRST_INIT = 'is_first_init';
     this.airplaneModeEnabled = false;
     this.previousFMRadioState = false;
@@ -129,6 +129,7 @@
       || frequency > mozFMRadio.frequencyUpperBound) {
       frequency = mozFMRadio.frequencyLowerBound;
     }
+
     if (HeadphoneState.deviceHeadphoneState) {
       // After headphone plugged, no matter device with internal antenna or not
       // set speaker state as previous state
@@ -136,6 +137,8 @@
         SpeakerState.state = this.previousSpeakerForcedState;
       }
     }
+    let powerSwitch = document.getElementById('power-switch');
+    powerSwitch.disabled = true;
     let request = mozFMRadio.enable(frequency);
     request.onerror = () => {
       this.updateEnablingState();
@@ -152,10 +155,13 @@
     mozFMRadio.disable();
   };
 
+
+
   FMRadio.prototype.updateEnablingState = function() {
     let enabled = mozFMRadio.enabled;
     let powerSwitch = document.getElementById('power-switch');
     let speakerSwitch = document.getElementById('speaker-switch');
+    powerSwitch.disabled = false;
     if (enabled) {
       powerSwitch.setAttribute('data-l10n-id', 'power-switch-off')
       powerSwitch.setAttribute('class', 'power-switch-off')

@@ -75,6 +75,7 @@
         && (updatedObject.station !== frequencyObject.station);
       favoriteTimeShouldUpdate = this.checkIsValidBoolValue(frequencyObject.favorite)
         && (updatedObject.favorite !== frequencyObject.favorite);
+      updatedObject.name = frequencyObject.name ? frequencyObject.name : updatedObject.name;
       updatedObject.frequency = frequencyObject.frequency;
       updatedObject.favorite = this.checkIsValidBoolValue(frequencyObject.favorite)
         ? frequencyObject.favorite : updatedObject.favorite;
@@ -86,6 +87,8 @@
       stationTimeShouldUpdate = frequencyObject.station;
       favoriteTimeShouldUpdate = frequencyObject.favorite;
       updatedObject.frequency = frequencyObject.frequency;
+      updatedObject.name = frequencyObject.name
+        ? frequencyObject.name : (frequencyObject.frequency.toFixed(1));
       updatedObject.favorite = this.checkIsValidBoolValue(frequencyObject.favorite)
         ? frequencyObject.favorite : false;
       updatedObject.station = this.checkIsValidBoolValue(frequencyObject.station)

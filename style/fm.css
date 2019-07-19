@@ -54,7 +54,7 @@ body > section {
 }
 
 #fm-container.dim {
-  opacity: 1;
+  opacity: 0.3;
 }
 
 #fm-container.dim::before {
@@ -67,7 +67,7 @@ body > section {
   left: 0;
   background: var(--color-gs00);
   z-index: 1;
-  opacity: 0.9;
+  opacity: 0.3;
 }
 
 /****** styles for fm Header **********/
@@ -89,22 +89,29 @@ body > section {
   width: 100%;
   transition: background-color 680ms ease;
   display: flex;
-  font-size: 5rem;
+  font-size: 7.2rem;
+  font-weight: 700;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
+  position: relative;
 }
 
-#frequency-display {
-  position: relative;
+#frequency-display > div{
+  width: 100%;
+  height: 2rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-align: center;
+  color: var(--color-gs60);
 }
 
 #frequency-display > span {
   display: inline-block;
   position: absolute;
-  top: -35%;
-  right: -50%;
+  top: -20%;
+  right: 10%;
   font-size: 4rem;
 }
 
@@ -218,17 +225,22 @@ div#frequency-list-container {
 
 div#frequency-list-container > div {
   position: relative;
-  font-size: 2.3rem;
-  font-weight: 300;
-  height: 4.4rem;
-  padding:0.2rem 2rem 0 2rem;
-  clear: both;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
 }
 
 .frequency-list-item > .favorite-icon {
   position: absolute;
-  top: 0;
+  top: 1.8rem;
   right: 5rem;
+}
+
+.frequency-list-item > .frequency-list-frequency {
+  width: 100%;
 }
 
 div#favoritelist-warning {
@@ -274,16 +286,9 @@ div#favoritelist-warning-body  {
   left: 0;
 }
 
-.warning .warning-header {
-  padding: 1rem 3rem 1rem 3rem;
-  font-weight: normal;
-  font-size: 1.9rem;
-}
-
 .warning .warning-body {
   text-align: center;
   font-weight: 300;
-  padding: .5rem;
   margin: 0 2.5rem;
 }
 
@@ -297,12 +302,34 @@ div#favoritelist-warning-body  {
 
 #antenna-warning > div:first-child {
   height: 60%;
-  background: url(images/headset.png) no-repeat center center / 18.4rem;
-}
-
-#antenna-warning .warning-header {
-  margin-top: -2.5rem;
+  background: url(images/headphone-unplugged.png) no-repeat center center / 18.4rem;
 }
 /******* end *******/
+
+/*** style for input dialog *****/
+#input-dialog {
+  width: 100%;
+  height: 100%;
+  color: var(--color-gs100);
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top:0;
+  left:0;
+  padding-top: 4rem 
+}
+
+#input-field > div {
+  text-align: left;
+  width: 100%;
+  padding: 0px 2rem;
+  font-size: 1.4rem;
+  color: var(--color-gs40);
+}
+
+/*****  end  *****/
 
 

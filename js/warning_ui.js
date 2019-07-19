@@ -3,7 +3,7 @@
 
 (function(exports) {
 
-  var WarningUI = function() { };
+  const WarningUI = function() {};
 
   WarningUI.prototype.update = function() {
     let hiddenState = false;
@@ -23,8 +23,8 @@
     // If current airplane mode is enabled,
     // airplane mode warning UI should be shown
     hiddenState = !FMRadio.airplaneModeEnabled;
-    hiddenState 
-      ? '' : FMAction.showDialog('Airplane Mode On', ' Trun off airplabe mode to use FM Radio', 'SETTINGS');
+    hiddenState ? ''
+      : FMAction.showDialog('Airplane Mode On', ' Trun off airplabe mode to use FM Radio', 'SETTINGS');
     // FMElementAirplaneModeWarning.hidden = hiddenState;
 
     // If current airplane mode is enabled, or current device has no valid antenna,

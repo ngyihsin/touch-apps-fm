@@ -89,7 +89,7 @@
     }
     let currentFrequency = FrequencyDialer.getFrequency();
     let stationslist = this.focus === StatusManager.STATUS_FAVORITE_SHOWING
-      ? FrequencyManager.getFavoriteFrequencyList() 
+      ? FrequencyManager.getFavoriteFrequencyList()
       : FrequencyManager.getStationsFrequencyList();
     let fixed = 0;
     let update = stationslist.some((frequency, i) => {
@@ -155,7 +155,6 @@
 
     this.updateCurrentFocusIndex(index);
   };
-
 
   // Remove current focus
   FocusManager.prototype.dismissFocus = function() {
