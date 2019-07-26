@@ -22,11 +22,12 @@
     HeadphoneState.init();
     // Initialize SpeakerState
     SpeakerState.init();
-    // Initialize HistoryFrequency
-    HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
 
     //Initialize FrequencyDialerUI
     FrequencyDialer.initDialerUI();
+    // Initialize HistoryFrequency
+    HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
+
 
     // Redirect FM radio callbacks
     mozFMRadio.onenabled = this.onFMRadioEnabled.bind(this);
@@ -154,8 +155,6 @@
     this.previousSpeakerForcedState = SpeakerState.state;
     mozFMRadio.disable();
   };
-
-
 
   FMRadio.prototype.updateEnablingState = function() {
     let enabled = mozFMRadio.enabled;

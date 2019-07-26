@@ -15,7 +15,8 @@
 
   // Switch from favorite list UI to station list UI
   StationsList.prototype.switchToStationListUI = function() {
-    if (StatusManager.status !== StatusManager.STATUS_FAVORITE_SHOWING) {
+    if (StatusManager.status !== StatusManager.STATUS_FAVORITE_SHOWING
+      && StatusManager.status !== StatusManager.STATUS_DIALOG_FIRST_INIT) {
       // Only in favorite list UI can switch to station list UI
       return;
     }
@@ -25,10 +26,15 @@
     FMElementFavoriteListWarning.hidden = true;
 
     let stationslist = FrequencyManager.getStationsFrequencyList();
-    StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
-    if (stationslist.length === 0) {
-      StatusManager.update(StatusManager.STATUS_STATIONS_EMPTY);
+    if (stationslist.length === 0 ) {
+      if (StatusManager.status === StatusManager.STATUS_DIALOG_FIRST_INIT) {
+        StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
+        this.startScanStations();
+      } else {
+        StatusManager.update(StatusManager.STATUS_STATIONS_EMPTY);
+      }
     } else {
+      StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
       // Update StatusManager to update UI
       // Show stations lit UI
       FrequencyList.updateStationsListUI();
@@ -152,6 +158,12 @@
 
     // Check if current scanning is aborted or not
     if (this.scanningAborted) {
+      //when press abort,radio will paly first station
+      let frequency = FrequencyManager.getStationsFrequencyList()[0].frequency;
+      if (frequency !== this.currentFrequency) {
+        mozFMRadio.setFrequency(frequency);
+        return;
+      }
       this.scanFinished(true);
       return;
     }

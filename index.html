@@ -45,7 +45,6 @@
           </div>
           <div id="frequency-display">
             87.5
-            <div class="frequency-rename"></div>
             <span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites"
               data-icon="favorite-off"></span>
           </div>
@@ -57,7 +56,9 @@
         <div id="dialer-bar">
           <div id="dialer-container" role="slider" aria-valuemin="87.5" aria-valuemax="108" aria-controls="frequency">
             <div id="frequency-indicator"></div>
-            <div id="frequency-dialer" class="animation-on"></div>
+            <div id="frequency-dialer" class="animation-on">
+              <ul id="dialer-unit"></ul>
+            </div>
           </div>
         </div>
         <kai-pillbutton class="hidden" id="station-action" data-l10n-id="scan-stations" text="RESCAN" level="secondary">
@@ -71,8 +72,8 @@
         <div id="favoritelist-warning">
           <div class="warning">
             <div id="favoritelist-warning-body" class="p warning-body">
-              <h1>No Favorites</h1>
-              <p>press <span data-icon="favorite-off"></span> to add favorite stations.</p>
+              <div>No Favorites</div>
+              <div>press <span data-icon="favorite-off"></span> to add favorite stations.</div>
             </div>
           </div>
         </div>

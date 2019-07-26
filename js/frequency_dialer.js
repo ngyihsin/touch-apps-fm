@@ -6,7 +6,8 @@
   // FrequencyDialer Constructor
   const FrequencyDialer = function() {
     this.currentFreqency = 0.0;
-    this.unit = 2
+    this.blankUnit = 3;
+    this.space = 5;
   };
 
   // Update current frequency dialer UI with current frequency
@@ -16,8 +17,8 @@
     let favoriteObject = FrequencyManager.getCurrentFrequencyObject(this.currentFreqency);
     FMElementFrequencyDialer.innerHTML =
       ` ${this.currentFreqency.toFixed(1)}
-     <div>${favoriteObject ? favoriteObject.name === this.currentFreqency.toFixed(1)
-      ? '' : favoriteObject.name : ''}</div>
+      ${favoriteObject ? favoriteObject.name === this.currentFreqency.toFixed(1)
+      ? '' : '<div>' + favoriteObject.name + '</div>' : ''}
       ${favorite
         ? '<span id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></span>'
         : '<span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>'}`;
@@ -56,102 +57,90 @@
     return this.currentFreqency;
   };
 
+  FrequencyDialer.prototype.diarUpdate = function(value, bound, shadow) {
+    if (shadow) {
+      return `
+      <li class="decimal shadow"></li>
+      <li class="shadow"></li>
+      <li class="shadow"></li>
+      <li class="shadow"></li>
+      <li class="shadow"></li>
+   `
+    }
+    return `
+        <li class="decimal ${bound}">
+          <span>
+            ${value}
+          </span>
+        </li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+     `
+  }
+
   FrequencyDialer.prototype.initDialerUI = function() {
-    document.getElementById('frequency-dialer').innerHTML = '';
+    this.diarUnit = document.getElementById('dialer-unit');
+    let frequencyDiar = document.getElementById('frequency-dialer');
+
     let lower = this._bandLowerBound = mozFMRadio.frequencyLowerBound;
     let upper = this._bandUpperBound = mozFMRadio.frequencyUpperBound;
 
-    let unit = this.unit;
-    this._minFrequency = lower - lower % unit;
-    this._maxFrequency = upper + unit - upper % unit;
-    let unitCount = (this._maxFrequency - this._minFrequency) / unit;
+    this.minFrequency = lower - lower % this.space;
+    this.minBlankFrequency = this.minFrequency - this.blankUnit * this.space;
+    this.maxFrequency = upper + this.space - upper % this.space;
+    this.maxBlankFrequency = this.maxFrequency + this.blankUnit * this.space;
+    let unitCount = Math.ceil((this.maxBlankFrequency - this.minBlankFrequency) / this.space);
 
     for (let i = 0; i < unitCount; ++i) {
-      let start = this._minFrequency + i * unit;
-      start = start < lower ? lower : start;
-      let end = this._maxFrequency + i * unit + unit;
-      end = upper < end ? upper : end;
-      this.addDialerUnit(start, end);
+      let value = this.minBlankFrequency + i * this.space;
+      let bound;
+      let shadow = false;
+      if (value === this.minFrequency || value === this.maxFrequency) {
+        bound = 'bound';
+      }
+      if (value > this.maxFrequency || value < this.minFrequency) {
+        shadow = true;
+      }
+      this.diarUnit.innerHTML += this.diarUpdate(value, bound, shadow);
     }
 
-    // cache the size of dialer
-    let _dialerUnits = document.getElementsByClassName('dialer-unit');
-    let _dialerUnitWidth = _dialerUnits[0].clientWidth;
-    this._dialerWidth = _dialerUnitWidth * _dialerUnits.length;
+    this._dialerWidth = this.diarUnit.clientWidth;
+    this.appWidth = frequencyDiar.clientWidth;
     this._space = this._dialerWidth /
-      (this._maxFrequency - this._minFrequency);
-
-    for (let i = 0; i < _dialerUnits.length; i++) {
-      _dialerUnits[i].style.left = i * _dialerUnitWidth + 'px';
-    }
-  }
-
-  FrequencyDialer.prototype.addDialerUnit = function(start, end) {
-    let markStart = start - start % this.unit;
-    let startMaskWidth = 0;
-    let endMaskWidth = 0;
-    let unitWidth = 16;
-
-    let total = this.unit * 10;     // 0.1MHz
-    for (let i = 0; i < total; i++) {
-      let dialValue = markStart + i * 0.1;
-      if (dialValue < start) {
-        startMaskWidth += unitWidth;
-      } else if (dialValue > end) {
-        endMaskWidth += unitWidth;
-      }
-    }
-
-    let container = document.createElement('div');
-    container.classList.add('dialer-unit-mark-box');
-
-    if (startMaskWidth > 0) {
-      let markEl = document.createElement('div');
-      markEl.classList.add('dialer-unit-mark-mask-start');
-      markEl.style.width = startMaskWidth + 'px';
-
-      container.appendChild(markEl);
-    }
-
-    if (endMaskWidth > 0) {
-      let markEnd = document.createElement('div');
-      markEnd.classList.add('dialer-unit-mark-mask-end');
-      markEnd.style.width = endMaskWidth + 'px';
-      container.appendChild(markEnd);
-    }
-
-    let width = (100 / this.unit) + '%';
-    // Show the frequencies on dialer
-    for (let j = 0; j < this.unit; j++) {
-      let frequency = Math.floor(markStart) + j;
-      let showFloor = frequency >= start && frequency <= end;
-
-      let unit = document.createElement('div');
-      unit.classList.add('dialer-unit-floor');
-      if (!showFloor) {
-        unit.classList.add('hidden-block');
-      }
-      unit.style.width = width;
-      unit.appendChild(document.createTextNode(frequency));
-      container.appendChild(unit);
-    }
-
-    let dialerUnit = document.createElement('div');
-    dialerUnit.className = 'dialer-unit';
-    dialerUnit.appendChild(container);
-    document.getElementById('frequency-dialer').appendChild(dialerUnit);
+      (this.maxBlankFrequency - this.minBlankFrequency);
   }
 
   FrequencyDialer.prototype.updateDialerUI = function(frequency, ignoreDialer) {
     if (true !== ignoreDialer) {
-      this._translateX = (this._minFrequency - frequency) * this._space;
-      let dialer = document.getElementById('frequency-dialer');
-      let count = dialer.childNodes.length;
-      for (let i = 0; i < count; i++) {
-        dialer.childNodes[i].style.MozTransform =
-          'translateX(' + this._translateX + 'px)';
-      }
+      this._translateX = (this.minBlankFrequency - frequency) * this._space + this.appWidth / 2
+      let dialer = document.getElementById('dialer-unit');
+      dialer.style.MozTransform =
+        'translateX(' + this._translateX + 'px)';
       document.getElementById('dialer-container').setAttribute('aria-valuenow', frequency);
+    }
+  }
+
+  FrequencyDialer.prototype.addFavoriteDialer = function(frequencyObject) {
+    let frequency = frequencyObject.frequency;
+    let favoriteNum = Math.floor(frequency - this.minBlankFrequency);
+    this.diarUnit.children[favoriteNum].classList.add('favorite-icon')
+    let elementHtml = `
+      <span class="favorite-diar" 
+      style="position:absolute;left:${frequency.toFixed(1).toString().split('.')[1] * 1.6 + 'px'}"></span>
+      `;
+    this.diarUnit.children[favoriteNum].innerHTML += elementHtml;
+  }
+
+  FrequencyDialer.prototype.removeFavoriteDialer = function() {
+    let favoritesList = document.getElementsByClassName('favorite-icon');
+    if (favoritesList.length > 0) {
+      for (let i = 0; i < favoritesList.length; i++) {
+        favoritesList[i].innerHTML = '';
+        favoritesList[i].classList.remove('favorite-icon');
+        i--;      
+      }
     }
   }
 

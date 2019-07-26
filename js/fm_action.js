@@ -32,7 +32,7 @@
   function onScanClicked() {
     // Hide dialog and update current status first
     FMAction.hideDialog();
-    StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
+    // StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
     StationsList.switchToStationListUI();
   }
 
@@ -49,11 +49,11 @@
       // Update current frequency as favorite to data base,
       // and mark current frequency is a station
       FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true, true);
-      // Just update current frequency element is OK
       let currentFocusedElement = FocusManager.getCurrentFocusElement();
       FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
     FrequencyDialer.updateFrequency();
+    FocusManager.update();
     StatusManager.update();
   }
 
@@ -69,11 +69,11 @@
       // Update current frequency as unfavorite to data base,
       // and mark current frequency is a station
       FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false, true);
-      // Just update current frequency element is OK
       let currentFocusedElement = FocusManager.getCurrentFocusElement();
       FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
     FrequencyDialer.updateFrequency();
+    FocusManager.update();
     StatusManager.update();
   }
 
@@ -275,6 +275,7 @@
     document.addEventListener('dialogSecondaryBtnClick', () => {
       if (l10nIdButton === 'SCAN') {
         StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
+        WarningUI.update();
         this.dialog.open = false;
       } else {
         window.close();
@@ -324,6 +325,8 @@
   // Cancel current rename operation
   FMAction.prototype.undoRename = function() {
     this.inputDialog.setAttribute('class', 'hidden');
+    document.removeEventListener('optionmenuSelect')
+    // Update current rename element UI after or cancel renamed
   };
 
   // Save the renamed station name
@@ -346,6 +349,7 @@
 
   FMAction.prototype.updateStatusUI = function() {
     let status = StatusManager.status;
+    let switchButton = document.getElementsByTagName('kai-categorybar')[0];
     switch (status) {
       case StatusManager.STATUS_WARNING_SHOWING:
         this.HeaderTitle.title = 'FM RADIO';
@@ -354,6 +358,7 @@
         this.HeaderTitle.title = 'FAVORITES';
         this.station_action.classList.add('hidden');
         this.freDialer.classList.remove('hidden');
+        switchButton.selected = 'favorites';
         break;
       case StatusManager.STATUS_STATIONS_SCANING:
         this.HeaderTitle.title = 'STATIONS';
@@ -369,11 +374,17 @@
         this.freDialer.classList.add('hidden');
         this.station_action.level = 'secondary';
         this.station_action.text = 'RESCAN';
+        switchButton.selected = 'allstations';
         this.station_action.setAttribute('data-l10n-id', 'scan-stations');
         break;
       case StatusManager.STATUS_STATIONS_EMPTY:
+        this.HeaderTitle.title = 'STATIONS';
+        this.station_action.classList.remove('hidden', 'scan');
+        this.freDialer.classList.add('hidden');
         this.station_action.level = 'primary';
         this.station_action.text = 'SCAN';
+        switchButton.selected = 'allstations';
+        this.station_action.setAttribute('data-l10n-id', 'scan-stations');
         break;
     }
   }

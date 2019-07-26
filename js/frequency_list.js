@@ -12,20 +12,17 @@
       return;
     }
     let html = `
-    <div id=${this.formatFrequencyElementId(frequencyObject.frequency)} 
-    class="frequency-list-item">
-        <div id=${'detail' + this.formatFrequencyElementId(frequencyObject.frequency)} 
+      <div id=${'detail' + this.formatFrequencyElementId(frequencyObject.frequency)} 
         class="frequency-list-frequency" data-l10n-id="Tab-frequency">
-          ${frequencyObject.name}
-        </div>
-        ${ StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING
+        ${frequencyObject.name}
+      </div>
+      ${ StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING
         || StatusManager.status === StatusManager.STATUS_STATIONS_SCANING
         ? frequencyObject.favorite
           ? '<span class="favorite-icon" data-icon="favorite-on"></span>'
           : '' : ''
       }
         <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>
-    </div>
      `
     return html;
   };
@@ -45,9 +42,13 @@
     if (!frequencyObject) {
       return;
     }
-
-    FMElementFrequencyListContainer.innerHTML += this.formatFrequencyElementInnerHTML(frequencyObject);
-
+    let element = `
+      <div id=${this.formatFrequencyElementId(frequencyObject.frequency)}
+      class="frequency-list-item">
+        ${this.formatFrequencyElementInnerHTML(frequencyObject)}
+      </div>
+      `
+    FMElementFrequencyListContainer.innerHTML += element;
   };
 
   // Update current frequency list UI, favorite list UI, rename UI or stations list UI
@@ -57,9 +58,11 @@
     }
 
     this.clearCurrentFrequencyList();
+    FrequencyDialer.removeFavoriteDialer();
     for (let index = 0; index < frequencyList.length; index++) {
       let frequencyObject = frequencyList[index];
       this.addFrequencyToListUI(frequencyObject);
+      FrequencyDialer.addFavoriteDialer(frequencyObject);
     }
   };
 

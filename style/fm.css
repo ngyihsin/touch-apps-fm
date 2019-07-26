@@ -94,8 +94,20 @@ body > section {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 2rem;
   position: relative;
+}
+
+#frequency-bar a {
+  color: var(--color-gs60);
+  font-size: 3rem;
+}
+
+#frequency-bar > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #frequency-display > div{
@@ -131,24 +143,18 @@ body > section {
 
 #dialer-container {
   position: relative;
-  padding-left: 50%;
   margin: 0 2rem;
   height: 100%;
 }
 
-#frequency-bar a {
-  font-size: 3rem;
-  color: var(--color-gs20);
-}
-
 #frequency-indicator {
-  border-radius: 50%/0.1rem;
-  height: 8.6rem;
-  width: 1.6rem;
-  margin: 0.6rem 0 0 -0.8rem;
+  height: 4rem;
+  width: 0.2rem;
+  background-color: var(--color-pink);
+  border-radius: 0.1rem;
+  margin-left: 0.2rem;
   position: absolute;
   z-index: 1;
-  background: url(images/selector.png) no-repeat center center / 1.6rem;
   top: 0;
   left: 50%;
 }
@@ -162,21 +168,59 @@ div.animation-on > div {
   display: -moz-inline-box;
   -moz-user-select: none;
   width: 100%;
-  margin-left: -2.2rem;
   position: absolute;
   top: 0;
 }
 
-#frequency-dialer .dialer-unit-mark-box {
-  background: url(images/dial-notches.png) no-repeat 0 3.4rem / 32rem;
-  overflow: hidden;
-  height: 5.5rem;
-}
-
-#frequency-dialer .dialer-unit {
+#frequency-dialer > ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
   text-align: left;
   position: absolute;
-  width: 32rem;
+  padding: 0;
+}
+
+li {
+  width: 0.2rem;
+  height: 0.8rem;
+  margin-right: 1rem;
+  border-radius: 0.3rem;
+  background-color: var(--color-gs20);
+  position: relative;
+}
+
+li > span {
+  font-size: 1.2rem;
+  color: var(--color-gs40);
+  font-weight: 700;
+  position: absolute;
+  top: 1.7rem;
+  left: -0.4rem;
+}
+
+.favorite-diar {
+  width: 0.4rem;
+  height: 1.2rem;
+  border-radius: 0.3rem;
+  background-color: var(--color-pink);
+  z-index: 2;
+  top: -0.2rem;
+}
+
+.decimal {
+  width: 0.4rem;
+  height: 1.2rem;
+  background-color: var(--color-gs40);
+}
+
+.bound {
+  background-color: var(--color-gs100);
+}
+
+.shadow {
+  background-color: var(--color-gs10)
 }
 
 /* The beginning and end of the dial are masked to hide notches that
@@ -251,11 +295,6 @@ div#favoritelist-warning {
   width: 100%;
 }
 
-div#favoritelist-warning-body > h1 {
-  text-align: center;
-  font-size: 3rem;
-}
-
 div#favoritelist-warning-body  {
   width: 100%;
   height: 100%;
@@ -265,6 +304,18 @@ div#favoritelist-warning-body  {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+div#favoritelist-warning-body :first-child {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+div#favoritelist-warning-body :last-child {
+  text-align: center;
+  font-size: 1.8rem;
 }
 /***** end *****/
 
@@ -301,8 +352,9 @@ div#favoritelist-warning-body  {
 }
 
 #antenna-warning > div:first-child {
-  height: 60%;
-  background: url(images/headphone-unplugged.png) no-repeat center center / 18.4rem;
+  height: 50%;
+  margin-bottom: 5rem;
+  background: url(images/headphone-unplugged.png) no-repeat bottom center / 18.4rem;
 }
 /******* end *******/
 
