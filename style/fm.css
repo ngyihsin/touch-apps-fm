@@ -285,6 +285,8 @@ div#frequency-list-container > div {
 
 .frequency-list-item > .frequency-list-frequency {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 div#favoritelist-warning {

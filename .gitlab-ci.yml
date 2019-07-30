@@ -5,7 +5,7 @@
 # LIMITED or its affiliate company and may be registered in some jurisdictions.
 # All other trademarks are the property of their respective owners.
 
-image: quay.io/kaici/gaia
+image: quay.io/kaici/b2g:touch
 
 variables:
   GAIA_DIR: 'gaia'

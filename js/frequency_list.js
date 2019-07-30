@@ -7,24 +7,24 @@
   const FrequencyList = function() {};
 
   // Format frequency list item element innerHTML
-  FrequencyList.prototype.formatFrequencyElementInnerHTML = function(frequencyObject) {
+  FrequencyList.prototype.formatFrequencyListTemplate = function(frequencyObject) {
     if (!frequencyObject) {
       return;
     }
-    let html = `
-      <div id=${'detail' + this.formatFrequencyElementId(frequencyObject.frequency)} 
-        class="frequency-list-frequency" data-l10n-id="Tab-frequency">
-        ${frequencyObject.name}
-      </div>
-      ${ StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING
-        || StatusManager.status === StatusManager.STATUS_STATIONS_SCANING
-        ? frequencyObject.favorite
-          ? '<span class="favorite-icon" data-icon="favorite-on"></span>'
-          : '' : ''
-      }
-        <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>
-     `
-    return html;
+    let frequencyItem = FMElementFrequencyListTemplate.content.querySelector('div');
+    frequencyItem.id = 'detail' + this.formatFrequencyElementId(frequencyObject.frequency);
+    frequencyItem.textContent = frequencyObject.name;
+    let condition = (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING
+      || StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) 
+      && frequencyObject.favorite
+    if (condition) {
+      let starObiect = document.createElement('span');
+      starObiect.classList = 'favorite-icon';
+      starObiect.setAttribute('data-icon','favorite-on');
+      frequencyItem.appendChild(starObiect);
+    }
+    let cloneChild = document.importNode(FMElementFrequencyListTemplate.content, true);
+    return cloneChild;
   };
 
   // Format frequency list item element ID
@@ -42,13 +42,11 @@
     if (!frequencyObject) {
       return;
     }
-    let element = `
-      <div id=${this.formatFrequencyElementId(frequencyObject.frequency)}
-      class="frequency-list-item">
-        ${this.formatFrequencyElementInnerHTML(frequencyObject)}
-      </div>
-      `
-    FMElementFrequencyListContainer.innerHTML += element;
+    let element = document.createElement('div');
+    element.id = this.formatFrequencyElementId(frequencyObject.frequency);
+    element.className = 'frequency-list-item';
+    element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
+    FMElementFrequencyListContainer.appendChild(element);
   };
 
   // Update current frequency list UI, favorite list UI, rename UI or stations list UI
@@ -86,7 +84,7 @@
       FrequencyDialer.updateFrequency();
     } else {
       let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
-      element.innerHTML = this.formatFrequencyElementInnerHTML(frequencyObject);
+      element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
     }
   };
 

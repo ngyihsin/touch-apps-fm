@@ -17,12 +17,14 @@
     let favoriteObject = FrequencyManager.getCurrentFrequencyObject(this.currentFreqency);
     FMElementFrequencyDialer.innerHTML =
       ` ${this.currentFreqency.toFixed(1)}
-      ${favoriteObject ? favoriteObject.name === this.currentFreqency.toFixed(1)
-      ? '' : '<div>' + favoriteObject.name + '</div>' : ''}
       ${favorite
         ? '<span id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></span>'
         : '<span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>'}`;
-
+    if (favoriteObject && favoriteObject.name !== this.currentFreqency.toFixed(1)) {
+      let dispalyName = document.createElement('div');
+      dispalyName.innerText = favoriteObject.name;
+      FMElementFrequencyDialer.appendChild(dispalyName)
+    }
     // No need update focus while FM Radio disabled
     if (!mozFMRadio.enabled) {
       return;
