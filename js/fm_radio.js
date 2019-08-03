@@ -64,7 +64,7 @@
 
   FMRadio.prototype.onHistorylistInitialized = function() {
     // Initialize FrequencyManager
-    FrequencyManager.init(function () {
+    FrequencyManager.init(()=> {
       // Only if current device has valid antenna,
       // should continue update UI, or just update warning UI is already OK
       if (HeadphoneState.deviceWithValidAntenna) {
@@ -73,6 +73,7 @@
         // Update favorite list UI
         FrequencyList.updateFavoriteListUI();
       }
+      this.saveCache();
     });
     WarningUI.update();
 
@@ -148,6 +149,7 @@
   };
 
   FMRadio.prototype.disableFMRadio = function() {
+    this.saveCache();
     this.turnOffRadio();
   };
 
@@ -194,6 +196,32 @@
 
   FMRadio.prototype.updateDimLightState = function(state) {
     FMElementFMContainer.classList.toggle('dim', state);
+  };
+
+
+  FMRadio.prototype.saveCache = function() {
+    if (navigator.mozAudioChannelManager.headphones ||
+        mozFMRadio.antennaAvailable) {
+      if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
+        FMCache.clear('fm-container');
+        let cacheHtml = document.getElementById('fm-container');
+        let codeNode = FMCache.cloneAsInertNodeAvoidingCustomElementHorrors(cacheHtml);
+        if (!codeNode.classList.contains('dim')) {
+          codeNode.classList.add('dim');
+        }
+        //make "dialer-unit" empty, because cache will make position shift
+        codeNode.children[0].children[1].innerHTML = 
+        `<div id="dialer-bar">
+          <div id="dialer-container" role="slider" aria-valuemin="87.5" aria-valuemax="108" aria-controls="frequency">
+            <div id="frequency-indicator"></div>
+            <div id="frequency-dialer" class="animation-on">
+              <ul id="dialer-unit"></ul>
+            </div>
+          </div>
+        </div>`
+        FMCache.saveFromNode('fm-container', codeNode);
+      }
+    }
   };
 
   exports.FMRadio = new FMRadio();

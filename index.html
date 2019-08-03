@@ -27,6 +27,7 @@
   <script src="shared/js/airplane_mode_helper.js"></script>
 
   <script defer src="js/startup.js"></script>
+  <script defer src="js/cache.js"></script>
 </head>
 
 <body class="theme-media">
@@ -83,10 +84,10 @@
           </div>
         </div>
       </div>
-      <kai-categorybar selected="favorites"
-        items='[{"label":"FAVORATES","value":"favorites","icon":"favorite-on"},{"label":"ALL","value":"allstations","icon":"fm-radio"}]'>
-      </kai-categorybar>
     </div>
+    <kai-categorybar selected="favorites"
+        items='[{"label":"FAVORATES","value":"favorites","icon":"favorite-on"},{"label":"ALL","value":"allstations","icon":"fm-radio"}]'>
+    </kai-categorybar>
     <div id="antenna-warning" class="warning" hidden="">
       <div></div>
       <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg">Plugged in
@@ -99,7 +100,7 @@
     <div id="input-content">
       <div class="h3 title style-scope kai-dialog">Rename Station</div>
       <div id="input-field" class="subtilte-1 content style-scope kai-dialog">
-        <kai-textfield id="textfield" maxLength="20"></kai-textfield>
+        <kai-textfield id="textfield" maxlength=20></kai-textfield>
         <div>
           <span id="input-num"></span>
           /20
@@ -112,6 +113,7 @@
       </div>
     </div>
   </div>
+  <script src="js/cache_restore.js"></script>
 </body>
 
 </html>

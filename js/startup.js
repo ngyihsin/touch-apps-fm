@@ -15,6 +15,11 @@
     window.FMElementFrequencyListTemplate = document.getElementById('frequency-list-template');
   }
 
+  if (navigator.mozAudioChannelManager.headphones ||
+    mozFMRadio.antennaAvailable) {
+    FMCacheRestore.hydrateHtml('fm-container');
+  }
+
   function lazyload() {
     setTimeout(() => {
       let lazyFiles = [

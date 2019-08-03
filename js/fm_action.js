@@ -315,7 +315,7 @@
       this.inputDialog.setAttribute('class', '');
       input.value = currentValue;
       inputLength.innerText = currentValue.length;
-      document.addEventListener('inputChanged', e => {
+      document.addEventListener('input', e => {
         this.editValue = e.detail.value;
         inputLength.innerText = this.editValue.length;
       });
