@@ -13,6 +13,7 @@
     window.FMElementFavoriteListWarning = document.getElementById('favoritelist-warning');
     window.FMElementFrequencyListContainer = document.getElementById('frequency-list-container');
     window.FMElementFrequencyListTemplate = document.getElementById('frequency-list-template');
+    window.FMElementFMFooter = document.getElementById('fm-footer');
   }
 
   if (navigator.mozAudioChannelManager.headphones ||

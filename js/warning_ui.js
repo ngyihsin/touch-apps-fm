@@ -13,10 +13,12 @@
     hiddenState = HeadphoneState.deviceWithValidAntenna;
     FMElementAntennaUnplugWarning.hidden = hiddenState;
     if (hiddenState) {
-      FMElementFMContainer.classList.remove('hidden')
+      FMElementFMContainer.classList.remove('hidden');
+      FMElementFMFooter.classList.remove('hidden');
       document.getElementById('power-switch').classList.remove('hidden');
     } else {
       FMElementFMContainer.classList.add('hidden')
+      FMElementFMFooter.classList.add('hidden');
       document.getElementById('power-switch').classList.add('hidden');
     }
 
@@ -25,12 +27,10 @@
     hiddenState = !FMRadio.airplaneModeEnabled;
     hiddenState ? ''
       : FMAction.showDialog('Airplane Mode On', ' Trun off airplabe mode to use FM Radio', 'SETTINGS');
-    // FMElementAirplaneModeWarning.hidden = hiddenState;
 
-    // If current airplane mode is enabled, or current device has no valid antenna,
-    // fm container element should be hidden
+    // // If current airplane mode is enabled, or current device has no valid antenna,
+    // // fm container element should be hidden
     hiddenState = FMRadio.airplaneModeEnabled || !HeadphoneState.deviceWithValidAntenna;
-    FMElementFMContainer.hidden = hiddenState;
     let status = hiddenState ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;
     FMElementFavoriteListWarning.hidden = true;
     if (status === StatusManager.STATUS_FAVORITE_SHOWING) {

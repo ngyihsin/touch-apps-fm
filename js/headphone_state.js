@@ -24,7 +24,7 @@
     this.deviceWithInternalAntenna = mozFMRadio.antennaAvailable;
     this.updateHeadphoneAndAntennaState();
 
-    this.audioChannelManager.onheadphoneschange = this.onHeadphoneStateChanged();
+    this.audioChannelManager.onheadphoneschange =  this.onHeadphoneStateChanged.bind(this);
   };
 
   HeadphoneState.prototype.updateHeadphoneAndAntennaState = function() {

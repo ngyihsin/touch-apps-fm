@@ -305,7 +305,10 @@
   }
 
   FMAction.prototype.optionMenuShow = function(e) {
-    this.optionMenu.position = { from: 0, to: e.clientY };
+    let id = e.rangeParent.id;
+    let element = document.getElementById(id);
+    let top = element.getBoundingClientRect().top;
+    this.optionMenu.position = { from: top, to: top + element.offsetTop};
     this.optionMenu.open = true;
     let currentValue = e.rangeParent.innerText;
     this.frequencyToRenameElement = e.rangeParent;
@@ -315,8 +318,9 @@
       this.inputDialog.setAttribute('class', '');
       input.value = currentValue;
       inputLength.innerText = currentValue.length;
+      this.optionMenu.open = false;
       document.addEventListener('input', e => {
-        this.editValue = e.detail.value;
+        this.editValue = e.target.value;
         inputLength.innerText = this.editValue.length;
       });
     });
@@ -325,8 +329,6 @@
   // Cancel current rename operation
   FMAction.prototype.undoRename = function() {
     this.inputDialog.setAttribute('class', 'hidden');
-    document.removeEventListener('optionmenuSelect')
-    // Update current rename element UI after or cancel renamed
   };
 
   // Save the renamed station name

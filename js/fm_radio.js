@@ -196,6 +196,7 @@
 
   FMRadio.prototype.updateDimLightState = function(state) {
     FMElementFMContainer.classList.toggle('dim', state);
+    FMElementFMFooter.classList.toggle('dim',state);
   };
 
 

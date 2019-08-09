@@ -6,8 +6,8 @@
   // FrequencyDialer Constructor
   const FrequencyDialer = function() {
     this.currentFreqency = 0.0;
-    this.blankUnit = 3;
-    this.space = 5;
+    this.blankUnit = 3; //In order to draw shadow
+    this.space = 5;  //A unit contain dive 
   };
 
   // Update current frequency dialer UI with current frequency
@@ -58,6 +58,8 @@
   FrequencyDialer.prototype.getFrequency = function() {
     return this.currentFreqency;
   };
+
+  /** unit diar */
 
   FrequencyDialer.prototype.diarUpdate = function(value, bound, shadow) {
     if (shadow) {
@@ -114,6 +116,7 @@
       (this.maxBlankFrequency - this.minBlankFrequency);
   }
 
+  /** update dialer according frequency */
   FrequencyDialer.prototype.updateDialerUI = function(frequency, ignoreDialer) {
     if (true !== ignoreDialer) {
       this._translateX = (this.minBlankFrequency - frequency) * this._space + this.appWidth / 2
