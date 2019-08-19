@@ -1,17 +1,17 @@
 /* exported FrequencyManager */
 'use strict';
 
-(function(exports) {
+(function (exports) {
 
   // FrequencyManager Constructor
-  const FrequencyManager = function() {
+  const FrequencyManager = function () {
     this.KEYNAME = 'frequencylist';
     this.favoriteFrequencyList = null;
     this.stationsFrequencyList = null;
   };
 
   // Initialize FrequencyManager
-  FrequencyManager.prototype.init = function(callback) {
+  FrequencyManager.prototype.init = function (callback) {
     // Read frequency list just from local storage
     this.frequencyList = window.localStorage.getItem(this.KEYNAME);
     if (!this.frequencyList) {
@@ -30,12 +30,12 @@
   };
 
   // Get frequency object by the specified frequency
-  FrequencyManager.prototype.getCurrentFrequencyObject = function(frequency) {
-    return (frequency && this.frequencyList && this.frequencyList[frequency.toFixed(1)]);
+  FrequencyManager.prototype.getCurrentFrequencyObject = function (frequency) {
+    return frequency && this.frequencyList && this.frequencyList[frequency.toFixed(1)];
   };
 
   // Check the specified frequency is favorite
-  FrequencyManager.prototype.checkFrequencyIsFavorite = function(frequency) {
+  FrequencyManager.prototype.checkFrequencyIsFavorite = function (frequency) {
     if (!this.getCurrentFrequencyObject(frequency)) {
       return false;
     }
@@ -45,7 +45,7 @@
   };
 
   // Check the specified frequency is station frequency
-  FrequencyManager.prototype.checkFrequencyIsStation = function(frequency) {
+  FrequencyManager.prototype.checkFrequencyIsStation = function (frequency) {
     if (!this.getCurrentFrequencyObject(frequency)) {
       return false;
     }
@@ -55,12 +55,12 @@
   };
 
   // Check the specified value is a valid boolean value
-  FrequencyManager.prototype.checkIsValidBoolValue = function(value) {
-    return ((value === true) || (value === false));
+  FrequencyManager.prototype.checkIsValidBoolValue = function (value) {
+    return value === true || value === false;
   };
 
   // Update frequency to frequency list
-  FrequencyManager.prototype.updateFrequencyToFrequencyList = function(frequencyObject) {
+  FrequencyManager.prototype.updateFrequencyToFrequencyList = function (frequencyObject) {
     if (!frequencyObject || !frequencyObject.frequency || !this.frequencyList) {
       return;
     }
@@ -71,10 +71,10 @@
     let updatedObject = this.frequencyList[frequencyObject.frequency.toFixed(1)];
     if (updatedObject) {
       // The frequency exists in frequency list already
-      stationTimeShouldUpdate = this.checkIsValidBoolValue(frequencyObject.station)
-        && (updatedObject.station !== frequencyObject.station);
-      favoriteTimeShouldUpdate = this.checkIsValidBoolValue(frequencyObject.favorite)
-        && (updatedObject.favorite !== frequencyObject.favorite);
+      stationTimeShouldUpdate = this.checkIsValidBoolValue(frequencyObject.station) &&
+        updatedObject.station !== frequencyObject.station;
+      favoriteTimeShouldUpdate = this.checkIsValidBoolValue(frequencyObject.favorite) &&
+        updatedObject.favorite !== frequencyObject.favorite;
       updatedObject.name = frequencyObject.name ? frequencyObject.name : updatedObject.name;
       updatedObject.frequency = frequencyObject.frequency;
       updatedObject.favorite = this.checkIsValidBoolValue(frequencyObject.favorite)
@@ -88,7 +88,7 @@
       favoriteTimeShouldUpdate = frequencyObject.favorite;
       updatedObject.frequency = frequencyObject.frequency;
       updatedObject.name = frequencyObject.name
-        ? frequencyObject.name : (frequencyObject.frequency.toFixed(1));
+        ? frequencyObject.name : frequencyObject.frequency.toFixed(1);
       updatedObject.favorite = this.checkIsValidBoolValue(frequencyObject.favorite)
         ? frequencyObject.favorite : false;
       updatedObject.station = this.checkIsValidBoolValue(frequencyObject.station)
@@ -102,7 +102,7 @@
     }
     this.frequencyList[frequencyObject.frequency.toFixed(1)] = updatedObject;
 
-    if ((updatedObject.favorite === false) && (updatedObject.station === false)) {
+    if (updatedObject.favorite === false && updatedObject.station === false) {
       // Remove the frequency if it do not belong to favorite list and station list
       delete this.frequencyList[frequencyObject.frequency.toFixed(1)];
     }
@@ -116,7 +116,7 @@
   };
 
   // Update current favorite list from frequency list
-  FrequencyManager.prototype.updateFavoriteFrequencyList = function() {
+  FrequencyManager.prototype.updateFavoriteFrequencyList = function () {
     let favoriteFrequencyList = [];
     for (let frequency in this.frequencyList) {
       let frequencyObject = this.frequencyList[frequency];
@@ -132,7 +132,7 @@
   };
 
   // Update current stations list from frequency list
-  FrequencyManager.prototype.updateStationsFrequencyList = function() {
+  FrequencyManager.prototype.updateStationsFrequencyList = function () {
     let stationsFrequencyList = [];
     for (let frequency in this.frequencyList) {
       let frequencyObject = this.frequencyList[frequency];
@@ -147,10 +147,12 @@
     this.stationsFrequencyList = stationsFrequencyList;
   };
 
-  // Update current frequency as favorite or not
-  // parameter favorite: true/false, indicate favorite or not current frequency to update
-  // parameter station: true/false, indicate current frequency is station or not
-  FrequencyManager.prototype.updateFrequencyFavorite = function(frequency, favorite, station) {
+  /*
+   * Update current frequency as favorite or not
+   * parameter favorite: true/false, indicate favorite or not current frequency to update
+   * parameter station: true/false, indicate current frequency is station or not
+   */
+  FrequencyManager.prototype.updateFrequencyFavorite = function (frequency, favorite, station) {
     // Update current frequency to frequency list
     this.updateFrequencyToFrequencyList({ frequency: frequency, favorite: favorite, station: station });
     // Update favorite list after frequency list updated
@@ -160,9 +162,9 @@
   };
 
   // Update frequency name
-  FrequencyManager.prototype.updateFrequencyName = function(frequency, name) {
+  FrequencyManager.prototype.updateFrequencyName = function (frequency, name) {
     let frequencyObject = this.getCurrentFrequencyObject(frequency);
-    // for the priority of favorite frequency is higher than station frequency
+    // For the priority of favorite frequency is higher than station frequency
     frequencyObject.name = name;
     // Update current frequency to frequency list
     this.updateFrequencyToFrequencyList(frequencyObject);
@@ -173,7 +175,7 @@
   };
 
   // Update frequency as station or not
-  FrequencyManager.prototype.updateFrequencyStation = function(frequency, station) {
+  FrequencyManager.prototype.updateFrequencyStation = function (frequency, station) {
     // Update current frequency to frequency list
     this.updateFrequencyToFrequencyList({ frequency: frequency, station: station });
     // Update stations list after frequency list updated
@@ -181,7 +183,7 @@
   };
 
   // Clear all stations from frequency list
-  FrequencyManager.prototype.clearAllStationsFrequencyList = function() {
+  FrequencyManager.prototype.clearAllStationsFrequencyList = function () {
     if (!this.stationsFrequencyList.length) {
       return;
     }
@@ -193,7 +195,7 @@
   };
 
   // Get favorite list
-  FrequencyManager.prototype.getFavoriteFrequencyList = function() {
+  FrequencyManager.prototype.getFavoriteFrequencyList = function () {
     if (!this.frequencyList) {
       return;
     }
@@ -206,7 +208,7 @@
   };
 
   // Get stations list
-  FrequencyManager.prototype.getStationsFrequencyList = function() {
+  FrequencyManager.prototype.getStationsFrequencyList = function () {
     if (!this.frequencyList) {
       return;
     }

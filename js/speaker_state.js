@@ -1,27 +1,27 @@
 /* exported SpeakerState */
 'use strict';
 
-(function(exports) {
+(function (exports) {
 
   const SpeakerState = {
-    _speakerManager: null,
+    speakerManagers: null,
 
-    init: function() {
+    init: function () {
       window.SpeakerManager = window.SpeakerManager || window.MozSpeakerManager;
-      this._speakerManager = new SpeakerManager('playing');
-      this._speakerManager.forcespeaker = false;
+      this.speakerManagers = new SpeakerManager('playing');
+      this.speakerManagers.forcespeaker = false;
     },
 
     get state() {
-      return this._speakerManager.forcespeaker;
+      return this.speakerManagers.forcespeaker;
     },
 
     set state(value) {
-      if ((value !== true) && (value !== false)) {
+      if (value !== true && value !== false) {
         return;
       }
 
-      this._speakerManager.forcespeaker = value;
+      this.speakerManagers.forcespeaker = value;
 
       StatusManager.update();
     }

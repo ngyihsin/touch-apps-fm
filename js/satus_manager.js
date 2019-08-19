@@ -23,10 +23,10 @@
     this.STATUS_DIALOG_FIRST_INIT = 5;
     // Update only station list is empty
     this.STATUS_STATIONS_EMPTY = 6;
-  };
+  }
 
   // Update current status
-  StatusManager.prototype.update = function(status) {
+  StatusManager.prototype.update = function (status) {
     // Update current status if status valid
     switch (status) {
       case this.STATUS_WARNING_SHOWING:

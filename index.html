@@ -25,7 +25,9 @@
   <script src="app://shared.gaiamobile.org/elements/kai-optionmenu.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-textfield.js"></script>
   <script src="shared/js/airplane_mode_helper.js"></script>
-
+  <script src="shared/js/l10n.js"></script>
+  <script src="js/satus_manager.js"></script>
+  <script src="js/language_manage.js"></script>
   <script defer src="js/startup.js"></script>
   <script defer src="js/cache.js"></script>
 </head>
@@ -68,37 +70,40 @@
       <div id="frequency-list" class="favorites-list">
         <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">
         </div>
-        <kai-optionmenu options='[{"label":"Rename Station","value":"rename"}]'></kai-optionmenu>
+        <kai-optionmenu options='[{"label":"","value":"rename"}]'></kai-optionmenu>
         <kai-loader id="myProgress" class="hidden"></kai-loader>
         <div id="favoritelist-warning">
           <div class="warning">
             <div id="favoritelist-warning-body" class="p warning-body">
-              <div>No Favorites</div>
-              <div>press <span data-icon="favorite-off"></span> to add favorite stations.</div>
+              <div id="favoritelist-warning-header" data-l10n-id="noFavoritelistHeader"></div>
+              <div>
+                <span data-l10n-id="noFavoritelistMsg1"></span>
+                <span data-icon="favorite-off"></span>
+                <span data-l10n-id="noFavoritelistMsg2"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <template id="frequency-list-template">
-        <div class="frequency-list-frequency" data-l10n-id="Tab-frequency">
+        <div class="frequency-list-frequency" data-l10n-id="tab-frequency">
         </div>
         <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>
       </template>
     </div>
     <kai-categorybar id="fm-footer" class="dim" selected="favorites"
-        items='[{"label":"FAVORATES","value":"favorites","icon":"favorite-on"},{"label":"ALL","value":"allstations","icon":"fm-radio"}]'>
+        items='[{"label":"","value":"favorites","icon":"favorite-on"},{"label":"ALL","value":"allstations","icon":"fm-radio"}]'>
     </kai-categorybar>
     <div id="antenna-warning" class="warning" hidden="">
       <div></div>
-      <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg">Plugged in
-        headset to receive radio signals.</div>
+      <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg"></div>
     </div>
   </section>
-  <kai-dialog id="myDialog" class="hidden" title="" message="" primarybtntext="Enabled" secondarybtntext="Cancel">
+  <kai-dialog id="myDialog" title="" message="" primarybtntext="" secondarybtntext="">
   </kai-dialog>
   <div id="input-dialog" class="hidden">
     <div id="input-content">
-      <div class="h3 title style-scope kai-dialog">Rename Station</div>
+      <div class="h3 title style-scope kai-dialog" data-l10n-id="save-rename"></div>
       <div id="input-field" class="subtilte-1 content style-scope kai-dialog">
         <kai-textfield id="textfield" maxlength=20></kai-textfield>
         <div>
@@ -106,10 +111,10 @@
           /20
         </div>
       </div>
-      <div class="buttons style-scope kai-dialog">
-        <kai-pillbutton class="style-scope kai-dialog" text="CANCEL" level="secondary" data-l10n-id="cancel-rename">
+      <div id="edit-button" class="buttons style-scope kai-dialog">
+        <kai-pillbutton class="style-scope kai-dialog" text="" level="secondary" data-l10n-id="cancel-rename">
         </kai-pillbutton>
-        <kai-pillbutton class="style-scope kai-dialog" text="SAVE" data-l10n-id="save-rename"></kai-pillbutton>
+        <kai-pillbutton class="style-scope kai-dialog" text="" data-l10n-id="save-rename"></kai-pillbutton>
       </div>
     </div>
   </div>

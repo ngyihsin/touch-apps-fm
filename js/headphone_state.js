@@ -1,10 +1,10 @@
 /* exported HeadphoneState */
 'use strict';
 
-(function(exports) {
+(function (exports) {
 
 
-  const HeadphoneState = function() {
+  const HeadphoneState = function () {
     // Indicate current audio channel manager interface
     this.audioChannelManager = null;
     // Indicate whether current device has valid antenna
@@ -15,7 +15,7 @@
     this.deviceWithInternalAntenna = false;
   };
 
-  HeadphoneState.prototype.init = function() {
+  HeadphoneState.prototype.init = function () {
     this.audioChannelManager = navigator.mozAudioChannelManager;
     if (!this.audioChannelManager) {
       return;
@@ -24,15 +24,15 @@
     this.deviceWithInternalAntenna = mozFMRadio.antennaAvailable;
     this.updateHeadphoneAndAntennaState();
 
-    this.audioChannelManager.onheadphoneschange =  this.onHeadphoneStateChanged.bind(this);
+    this.audioChannelManager.onheadphoneschange = this.onHeadphoneStateChanged.bind(this);
   };
 
-  HeadphoneState.prototype.updateHeadphoneAndAntennaState = function() {
+  HeadphoneState.prototype.updateHeadphoneAndAntennaState = function () {
     this.deviceHeadphoneState = this.audioChannelManager.headphones;
     this.deviceWithValidAntenna = this.deviceHeadphoneState || this.deviceWithInternalAntenna;
   };
 
-  HeadphoneState.prototype.onHeadphoneStateChanged = function() {
+  HeadphoneState.prototype.onHeadphoneStateChanged = function () {
     this.updateHeadphoneAndAntennaState();
 
     if (this.deviceHeadphoneState) {
@@ -45,8 +45,11 @@
       }
       // Headphone has plugged
       if (this.deviceWithInternalAntenna) {
-        // No matter FMRadio is enabled or not before headphone insert,
-        // just changed SpeakerState to false for device with internal antenna
+
+        /*
+         * No matter FMRadio is enabled or not before headphone insert,
+         * just changed SpeakerState to false for device with internal antenna
+         */
         SpeakerState.state = false;
       } else {
         // Just update UI if device with no internal antenna
@@ -61,16 +64,16 @@
     } else {
       // Headphone has unplugged
       if (!this.deviceWithInternalAntenna) {
-        // Device with no internal antenna
-        // make sure FMRadio show favorite list UI while headphone plugged out
+        // Make sure FMRadio speaker off while headphone plugged
+        FMAction.speakerUpdate(false);
+        // Device with no internal antenna,make sure FMRadio show favorite list UI while headphone plugged out
         if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
           StationsList.switchToFavoriteListUI();
         } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) {
           // Abort scanning stations first while scanning stations currently
           StationsList.abortScanStations(true);
         } else if (StatusManager.status === StatusManager.STATUS_FAVORITE_RENAMING) {
-          FavoriteEditor.undoRename();
-          FavoriteEditor.switchToFrequencyListUI();
+          FMAction.undoRename();
         }
       }
 

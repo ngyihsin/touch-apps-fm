@@ -1,15 +1,14 @@
 
-(function (exports) {
-  'use strict';
-  let csh = null;
+'use strict';
 
+(function (exports) {
   exports.FMCache = {
-    saveFromNode: function cache_saveFromNode(moduleId, node) {
+    saveFromNode: function saveFromNode(moduleId, node) {
       let html = node.outerHTML;
       this.save(moduleId, html);
     },
 
-    save: function cache_save(moduleId, html) {
+    save: function save(moduleId, html) {
       let id = moduleId;
       let langDir = document.querySelector('html').getAttribute('dir');
       let lang = navigator.language;
@@ -24,12 +23,12 @@
       }
     },
 
-    clear: function cache_clear(moduleId) {
+    clear: function clear(moduleId) {
       localStorage.removeItem('html_cache_' + moduleId);
     },
 
     cloneAsInertNodeAvoidingCustomElementHorrors:
-      function cache_cloneAsInertNodeAvoidingCustomElementHorrors(node) {
+      function cloneAsInertNodeAvoidingCustomElementHorrors(node) {
         let templateNode = document.createElement('template');
         let cacheDoc = templateNode.content.ownerDocument;
         return cacheDoc.importNode(node, true);

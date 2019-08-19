@@ -1,7 +1,7 @@
-/* launch or quit fmradio */
+/* Launch or quit fmradio */
 'use strict';
 
-(function() {
+(function () {
   const time = 300;
   window.mozFMRadio = navigator.mozFM || navigator.mozFMRadio;
 
@@ -13,13 +13,18 @@
     window.FMElementFavoriteListWarning = document.getElementById('favoritelist-warning');
     window.FMElementFrequencyListContainer = document.getElementById('frequency-list-container');
     window.FMElementFrequencyListTemplate = document.getElementById('frequency-list-template');
-    window.FMElementFMFooter = document.getElementById('fm-footer');
+    window.FMElementFMFooter = document.querySelector('kai-categorybar');
   }
 
   if (navigator.mozAudioChannelManager.headphones ||
     mozFMRadio.antennaAvailable) {
     FMCacheRestore.hydrateHtml('fm-container');
   }
+
+  navigator.mozL10n.ready(() => {
+    LanguageManager.init();
+    LanguageManager.updateLanguage();
+  });
 
   function lazyload() {
     setTimeout(() => {
@@ -29,7 +34,6 @@
         'js/fm_action.js',
         'js/history_frequency.js',
         'js/stations_list.js',
-        'js/satus_manager.js',
         'js/frequency_manager.js',
         'js/frequency_dialer.js',
         'js/frequency_list.js',
@@ -43,23 +47,29 @@
       });
     }, time);
 
-    // PERFORMANCE EVENT (2): moz-chrome-interactive
-    // Designates that the app's *core* chrome or navigation interface
-    // has its events bound and is ready for user interaction.
+    /*
+     * PERFORMANCE EVENT (2): moz-chrome-interactive
+     * Designates that the app's *core* chrome or navigation interface
+     * has its events bound and is ready for user interaction.
+     */
     window.performance.mark('navigationInteractive');
     window.dispatchEvent(new CustomEvent('moz-chrome-interactive'));
 
-    // PERFORMANCE EVENT (3): moz-app-visually-complete
-    // Designates that the app is visually loaded (e.g.: all of the
-    // 'above-the-fold' content exists in the DOM and is marked as
-    // ready to be displayed).
+    /*
+     * PERFORMANCE EVENT (3): moz-app-visually-complete
+     * Designates that the app is visually loaded (e.g.: all of the
+     * 'above-the-fold' content exists in the DOM and is marked as
+     * ready to be displayed).
+     */
     window.performance.mark('visuallyLoaded');
     window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
 
-    // PERFORMANCE EVENT (4): moz-content-interactive
-    // Designates that the app has its events bound for the minimum
-    // set of functionality to allow the user to interact with the
-    // 'above-the-fold' content.
+    /*
+     * PERFORMANCE EVENT (4): moz-content-interactive
+     * Designates that the app has its events bound for the minimum
+     * set of functionality to allow the user to interact with the
+     * 'above-the-fold' content.
+     */
     window.performance.mark('contentInteractive');
     window.dispatchEvent(new CustomEvent('moz-content-interactive'));
   }

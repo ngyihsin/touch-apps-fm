@@ -1,21 +1,21 @@
 /* exported HistoryFrequency */
 'use strict';
 
-(function(exports) {
+(function (exports) {
 
   // HistoryFrequency Constructor
-  const HistoryFrequency = function() {
+  const HistoryFrequency = function () {
     this.KEYNAME = 'history';
     this.historyFrequency = 0;
   };
 
   // Initialize history frequency
-  HistoryFrequency.prototype.init = function(callback) {
+  HistoryFrequency.prototype.init = function (callback) {
     // Read history frequency just from local storage
     this.historyFrequency = window.localStorage.getItem(this.KEYNAME);
 
     // Change history frequency value to number forcely
-    if (this.historyFrequency && (typeof this.historyFrequency !== 'Number')) {
+    if (this.historyFrequency && typeof this.historyFrequency !== 'Number') {
       this.historyFrequency = Number(this.historyFrequency);
     }
 
@@ -30,7 +30,7 @@
   };
 
   // Add and save current frequency to history and save to local storage
-  HistoryFrequency.prototype.add = function(frequency) {
+  HistoryFrequency.prototype.add = function (frequency) {
     if (!frequency) {
       return;
     }
@@ -43,7 +43,7 @@
     }
   };
 
-  HistoryFrequency.prototype.getFrequency = function() {
+  HistoryFrequency.prototype.getFrequency = function () {
     return this.historyFrequency;
   };
 

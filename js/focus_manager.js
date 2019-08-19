@@ -1,10 +1,10 @@
 /* exported FocusManager */
 'use strict';
 
-(function(exports) {
+(function (exports) {
 
   // FocusManager Constructor
-  const FocusManager = function() {
+  const FocusManager = function () {
     this.focus = -1;
     this.focusList = {};
     this.previousFocusedItem = null;
@@ -12,7 +12,7 @@
   };
 
   // Update current list should be focued in current screen
-  FocusManager.prototype.updateCurrentFocusList = function() {
+  FocusManager.prototype.updateCurrentFocusList = function () {
     let elements = [];
     switch (this.focus) {
       case StatusManager.STATUS_FAVORITE_SHOWING:
@@ -20,7 +20,7 @@
       case StatusManager.STATUS_FAVORITE_RENAMING:
       case StatusManager.STATUS_STATIONS_SCANING:
       case StatusManager.STATUS_STATIONS_SHOWING:
-        [].forEach.call(FMElementFrequencyListContainer.children, function (element) {
+        [].forEach.call(FMElementFrequencyListContainer.children, (element) => {
           elements.push(element);
         });
         break;
@@ -41,18 +41,18 @@
   };
 
   // Get current focus list
-  FocusManager.prototype.getCurrentFocusList = function() {
+  FocusManager.prototype.getCurrentFocusList = function () {
     return this.focusList[this.focus];
   };
 
   // Update current focus index
-  FocusManager.prototype.updateCurrentFocusIndex = function(index) {
+  FocusManager.prototype.updateCurrentFocusIndex = function (index) {
     let focusList = this.getCurrentFocusList();
-    if (!focusList || (focusList.elements.length === 0)) {
+    if (!focusList || focusList.elements.length === 0) {
       return;
     }
 
-    if ((index < 0) || (index >= focusList.elements.length)) {
+    if (index < 0 || index >= focusList.elements.length) {
       return;
     }
 
@@ -71,7 +71,7 @@
   };
 
   // Update current focus
-  FocusManager.prototype.update = function() {
+  FocusManager.prototype.update = function () {
     switch (StatusManager.status) {
       case StatusManager.STATUS_FAVORITE_SHOWING:
       case StatusManager.STATUS_FAVORITE_RENAMING:
@@ -93,7 +93,7 @@
       : FrequencyManager.getStationsFrequencyList();
     let fixed = 0;
     let update = stationslist.some((frequency, i) => {
-      let frequencyCompare = (frequency.frequency == currentFrequency);
+      let frequencyCompare = frequency.frequency === currentFrequency;
       if (frequencyCompare) {
         fixed = i;
       }
@@ -106,11 +106,13 @@
     }
   };
 
-  // Reset and update current focused items
-  // fixed: change current focus to the first item in station list UI or not
-  FocusManager.prototype.resetCurrentFocusedItems = function(fixed) {
+  /*
+   * Reset and update current focused items
+   * fixed: change current focus to the first item in station list UI or not
+   */
+  FocusManager.prototype.resetCurrentFocusedItems = function (fixed) {
     let currentFocusList = this.updateCurrentFocusList();
-    if (!currentFocusList || (currentFocusList.elements.length === 0)) {
+    if (!currentFocusList || currentFocusList.elements.length === 0) {
       return;
     }
 
@@ -121,8 +123,8 @@
       }
       // Always focus the last item while scanning
       index = currentFocusList.elements.length - 1;
-    } else if (this.focus === StatusManager.STATUS_STATIONS_SHOWING
-      || this.focus === StatusManager.STATUS_FAVORITE_SHOWING) {
+    } else if (this.focus === StatusManager.STATUS_STATIONS_SHOWING ||
+      this.focus === StatusManager.STATUS_FAVORITE_SHOWING) {
       if (fixed) {
         if (typeof fixed === 'number') {
           currentFocusList.index = fixed;
@@ -140,9 +142,9 @@
   };
 
   // Update the specified index item to focus
-  FocusManager.prototype.updateFocus = function(index) {
+  FocusManager.prototype.updateFocus = function (index) {
     let focusList = this.getCurrentFocusList();
-    if (!focusList || (focusList.elements.length === 0)) {
+    if (!focusList || focusList.elements.length === 0) {
       return;
     }
 
@@ -157,7 +159,7 @@
   };
 
   // Remove current focus
-  FocusManager.prototype.dismissFocus = function() {
+  FocusManager.prototype.dismissFocus = function () {
     let focused = document.querySelectorAll('.focus');
     for (let i = 0; i < focused.length; i++) {
       focused[i].classList.remove('focus');
@@ -170,7 +172,7 @@
   };
 
   // Get current focused item
-  FocusManager.prototype.getCurrentFocusElement = function() {
+  FocusManager.prototype.getCurrentFocusElement = function () {
     return this.previousFocusedItem;
   };
 

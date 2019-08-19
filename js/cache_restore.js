@@ -1,15 +1,15 @@
+'use strict';
 (function (exports) {
-  'use strict';
 
   window.HTML_CACHE_VERSION = '4';
 
   exports.FMCacheRestore = {
 
-    hydrateHtml: function cache_hydrateHtml(id) {
+    hydrateHtml: function hydrateHtml(id) {
       let parsedResults = this.retrieve(id);
       let lang = navigator.language;
 
-      if (parsedResults.langDir && (lang === parsedResults.lang)) {
+      if (parsedResults.langDir && lang === parsedResults.lang) {
         document.querySelector('html').setAttribute('dir', parsedResults.langDir);
       }
 
@@ -21,9 +21,12 @@
       cardsNode.outerHTML = contents;
     },
 
-    retrieve: function cache_retrieve(id) {
+    retrieve: function retrieve(id) {
       let value = localStorage.getItem('html_cache_' + id) || '';
-      let index, version, langDir, lang;
+      let index = null;
+      let version = null;
+      let langDir = null;
+      let lang = null;
       index = value.indexOf(':');
 
       if (index === -1) {
@@ -47,7 +50,6 @@
         lang: lang,
         contents: value
       };
-    },
-
+    }
   };
 })(this);

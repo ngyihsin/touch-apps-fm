@@ -1,15 +1,17 @@
 /* exported WarningUI */
 'use strict';
 
-(function(exports) {
+(function (exports) {
 
-  const WarningUI = function() {};
+  const WarningUI = function () {};
 
-  WarningUI.prototype.update = function() {
+  WarningUI.prototype.update = function () {
     let hiddenState = false;
 
-    // If current device has no valid antenna,
-    // antenna warning UI should be shown
+    /*
+     * If current device has no valid antenna,
+     * antenna warning UI should be shown
+     */
     hiddenState = HeadphoneState.deviceWithValidAntenna;
     FMElementAntennaUnplugWarning.hidden = hiddenState;
     if (hiddenState) {
@@ -17,26 +19,33 @@
       FMElementFMFooter.classList.remove('hidden');
       document.getElementById('power-switch').classList.remove('hidden');
     } else {
-      FMElementFMContainer.classList.add('hidden')
+      FMElementFMContainer.classList.add('hidden');
       FMElementFMFooter.classList.add('hidden');
       document.getElementById('power-switch').classList.add('hidden');
     }
 
-    // If current airplane mode is enabled,
-    // airplane mode warning UI should be shown
+    /*
+     * If current airplane mode is enabled,
+     * airplane mode warning UI should be shown
+     */
     hiddenState = !FMRadio.airplaneModeEnabled;
-    hiddenState ? ''
-      : FMAction.showDialog('Airplane Mode On', ' Trun off airplabe mode to use FM Radio', 'SETTINGS');
+    hiddenState = !FMRadio.airplaneModeEnabled;
+    if (!hiddenState) {
+      FMAction.dialog.setAttribute('class', 'airplane-dialog');
+      FMAction.showDialog(LanguageManager.airplaneModeHeader, LanguageManager.airplaneModeMsg, LanguageManager.airplaneModeButton);
+    }
 
-    // // If current airplane mode is enabled, or current device has no valid antenna,
-    // // fm container element should be hidden
+    /*
+     * If current airplane mode is enabled, or current device has no valid antenna,
+     * fm container element should be hidden
+     */
     hiddenState = FMRadio.airplaneModeEnabled || !HeadphoneState.deviceWithValidAntenna;
     let status = hiddenState ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;
     FMElementFavoriteListWarning.hidden = true;
     if (status === StatusManager.STATUS_FAVORITE_SHOWING) {
       let favoritelist = FrequencyManager.getFavoriteFrequencyList();
-      hiddenState = (favoritelist && favoritelist.length > 0)
-        || (status !== StatusManager.STATUS_FAVORITE_SHOWING);
+      hiddenState = favoritelist && favoritelist.length > 0 ||
+        status !== StatusManager.STATUS_FAVORITE_SHOWING;
       FMElementFavoriteListWarning.hidden = hiddenState;
     }
 
