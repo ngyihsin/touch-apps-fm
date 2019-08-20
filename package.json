@@ -1,0 +1,33 @@
+{
+  "name": "fm",
+  "version": "0.0.1",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest --no-cache --verbose --coverage"
+  },
+  "jtest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "collectCoverageFrom": [
+      "js/**",
+      "!js/layouts/**",
+      "!js/shared/**"
+    ]
+  },
+  "author": "The Gaia Team",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "eslint": "4.16.0",
+    "eslint-plugin-optimize-regex": "1.1.5"
+  },
+  "dependencies": {
+    "babel-jest": "^24.7.1",
+    "jest": "^24.7.1"
+  }
+}

@@ -178,7 +178,7 @@
     this.speakSwitch = document.getElementById('speaker-switch');
     this.fmPowerKey = document.getElementById('power-switch');
 
-    this.stationＡction = document.getElementById('station-action');
+    this.stationAction = document.getElementById('station-action');
 
     this.fmLeftKey = document.getElementById('frequency-op-seekdown');
     this.fmRightKey = document.getElementById('frequency-op-seekup');

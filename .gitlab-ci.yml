@@ -7,6 +7,10 @@
 
 image: quay.io/kaici/b2g:touch
 
+stages:
+- build
+- test
+
 variables:
   GAIA_DIR: 'gaia'
   CI_UTILS: 'ci-utils'
@@ -49,3 +53,9 @@ build:
   - PRODUCTION=1 APP="$CI_PROJECT_NAME" make
   # Do clean again to prevent those files get cached.
   - make clean
+test:
+  stage: test
+  script:
+  # - yarn --frozen-lockfile --cache-folder .yarn-cache
+  - yarn install
+  - yarn test
