@@ -65,6 +65,7 @@
       // Headphone has unplugged
       if (!this.deviceWithInternalAntenna) {
         // Make sure FMRadio speaker off while headphone plugged
+        FMRadio.previousSpeakerForcedState = false;
         FMAction.speakerUpdate(false);
         // Device with no internal antenna,make sure FMRadio show favorite list UI while headphone plugged out
         if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {

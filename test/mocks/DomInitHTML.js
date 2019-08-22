@@ -33,8 +33,10 @@
                   </div>\
                 </div>\
               </div>\
-              <kai-pillbutton class="hidden" id="station-action" data-l10n-id="scan-stations" text="RESCAN" level="secondary">\
-              </kai-pillbutton>\
+              <div id="action" class="hidden">\
+                <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">\
+                </kai-pillbutton>\
+              </div>\
             </div>\
             <div id="frequency-list" class="favorites-list">\
               <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">\
