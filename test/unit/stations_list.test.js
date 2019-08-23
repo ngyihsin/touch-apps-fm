@@ -63,7 +63,7 @@ test('Switch from station list UI to favorite list UI', () => {
   StationsList.switchToFavoriteListUI();
   expect(FMElementFrequencyListUI.className).toBe('favorites-list');
   expect(StatusManager.status).toBe(StatusManager.STATUS_FAVORITE_SHOWING);
-  expect(FMAction.stationAction.classList.contains('hidden')).toBe(true);
+  expect(FMAction.action.classList.contains('hidden')).toBe(true);
   expect(FMAction.freDialer.classList.contains('hidden')).toBe(false);
   expect(document.getElementsByTagName('kai-categorybar')[0].selected).toBe('favorites');
   expect(FMElementFrequencyListContainer.children.length).toBe(1);
@@ -75,7 +75,7 @@ test('Switch from favorite list UI to station list UI', () => {
   StationsList.switchToStationListUI();
   expect(FMElementFrequencyListUI.className).toBe('stations-list');
   expect(StatusManager.status).toBe(StatusManager.STATUS_STATIONS_SHOWING);
-  expect(FMAction.stationAction.classList.contains('hidden')).toBe(false);
+  expect(FMAction.action.classList.contains('hidden')).toBe(false);
   expect(FMAction.freDialer.classList.contains('hidden')).toBe(true);
   expect(FMAction.stationAction.level).toBe('secondary');
   expect(FMAction.stationAction.getAttribute('data-l10n-id')).toBe('scan-stations');

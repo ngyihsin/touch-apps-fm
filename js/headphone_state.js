@@ -44,27 +44,17 @@
         }
       }
       // Headphone has plugged
-      if (this.deviceWithInternalAntenna) {
-
-        /*
-         * No matter FMRadio is enabled or not before headphone insert,
-         * just changed SpeakerState to false for device with internal antenna
-         */
-        SpeakerState.state = false;
-      } else {
+      if (!this.deviceWithInternalAntenna) {
         // Just update UI if device with no internal antenna
         FrequencyDialer.updateFrequency(HistoryFrequency.getFrequency());
-        FrequencyList.updateFavoriteListUI();
         StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
-      }
-
-      if (typeof FocusManager !== 'undefined') {
-        FocusManager.dismissFocus();
+        FrequencyList.updateFavoriteListUI();
       }
     } else {
       // Headphone has unplugged
       if (!this.deviceWithInternalAntenna) {
         // Make sure FMRadio speaker off while headphone plugged
+        FMRadio.previousSpeakerForcedState = false;
         FMAction.speakerUpdate(false);
         // Device with no internal antenna,make sure FMRadio show favorite list UI while headphone plugged out
         if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {

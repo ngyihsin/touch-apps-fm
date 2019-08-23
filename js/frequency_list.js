@@ -69,6 +69,7 @@
     if (favoritesList) {
       favoritesList.sort((a, b) => b.favoriteTime - a.favoriteTime);
       this.updateFrequencyListUI(favoritesList);
+      FocusManager.update();
     }
   };
 
@@ -102,6 +103,7 @@
     if (stationslist) {
       stationslist.sort((a, b) => a.stationTime - b.stationTime);
       this.updateFrequencyListUI(stationslist);
+      FocusManager.update();
     }
   };
   exports.FrequencyList = new FrequencyList();

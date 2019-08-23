@@ -99,9 +99,9 @@ body > section {
   position: relative;
 }
 
-#frequency-bar a {
+#frequency-bar span {
   color: var(--color-gs60);
-  font-size: 3rem;
+  font-size: 3.6rem;
 }
 
 #frequency-bar > div {
@@ -243,13 +243,17 @@ mask is intended to cover everything except the first notch. */
   float: left;
 }
 
-#station-action {
-  width: 40%;
+#action {
   height: var(--stationactionbar-height);
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+#station-action {
+  width: 20rem;
+  display: flex;
 }
 /**** end *******/
 
