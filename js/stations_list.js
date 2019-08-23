@@ -129,6 +129,8 @@
     FrequencyList.updateStationsListUI();
     // Make the frequency in frequency dialer UI is current palying frequency
     this.onFrequencyChanged();
+    // Update current focus
+    FocusManager.update();
   };
 
   StationsList.prototype.onFrequencyChanged = function () {
@@ -139,8 +141,6 @@
     FrequencyDialer.updateFrequency(frequency);
     // Update status to update UI
     StatusManager.update();
-    // Update current focus
-    FocusManager.update();
   };
 
   // Handle the fm channel frequency
@@ -277,7 +277,7 @@
    */
   StationsList.prototype.scanAbortOnBrowserBack = function (retryTime) {
     // Cancel seek
-    let request = mozFMRadio.cancelSeek();
+    const request = mozFMRadio.cancelSeek();
     request.onsuccess = () => {
       this.scanningAborted = true;
       this.scanFinished(true);

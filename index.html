@@ -43,7 +43,8 @@
       <div id="fm-header">
         <div id="frequency-bar">
           <div>
-            <span id="frequency-op-seekdown" data-icon="media-back" data-l10n-id="frequency-op-seekdown"></span>
+            <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-icon="media-back"
+              data-l10n-id="frequency-op-seekdown" role="button"></a>
           </div>
           <div id="frequency-display">
             87.5
@@ -51,7 +52,8 @@
               data-icon="favorite-off"></span>
           </div>
           <div>
-            <span id="frequency-op-seekup" data-icon="media-forward" data-l10n-id="frequency-op-seekup"></span>
+            <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-icon="media-forward"
+              data-l10n-id="frequency-op-seekup" role="button"></a>
           </div>
         </div>
         <div id="dialer-bar">
@@ -62,14 +64,13 @@
             </div>
           </div>
         </div>
-        <div id="action" class="hidden">
-          <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">
-          </kai-pillbutton>
-        </div>
+        <kai-pillbutton class="hidden" id="station-action" data-l10n-id="scan-stations" text="RESCAN" level="secondary">
+        </kai-pillbutton>
       </div>
       <div id="frequency-list" class="favorites-list">
         <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">
         </div>
+        <kai-optionmenu options='[{"label":"","value":"rename"}]'></kai-optionmenu>
         <kai-loader id="myProgress" class="hidden"></kai-loader>
         <div id="favoritelist-warning">
           <div class="warning">
@@ -90,7 +91,6 @@
         <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>
       </template>
     </div>
-    <kai-optionmenu options='[{"label":"","value":"rename"}]'></kai-optionmenu>
     <kai-categorybar id="fm-footer" class="dim" selected="favorites"
         items='[{"label":"","value":"favorites","icon":"favorite-on"},{"label":"ALL","value":"allstations","icon":"fm-radio"}]'>
     </kai-categorybar>

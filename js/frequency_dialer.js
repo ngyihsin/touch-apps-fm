@@ -41,6 +41,9 @@
     if (focusedFreqency === this.currentFreqency) {
       return;
     }
+
+    // Update focus
+    FocusManager.update();
   };
 
   // Update current frequency dialer UI with specified frequency
@@ -91,12 +94,6 @@
     this.minBlankFrequency = this.minFrequency - this.blankUnit * this.space;
     this.maxFrequency = upper + this.space - upper % this.space;
     this.maxBlankFrequency = this.maxFrequency + this.blankUnit * this.space;
-    if (this.diarUnit.children.length > 0) {
-      this.dialerWidth = this.diarUnit.clientWidth;
-      this.appWidth = frequencyDiar.clientWidth;
-      this.space = this.dialerWidth /(this.maxBlankFrequency - this.minBlankFrequency);
-      return;
-    }
     let unitCount = Math.ceil((this.maxBlankFrequency - this.minBlankFrequency) / this.space);
 
     for (let i = 0; i < unitCount; ++i) {

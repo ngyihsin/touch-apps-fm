@@ -12,14 +12,12 @@
       let id = moduleId;
       let langDir = document.querySelector('html').getAttribute('dir');
       let lang = navigator.language;
-      let stationAction = document.getElementById('station-action').outerHTML;
-      let progress = document.getElementById('myProgress').outerHTML;
-      let rewrite = html.replace(/(\<kai-pillbutton).*\/kai-pillbutton\>/,stationAction);
-      rewrite = rewrite.replace(/(\<kai-loader).*\/kai-loader\>/,progress)
       html = window.HTML_CACHE_VERSION + (langDir ? ',' + langDir : '') +
-        (lang ? ',' + lang : '') + ':' + rewrite;
+        (lang ? ',' + lang : '') + ':' + html;
       try {
         localStorage.setItem('html_cache_' + id, html);
+        console.log('html_cache_' + id);
+
       } catch (e) {
         console.error('Failed save cache:' + e);
       }

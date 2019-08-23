@@ -69,7 +69,6 @@
     if (favoritesList) {
       favoritesList.sort((a, b) => b.favoriteTime - a.favoriteTime);
       this.updateFrequencyListUI(favoritesList);
-      FocusManager.update();
     }
   };
 

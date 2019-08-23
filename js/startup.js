@@ -38,8 +38,7 @@
         'js/frequency_dialer.js',
         'js/frequency_list.js',
         'js/warning_ui.js',
-        'js/fm_radio.js',
-        'js/focus_manager.js'
+        'js/fm_radio.js'
       ];
 
       LazyLoader.load(lazyFiles, () => {

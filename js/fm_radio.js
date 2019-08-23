@@ -6,7 +6,6 @@
   const FMRadio = function () {
     this.KEYNAME_FIRST_INIT = 'is_first_init';
     this.airplaneModeEnabled = false;
-    this.previousSpeakerForcedState = false;
   };
 
   FMRadio.prototype.init = function () {
@@ -20,6 +19,7 @@
     HeadphoneState.init();
     // Initialize SpeakerState
     SpeakerState.init();
+
     // Initialize FrequencyDialerUI
     FrequencyDialer.initDialerUI();
     // Initialize HistoryFrequency
@@ -104,6 +104,15 @@
     } else if (StatusManager.status !== StatusManager.STATUS_DIALOG_FIRST_INIT) {
       StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
     }
+
+    if (typeof FocusManager === 'undefined') {
+      // FocusManager must be called firstly here, so lazy load it
+      LazyLoader.load('js/focus_manager.js', () => {
+        FocusManager.update(true);
+      });
+    } else {
+      FocusManager.update(true);
+    }
   };
 
   FMRadio.prototype.onFMRadioDisabled = function () {
@@ -122,16 +131,6 @@
       frequency = mozFMRadio.frequencyLowerBound;
     }
 
-    if (HeadphoneState.deviceHeadphoneState) {
-      /**
-       * After headphone plugged, no matter device with internal antenna or not
-       * set speaker state as previous state
-       */
-      if (SpeakerState.state !== this.previousSpeakerForcedState) {
-        SpeakerState.state = this.previousSpeakerForcedState;
-      }
-    }
-
     let powerSwitch = document.getElementById('power-switch');
     powerSwitch.disabled = true;
     let request = mozFMRadio.enable(frequency);
@@ -147,8 +146,6 @@
   };
 
   FMRadio.prototype.turnOffRadio = function () {
-     // Remember previous states
-    this.previousSpeakerForcedState = SpeakerState.state;
     mozFMRadio.disable();
   };
 
@@ -194,6 +191,7 @@
     FMElementFMFooter.classList.toggle('dim', state);
   };
 
+
   FMRadio.prototype.saveCache = function () {
     if (navigator.mozAudioChannelManager.headphones ||
         mozFMRadio.antennaAvailable) {
@@ -204,6 +202,16 @@
         if (!codeNode.classList.contains('dim')) {
           codeNode.classList.add('dim');
         }
+        // Make "dialer-unit" empty, because cache will make position shift
+        codeNode.children[0].children[1].innerHTML =
+        `<div id="dialer-bar">
+          <div id="dialer-container" role="slider" aria-valuemin="87.5" aria-valuemax="108" aria-controls="frequency">
+            <div id="frequency-indicator"></div>
+            <div id="frequency-dialer" class="animation-on">
+              <ul id="dialer-unit"></ul>
+            </div>
+          </div>
+        </div>`;
         FMCache.saveFromNode('fm-container', codeNode);
       }
     }
