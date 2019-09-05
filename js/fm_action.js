@@ -51,7 +51,7 @@
        * Update current frequency as favorite to data base,
        * and mark current frequency is a station
        */
-      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true, true);
+      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true);
       let currentFocusedElement = FocusManager.getCurrentFocusElement();
       FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
@@ -75,7 +75,7 @@
        * Update current frequency as unfavorite to data base,
        * and mark current frequency is a station
        */
-      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false, true);
+      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false);
       let currentFocusedElement = FocusManager.getCurrentFocusElement();
       FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
     }
