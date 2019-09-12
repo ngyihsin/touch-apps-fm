@@ -161,7 +161,7 @@
 
     if (this.previousFrequency > this.currentFrequency) {
       // Scanning finished if scanned frequency is smaller
-      this.scanFinished(true);
+      this.scanFinished(true, 'kai-scanning-completed');
       return;
     }
 
@@ -194,18 +194,20 @@
   };
 
   // Stations scanning operation finished
-  StationsList.prototype.scanFinished = function (needupdate) {
+  StationsList.prototype.scanFinished = function (needupdate, message) {
 
     /*
      * Hidden scan progress UI
-     * FMElementScanProgress.className = 'hidden';
      * Remove 'scanning' to update stations list UI
      */
     FrequencyDialer.progressOff();
     FMElementFrequencyListUI.classList.remove('scanning');
 
     // Mark flag 'scanningAborted' as false
-    this.scanningAborted = false;
+    this.scanningAborted = false;    
+    
+    // Show toast message
+    FMRadio.showMessage(message);
 
     // Update StatusManager to update UI
     StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);

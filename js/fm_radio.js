@@ -194,6 +194,25 @@
     FMElementFMFooter.classList.toggle('dim', state);
   };
 
+  FMRadio.prototype.showMessage = function (l10nId, option = {}) {
+    if (!l10nId) {
+      return;
+    }
+
+    const options = Object.assign({
+      messageL10nId: l10nId,
+      latency: 2000
+    }, option);
+
+    if (typeof Toaster === 'undefined') {
+      LazyLoader.load('shared/js/toaster.js', () => {
+        Toaster.showToast(options);
+      });
+    } else {
+      Toaster.showToast(options);
+    }
+  };
+
   FMRadio.prototype.saveCache = function () {
     if (navigator.mozAudioChannelManager.headphones ||
         mozFMRadio.antennaAvailable) {

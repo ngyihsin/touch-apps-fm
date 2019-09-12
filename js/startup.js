@@ -19,6 +19,11 @@
   if (navigator.mozAudioChannelManager.headphones ||
     mozFMRadio.antennaAvailable) {
     FMCacheRestore.hydrateHtml('fm-container');
+  } else {
+    document.getElementById('fm-container').classList.add('hidden');
+    document.querySelector('kai-categorybar').classList.add('hidden');
+    document.getElementById('power-switch').classList.add('hidden');
+    document.getElementById('antenna-warning').hidden = false;
   }
 
   navigator.mozL10n.ready(() => {
