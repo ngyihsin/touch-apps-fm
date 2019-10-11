@@ -84,6 +84,9 @@
       FrequencyDialer.updateFrequency();
     } else {
       let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
+      if (!frequencyObject) {
+        return;
+      }
       element.innerHTML = '';
       element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
     }

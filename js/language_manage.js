@@ -24,18 +24,15 @@
         { label: navigator.mozL10n.get('all'), value: 'allstations', icon: 'fm-radio' }
       ];
 
-      this.dialog = document.getElementById('myDialog');
+      this.dialog = document.querySelector('kai-dialog');
       this.optionMenu = document.querySelector('kai-optionmenu');
       this.HeaderTitle = document.getElementById('header');
       this.stationAction = document.getElementById('station-action');
-      this.editButton = document.getElementById('edit-button');
       this.footer = document.getElementById('fm-footer');
     },
 
     updateLanguage: function updateLanguage() {
       this.optionMenu.options[0].label = this.rename;
-      this.editButton.children[0].text = this.cancel;
-      this.editButton.children[1].text = this.save;
       this.footer.setAttribute('items', JSON.stringify(this.items));
       let status = StatusManager.status;
       switch (status) {
@@ -68,6 +65,11 @@
           this.dialog.secondarybtntext = this.cancel;
           this.dialog.title = this.scanStationsHeader;
           this.dialog.message = this.scanStationsMsg;
+          break;
+        case StatusManager.STATUS_FAVORITE_RENAMING:
+          this.dialog.primarybtntext = this.save;
+          this.dialog.secondarybtntext = this.cancel;
+          this.dialog.title = this.rename;
           break;
       }
     }

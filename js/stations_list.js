@@ -159,7 +159,8 @@
       return;
     }
 
-    if (this.previousFrequency > this.currentFrequency) {
+    if (this.previousFrequency > this.currentFrequency &&
+      !this.scanningAborted) {
       // Scanning finished if scanned frequency is smaller
       this.scanFinished(true, 'kai-scanning-completed');
       return;
@@ -204,8 +205,8 @@
     FMElementFrequencyListUI.classList.remove('scanning');
 
     // Mark flag 'scanningAborted' as false
-    this.scanningAborted = false;    
-    
+    this.scanningAborted = false;
+
     // Show toast message
     FMRadio.showMessage(message);
 

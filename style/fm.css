@@ -18,15 +18,6 @@ html, body {
   overflow: hidden;
 }
 
-
-/**
- * 1. No content inside the app
- *    should be user-selectable.
- */
-* {
-  -moz-user-select: none; /* 1 */
-}
-
 *[hidden] { display: none; }
 
 .hidden {
@@ -224,25 +215,6 @@ li > span {
   background-color: var(--color-gs10)
 }
 
-/* The beginning and end of the dial are masked to hide notches that
-are out of range. */
-.dialer-unit-mark-mask-start,
-.dialer-unit-mark-mask-end {
-  display: block;
-  height: 5.5rem;
-  position: absolute;
-}
-/* The mask at the end should be jogged left by 0.3rem, since the
-mask is intended to cover everything except the first notch. */
-.dialer-unit-mark-mask-end {
-  margin-left: .3rem;
-}
-
-#frequency-dialer .dialer-unit-floor {
-  color: #AAA;
-  float: left;
-}
-
 #action {
   height: var(--stationactionbar-height);
   display: flex;
@@ -266,7 +238,6 @@ div#frequency-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* transform: translate(0, 0); */
 }
 
 div#frequency-list-container {
@@ -372,27 +343,8 @@ div#favoritelist-warning-body  {
 /******* end *******/
 
 /*** style for input dialog *****/
-#input-dialog {
-  width: 100%;
-  height: 100%;
-  color: var(--color-gs100);
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  top:0;
-  left:0;
-  padding-top: 4rem 
-}
-
-#input-field > div {
+.subtitle.kai-textfield {
   text-align: left;
-  width: 100%;
-  padding: 0px 2rem;
-  font-size: 1.4rem;
-  color: var(--color-gs40);
 }
 
 /*****  end  *****/

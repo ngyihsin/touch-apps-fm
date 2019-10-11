@@ -25,22 +25,6 @@
       dispalyName.innerText = favoriteObject.name;
       FMElementFrequencyDialer.appendChild(dispalyName);
     }
-    // No need update focus while FM Radio disabled
-    if (!mozFMRadio.enabled) {
-      return;
-    }
-
-    // No need update focus if FocusManager has not loaded yet
-    if (typeof FocusManager === 'undefined') {
-      return;
-    }
-
-    // No need update focus while current frequency playing is focused
-    let focusedItem = FocusManager.getCurrentFocusElement();
-    let focusedFreqency = FrequencyList.getFrequencyByElement(focusedItem);
-    if (focusedFreqency === this.currentFreqency) {
-      return;
-    }
   };
 
   // Update current frequency dialer UI with specified frequency
@@ -94,7 +78,7 @@
     if (this.diarUnit.children.length > 0) {
       this.dialerWidth = this.diarUnit.clientWidth;
       this.appWidth = frequencyDiar.clientWidth;
-      this.space = this.dialerWidth /(this.maxBlankFrequency - this.minBlankFrequency);
+      this.space = this.dialerWidth / (this.maxBlankFrequency - this.minBlankFrequency);
       return;
     }
     let unitCount = Math.ceil((this.maxBlankFrequency - this.minBlankFrequency) / this.space);

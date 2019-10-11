@@ -69,25 +69,9 @@
               headset to receive radio signals.</div>\
           </div>\
         </section>\
-        <kai-dialog id="myDialog" class="hidden" title="" message="" primarybtntext="Enabled" secondarybtntext="Cancel">\
-        </kai-dialog>\
-        <div id="input-dialog" class="hidden">\
-          <div id="input-content">\
-            <div class="h3 title style-scope kai-dialog" data-l10n-id="save-rename">Rename Station</div>\
-            <div id="input-field" class="subtilte-1 content style-scope kai-dialog">\
-              <kai-textfield id="textfield" maxlength=20></kai-textfield>\
-              <div>\
-                <span id="input-num"></span>\
-                /20\
-              </div>\
-            </div>\
-            <div id="edit-button"  class="buttons style-scope kai-dialog">\
-              <kai-pillbutton class="style-scope kai-dialog" text="CANCEL" level="secondary" data-l10n-id="cancel-rename">\
-              </kai-pillbutton>\
-              <kai-pillbutton class="style-scope kai-dialog" text="SAVE" data-l10n-id="save-rename"></kai-pillbutton>\
-            </div>\
-          </div>\
-        </div>'
+        <kai-dialog id="mydialog" title="" open="false" message="" primarybtntext="" secondarybtntext="">\
+          <kai-textfield class="hidden" slot="custom-view" id="textfield" maxlength=20></kai-textfield>\
+        </kai-dialog>'
   };
   exports.DomInitHTML = DomInitHTML;
 })(window);

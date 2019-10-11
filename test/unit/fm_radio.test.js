@@ -23,6 +23,8 @@ require('../../js/stations_list');
 require('../../js/warning_ui');
 require('../../js/satus_manager');
 require('../../js/language_manage');
+require('../../js/dialog_helper');
+require('../../js/frequency_rename');
 
 document.dir = DomInitHTML.dir;
 document.body.innerHTML = DomInitHTML.innerHTML;
@@ -63,21 +65,4 @@ test('radio on', () => {
   expect(FMElementFMContainer.classList.contains('dim')).toBe(false);
   expect(FMElementFMFooter.classList.contains('dim')).toBe(false);
   expect(StatusManager.status).toBe(StatusManager.STATUS_FAVORITE_SHOWING);
-});
-
-test('radio off', () => {
-  mozFMRadio.enabled = false;
-  FMRadio.onFMRadioDisabled();
-  expect(document.getElementById('power-switch').getAttribute('data-l10n-id')).toBe('power-switch-on');
-  expect(document.getElementById('power-switch').checked).toBe(false);
-  expect(document.getElementById('speaker-switch').classList.contains('hidden')).toBe(true);
-  expect(FMElementFMContainer.classList.contains('dim')).toBe(true);
-  expect(FMElementFMFooter.classList.contains('dim')).toBe(true);
-});
-
-test('showFMRadioFirstInitDialog', () => {
-  FMRadio.showFMRadioFirstInitDialog();
-  expect(FMAction.dialog.classList.contains('hidden')).toBe(false);
-  expect(FMAction.dialog.open).toBe(true);
-  expect(StatusManager.status).toBe(StatusManager.STATUS_DIALOG_FIRST_INIT);
 });

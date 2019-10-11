@@ -12,6 +12,7 @@
   FMRadio.prototype.init = function () {
     // Initialize parameter airplaneModeEnabled
     this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
+    this.updateAirplaneDialog();
     AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
 
     // Initialize FMAction
@@ -36,7 +37,7 @@
   FMRadio.prototype.onAirplaneModeStateChanged = function () {
     this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
     StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
-    WarningUI.update();
+    this.updateAirplaneDialog();
 
     if (this.airplaneModeEnabled) {
       // If airplane mode is enabled, just update warning UI is already OK
@@ -111,7 +112,7 @@
     this.updateDimLightState(true);
     SpeakerState.state = false;
     // Hide dialog when fm disabled..
-    FMAction.hideDialog();
+    Dialog.hideDialog();
     // Update status to update UI
     StatusManager.update();
   };
@@ -123,6 +124,7 @@
     }
 
     if (HeadphoneState.deviceHeadphoneState) {
+
       /**
        * After headphone plugged, no matter device with internal antenna or not
        * set speaker state as previous state
@@ -147,9 +149,19 @@
   };
 
   FMRadio.prototype.turnOffRadio = function () {
-     // Remember previous states
+    // Remember previous states
     this.previousSpeakerForcedState = SpeakerState.state;
     mozFMRadio.disable();
+  };
+
+  FMRadio.prototype.updateAirplaneDialog = function () {
+    if (this.airplaneModeEnabled) {
+      Dialog.dialog.setAttribute('class', 'airplane-dialog');
+      Dialog.showDialog(Dialog.airplane, false,
+        FMAction.settingsClicked.bind(this), this.airplneCancel.bind(this));
+    } else {
+      Dialog.hideDialog();
+    }
   };
 
   FMRadio.prototype.updateEnablingState = function () {
@@ -183,10 +195,21 @@
 
   FMRadio.prototype.showFMRadioFirstInitDialog = function () {
     // Show dialog and set dialog message
-    FMAction.dialog.setAttribute('class', 'first-init');
-    FMAction.showDialog(LanguageManager.scanStationsHeader, LanguageManager.scanStationsMsg, LanguageManager.scan);
+    Dialog.dialog.setAttribute('class', 'first-init');
+    Dialog.showDialog(Dialog.firstInit, false,
+      FMAction.onScanClicked.bind(this), this.cancelFirst.bind(this));
     // Update status to update UI
     StatusManager.update(StatusManager.STATUS_DIALOG_FIRST_INIT);
+  };
+
+  FMRadio.prototype.cancelFirst = function () {
+    StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
+    WarningUI.update();
+    Dialog.hideDialog();
+  };
+
+  FMRadio.prototype.airplneCancel = function () {
+    window.close();
   };
 
   FMRadio.prototype.updateDimLightState = function (state) {

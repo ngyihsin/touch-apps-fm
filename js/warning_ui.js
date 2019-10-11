@@ -24,16 +24,6 @@
       document.getElementById('power-switch').classList.add('hidden');
     }
 
-    /*
-     * If current airplane mode is enabled,
-     * airplane mode warning UI should be shown
-     */
-    hiddenState = !FMRadio.airplaneModeEnabled;
-    hiddenState = !FMRadio.airplaneModeEnabled;
-    if (!hiddenState) {
-      FMAction.dialog.setAttribute('class', 'airplane-dialog');
-      FMAction.showDialog(LanguageManager.airplaneModeHeader, LanguageManager.airplaneModeMsg, LanguageManager.airplaneModeButton);
-    }
 
     /*
      * If current airplane mode is enabled, or current device has no valid antenna,

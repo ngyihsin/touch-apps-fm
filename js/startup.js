@@ -44,7 +44,9 @@
         'js/frequency_list.js',
         'js/warning_ui.js',
         'js/fm_radio.js',
-        'js/focus_manager.js'
+        'js/focus_manager.js',
+        'js/dialog_helper.js',
+        'js/frequency_rename.js'
       ];
 
       LazyLoader.load(lazyFiles, () => {

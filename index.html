@@ -25,6 +25,7 @@
   <script src="app://shared.gaiamobile.org/elements/kai-optionmenu.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-textfield.js"></script>
   <script src="shared/js/airplane_mode_helper.js"></script>
+  <script defer src="shared/js/toaster.js"></script>
   <script src="shared/js/l10n.js"></script>
   <script src="js/satus_manager.js"></script>
   <script src="js/language_manage.js"></script>
@@ -99,26 +100,9 @@
       <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg"></div>
     </div>
   </section>
-  <kai-dialog id="myDialog" title="" message="" primarybtntext="" secondarybtntext="">
+  <kai-dialog  title="" message="" primarybtntext="" secondarybtntext="">
+    <kai-textfield id="textfield" class="hidden" maxlength=20 slot="custom-view"></kai-textfield>
   </kai-dialog>
-  <div id="input-dialog" class="hidden">
-    <div id="input-content">
-      <div class="h3 title style-scope kai-dialog" data-l10n-id="save-rename"></div>
-      <div id="input-field" class="subtilte-1 content style-scope kai-dialog">
-        <kai-textfield id="textfield" maxlength=20></kai-textfield>
-        <div>
-          <span id="input-num"></span>
-          /20
-        </div>
-      </div>
-      <div id="edit-button" class="buttons style-scope kai-dialog">
-        <kai-pillbutton class="style-scope kai-dialog" text="" level="secondary" data-l10n-id="cancel-rename">
-        </kai-pillbutton>
-        <kai-pillbutton class="style-scope kai-dialog" text="" data-l10n-id="save-rename"></kai-pillbutton>
-      </div>
-    </div>
-  </div>
   <script src="js/cache_restore.js"></script>
 </body>
-
 </html>
