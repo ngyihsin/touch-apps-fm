@@ -8,6 +8,7 @@
       this.airplaneModeHeader = navigator.mozL10n.get('airplaneModeHeader');
       this.airplaneModeMsg = navigator.mozL10n.get('airplaneModeMsg');
       this.airplaneModeButton = navigator.mozL10n.get('settings');
+      this.noAntennaMsg = navigator.mozL10n.get('noAntennaMsg');
       this.scanStationsMsg = navigator.mozL10n.get('scan-stations-msg');
       this.scanStationsHeader = navigator.mozL10n.get('scan-stations-header');
       this.scanStations = navigator.mozL10n.get('scan-stations');
@@ -38,6 +39,7 @@
       switch (status) {
         case StatusManager.STATUS_WARNING_SHOWING:
           FMAction.HeaderTitle.title = this.radioTitle;
+          FMElementAntennaUnplugWarning.description = this.noAntennaMsg;
           if (this.dialog.open) {
             this.dialog.primarybtntext = this.airplaneModeButton;
             this.dialog.secondarybtntext = this.cancel;

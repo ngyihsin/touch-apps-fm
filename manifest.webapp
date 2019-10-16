@@ -42,7 +42,7 @@
   "default_locale": "en-US",
   "icons": {
     "56": "/style/icons/fm_56.png",
-    "84": "/style/icons/fm_84.png"
+    "112": "/style/icons/fm_112.png"
   },
   "orientation": "default"
 }

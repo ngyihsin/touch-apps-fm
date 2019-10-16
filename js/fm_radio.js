@@ -14,6 +14,8 @@
     this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
     this.updateAirplaneDialog();
     AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
+    // Add theme init
+    WarningUI.themeDetect();
 
     // Initialize FMAction
     FMAction.init();
@@ -25,7 +27,6 @@
     FrequencyDialer.initDialerUI();
     // Initialize HistoryFrequency
     HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
-
 
     // Redirect FM radio callbacks
     mozFMRadio.onenabled = this.onFMRadioEnabled.bind(this);

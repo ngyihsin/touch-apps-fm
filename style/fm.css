@@ -329,19 +329,6 @@ div#favoritelist-warning-body  {
 
 /**** end ****/
 
-/***  styles for antenna warning box ****/
-#antenna-warning {
-  z-index: 2;
-  color: var(--color-gs100);
-}
-
-#antenna-warning > div:first-child {
-  height: 50%;
-  margin-bottom: 5rem;
-  background: url(images/headphone-unplugged.png) no-repeat bottom center / 18.4rem;
-}
-/******* end *******/
-
 /*** style for input dialog *****/
 .subtitle.kai-textfield {
   text-align: left;
