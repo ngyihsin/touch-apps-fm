@@ -25,6 +25,7 @@ require('../../js/satus_manager');
 require('../../js/history_frequency');
 require('../../js/language_manage');
 require('../../js/dialog_helper');
+require('../../js/remoteControl');
 
 document.dir = DomInitHTML.dir;
 document.body.innerHTML = DomInitHTML.innerHTML;

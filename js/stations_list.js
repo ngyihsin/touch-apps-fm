@@ -141,6 +141,8 @@
     StatusManager.update();
     // Update current focus
     FocusManager.update();
+    // Update Remote data
+    Remote.updateMetadata();
   };
 
   // Handle the fm channel frequency

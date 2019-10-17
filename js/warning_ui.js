@@ -44,20 +44,21 @@
 
   WarningUI.prototype.themeDetect = function () {
     FMElementAntennaUnplugWarning.description = LanguageManager.noAntennaMsg;
-    navigator.mozSettings.createLock().get('theme.selected').then((theme) => {
-      this.themeChange(theme['theme.selected']);
-    })
+    navigator.mozSettings.createLock().get('theme.selected')
+      .then((theme) => {
+        this.themeChange(theme['theme.selected']);
+      });
     navigator.mozSettings.addObserver('theme.selected', (theme) => {
       this.themeChange(theme['settingValue']);
     });
   };
 
   WarningUI.prototype.themeChange = function (theme) {
-    let mode = (/darktheme/).test(theme) ?
-    '/style/images/img-headphone-unplugged-dark.svg' :
-    '/style/images/img-headphone-unplugged-light.svg';
+    let mode = (/darktheme/).test(theme)
+      ? '/style/images/img-headphone-unplugged-dark.svg'
+      : '/style/images/img-headphone-unplugged-light.svg';
     FMElementAntennaUnplugWarning.src = mode;
-  }
+  };
 
   exports.WarningUI = new WarningUI();
 })(window);

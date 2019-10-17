@@ -34,6 +34,7 @@
   function lazyload() {
     setTimeout(() => {
       let lazyFiles = [
+        'js/remoteControl.js',
         'js/headphone_state.js',
         'js/speaker_state.js',
         'js/fm_action.js',

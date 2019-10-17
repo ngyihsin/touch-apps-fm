@@ -27,6 +27,8 @@
     FrequencyDialer.initDialerUI();
     // Initialize HistoryFrequency
     HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
+    // Initialize remoteControl
+    Remote.init();
 
     // Redirect FM radio callbacks
     mozFMRadio.onenabled = this.onFMRadioEnabled.bind(this);
@@ -88,6 +90,7 @@
     // Update UI immediately
     this.updateEnablingState();
     this.updateDimLightState(false);
+    Remote.updatePlaybackStatus();
 
     if (!HeadphoneState.deviceWithValidAntenna) {
 
@@ -111,6 +114,7 @@
   FMRadio.prototype.onFMRadioDisabled = function () {
     this.updateEnablingState(false);
     this.updateDimLightState(true);
+    Remote.updatePlaybackStatus();
     SpeakerState.state = false;
     // Hide dialog when fm disabled..
     Dialog.hideDialog();
@@ -225,7 +229,6 @@
 
     const options = Object.assign({
       messageL10nId: l10nId,
-      latency: 2000
     }, option);
 
     if (typeof Toaster === 'undefined') {
