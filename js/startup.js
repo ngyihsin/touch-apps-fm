@@ -31,6 +31,12 @@
     LanguageManager.updateLanguage();
   });
 
+  // Toggle the large-text. changed big to small then to big. so change text should executed earlier
+  document.body.classList.toggle('large-text', navigator.largeTextEnabled);
+  window.addEventListener('largetextenabledchanged', () => {
+    document.body.classList.toggle('large-text', navigator.largeTextEnabled);
+  });
+
   function lazyload() {
     setTimeout(() => {
       let lazyFiles = [

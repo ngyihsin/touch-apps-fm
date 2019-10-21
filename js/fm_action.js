@@ -37,7 +37,8 @@
       FrequencyList.updateFavoriteListUI();
       // Update frequency dialer UI
       WarningUI.update();
-    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
+    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING ||
+      StatusManager.status === StatusManager.STATUS_STATIONS_EMPTY) {
 
       /*
        * Update current frequency as favorite to data base,
@@ -61,7 +62,8 @@
       // Update favorite list UI
       FrequencyList.updateFavoriteListUI();
       WarningUI.update();
-    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
+    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING ||
+      StatusManager.status === StatusManager.STATUS_STATIONS_EMPTY) {
 
       /*
        * Update current frequency as unfavorite to data base,
@@ -140,9 +142,7 @@
     this.timeOutEvent = 0;
     this.editValue = '';
     this.frequencyToRenameElement = null;
-    this.preStatus = 0;
 
-    this.mainBody = document.querySelector('section');
     this.HeaderTitle = document.getElementById('header');
     this.speakSwitch = document.getElementById('speaker-switch');
     this.fmPowerKey = document.getElementById('power-switch');
@@ -155,12 +155,17 @@
     this.optionMenu = document.querySelector('kai-optionmenu');
 
     this.action = document.getElementById('action');
+
+    /**
+     * Due to component kill-button can't save cache so when page init, update kill button
+     */
     this.pillButtonUpdate();
     FMElementFMFooter.setAttribute('items', JSON.stringify(LanguageManager.items));
 
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     window.addEventListener('click', this.callFunByClick.bind(this), false);
+    window.addEventListener('keydown', this.callFunBackSpace.bind(this));
     document.addEventListener('categorybarSelect', (e) => {
       let clickId = e.detail.selected;
       FunctionList[clickId]();
@@ -168,6 +173,17 @@
     document.addEventListener('optionmenuSelect', () => {
       FrequencyRename.switchToRenameModeUI();
     });
+  };
+
+  FMAction.prototype.callFunBackSpace = function (e) {
+    if (e.key !== 'Backspace') {
+      Navigation.back();
+    }
+    if (e.key === 'Backspace' &&
+    !FMElementAntennaUnplugWarning.classList.contains('hidden')
+    ) {
+      window.close();
+    }
   };
 
 

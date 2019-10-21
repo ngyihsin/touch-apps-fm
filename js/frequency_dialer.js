@@ -66,7 +66,6 @@
 
   FrequencyDialer.prototype.initDialerUI = function () {
     this.diarUnit = document.getElementById('dialer-unit');
-    let frequencyDiar = document.getElementById('frequency-dialer');
 
     let lower = mozFMRadio.frequencyLowerBound;
     let upper = mozFMRadio.frequencyUpperBound;
@@ -76,13 +75,10 @@
     this.maxFrequency = upper + this.space - upper % this.space;
     this.maxBlankFrequency = this.maxFrequency + this.blankUnit * this.space;
     if (this.diarUnit.children.length > 0) {
-      this.dialerWidth = this.diarUnit.clientWidth;
-      this.appWidth = frequencyDiar.clientWidth;
-      this.space = this.dialerWidth / (this.maxBlankFrequency - this.minBlankFrequency);
+      this.updateElementWidth();
       return;
     }
     let unitCount = Math.ceil((this.maxBlankFrequency - this.minBlankFrequency) / this.space);
-
     for (let i = 0; i < unitCount; ++i) {
       let value = this.minBlankFrequency + i * this.space;
       let bound = '';
@@ -96,20 +92,28 @@
       this.diarUnit.innerHTML += this.diarUpdate(value, bound, shadow);
     }
 
-    this.dialerWidth = this.diarUnit.clientWidth;
-    this.appWidth = frequencyDiar.clientWidth;
-    this.space = this.dialerWidth /
-      (this.maxBlankFrequency - this.minBlankFrequency);
+    this.updateElementWidth();
   };
 
   FrequencyDialer.prototype.updateDialerUI = function (frequency, ignoreDialer) {
     if (true !== ignoreDialer) {
+      if (this.dialerWidth === 0) {
+        this.updateElementWidth();
+      }
       this.translateX = (this.minBlankFrequency - frequency) * this.space + this.appWidth / 2;
       let dialer = document.getElementById('dialer-unit');
       dialer.style.MozTransform =
         'translateX(' + this.translateX + 'px)';
       document.getElementById('dialer-container').setAttribute('aria-valuenow', frequency);
     }
+  };
+
+  FrequencyDialer.prototype.updateElementWidth = function () {
+    let frequencyDiar = document.getElementById('frequency-dialer');
+    this.dialerWidth = this.diarUnit.clientWidth;
+    this.appWidth = frequencyDiar.clientWidth;
+    this.space = this.dialerWidth /
+      (this.maxBlankFrequency - this.minBlankFrequency);
   };
 
   FrequencyDialer.prototype.addFavoriteDialer = function (frequencyObject) {

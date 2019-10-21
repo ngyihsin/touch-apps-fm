@@ -13,6 +13,8 @@
     this.deviceHeadphoneState = false;
     // Indicate whether current device has internal antenna or not
     this.deviceWithInternalAntenna = false;
+    // App Status
+    this.appStatus = null;
   };
 
   HeadphoneState.prototype.init = function () {
@@ -47,8 +49,10 @@
       if (!this.deviceWithInternalAntenna) {
         // Just update UI if device with no internal antenna
         FrequencyDialer.updateFrequency(HistoryFrequency.getFrequency());
-        StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
-        FrequencyList.updateFavoriteListUI();
+        StatusManager.update(this.appStatus);
+        this.appStatus === StatusManager.STATUS_STATIONS_SHOWING
+          ? FrequencyList.updateStationsListUI()
+          : FrequencyList.updateFavoriteListUI();
       }
     } else {
       // Headphone has unplugged
@@ -56,15 +60,18 @@
         // Make sure FMRadio speaker off while headphone plugged
         FMRadio.previousSpeakerForcedState = false;
         FMAction.speakerUpdate(false);
-        // Device with no internal antenna,make sure FMRadio show favorite list UI while headphone plugged out
-        if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
-          StationsList.switchToFavoriteListUI();
-        } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) {
+
+        /**
+         * Device with no internal antenna,make sure FMRadio show favorite list UI
+         * or Station List while headphone plugged out
+         */
+        if (StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) {
           // Abort scanning stations first while scanning stations currently
           StationsList.abortScanStations(true);
         } else if (StatusManager.status === StatusManager.STATUS_FAVORITE_RENAMING) {
-          FMAction.undoRename();
+          FrequencyRename.undoRename();
         }
+        this.appStatus = StatusManager.status;
       }
 
       // Disable FMRadio no matter device with internal antenna or not

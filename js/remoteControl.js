@@ -51,8 +51,6 @@
     if (this.enabled) {
       let frequency = FrequencyDialer.currentFreqency;
       this.postMessage('nowplaying', { title: frequency });
-      console.log('updateMetadata');
-      
     }
   };
 
@@ -62,8 +60,6 @@
       playStatus = mozFMRadio.enabled
         ? PLAY_STATUS_PLAYING : PLAY_STATUS_PAUSED;
       this.postMessage('status', playStatus);
-      console.log('updatePlaybackStatus');
-
     }
   };
 

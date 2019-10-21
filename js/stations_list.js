@@ -34,6 +34,7 @@
         this.startScanStations();
       } else {
         StatusManager.update(StatusManager.STATUS_STATIONS_EMPTY);
+        FrequencyList.updateStationsListUI();
       }
     } else {
       StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
@@ -263,7 +264,6 @@
   StationsList.prototype.scanAbortedHeadphone = function () {
     this.scanningAborted = true;
     this.scanFinished(false);
-    this.switchToFavoriteListUI();
   };
 
   /*
