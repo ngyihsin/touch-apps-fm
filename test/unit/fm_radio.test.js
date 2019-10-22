@@ -11,6 +11,7 @@ require('../mocks/speaker');
 require('../mocks/speakerManager');
 require('../mocks/document');
 require('../mocks/navigator/mozL10n');
+require('../mocks/remote_control');
 
 require('../../js/fm_radio');
 require('../../js/fm_action');
