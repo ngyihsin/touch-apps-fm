@@ -27,6 +27,8 @@
     FrequencyDialer.initDialerUI();
     // Initialize HistoryFrequency
     HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
+    // Initialize remoteControl
+    Remote.init();
 
     // Redirect FM radio callbacks
     mozFMRadio.onenabled = this.onFMRadioEnabled.bind(this);
@@ -88,10 +90,6 @@
     // Update UI immediately
     this.updateEnablingState();
     this.updateDimLightState(false);
-    if (!Remote.enabled) {
-      // Init remote on first turn on radio
-      Remote.init();
-    }
     Remote.updatePlaybackStatus();
 
     if (!HeadphoneState.deviceWithValidAntenna) {
