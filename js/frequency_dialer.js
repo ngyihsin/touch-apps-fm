@@ -132,7 +132,16 @@
     let favoritesList = document.getElementsByClassName('favorite-icon');
     if (favoritesList.length > 0) {
       for (let i = 0; i < favoritesList.length; i++) {
-        favoritesList[i].innerHTML = '';
+        if (favoritesList[i].className.indexOf('decimal') !== -1) {
+          let favoriteChild = favoritesList[i].childNodes;
+          for (let j = favoriteChild.length - 1; j >= 0; j--) {
+            favoriteChild[j].className === 'favorite-diar'
+              ? favoritesList[i].removeChild(favoriteChild[j])
+              : '';
+          }
+        } else {
+          favoritesList[i].innerHTML = '';
+        }
         favoritesList[i].classList.remove('favorite-icon');
         i--;
       }

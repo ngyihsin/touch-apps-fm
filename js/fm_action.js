@@ -50,7 +50,6 @@
     }
     FrequencyDialer.updateFrequency();
     FocusManager.update();
-    StatusManager.update();
   }
 
   // Handle 'unfavorite' clicked
@@ -176,13 +175,9 @@
   };
 
   FMAction.prototype.callFunBackSpace = function (e) {
-    if (e.key !== 'Backspace') {
-      Navigation.back();
-    }
-    if (e.key === 'Backspace' &&
-    !FMElementAntennaUnplugWarning.classList.contains('hidden')
-    ) {
-      window.close();
+    if (e.key === 'Backspace') {
+      FMElementAntennaUnplugWarning.classList.contains('hidden')
+        ? window.history.back() : window.close();
     }
   };
 

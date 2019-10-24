@@ -59,7 +59,8 @@
     for (let index = 0; index < frequencyList.length; index++) {
       let frequencyObject = frequencyList[index];
       this.addFrequencyToListUI(frequencyObject);
-      FrequencyDialer.addFavoriteDialer(frequencyObject);
+      frequencyObject.favorite
+        ? FrequencyDialer.addFavoriteDialer(frequencyObject) : '';
     }
   };
 

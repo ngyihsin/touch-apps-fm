@@ -3,6 +3,9 @@
 
 (function (exports) {
 
+  const STATION_MAX_INTERVAL = 2000;
+  const CANCEL_RETRY_TIMES = 3;
+
   /*
    * StationsList Constructor
    * StationsList will be loaded only while station list shown
@@ -11,8 +14,9 @@
     this.scanningAborted = false;
     this.currentFrequency = null;
     this.previousFrequency = null;
-    this.STATION_MAX_INTERVAL = 2000;
-    this.CANCEL_RETRY_TIMES = 3;
+    this.KEYNAME = 'station-tab';
+    this.STATION = 'stations-list';
+    this.FAVORITE = 'favorites-list';
   };
 
   // Switch from favorite list UI to station list UI
@@ -24,7 +28,7 @@
     }
 
     // Change frequency list to 'stations-list' to update UI
-    FMElementFrequencyListUI.className = 'stations-list';
+    FMElementFrequencyListUI.className = this.STATION;
     FMElementFavoriteListWarning.hidden = true;
 
     let stationslist = FrequencyManager.getStationsFrequencyList();
@@ -64,7 +68,7 @@
       return;
     }
     // Change frequency list to 'favorites-list' to update UI
-    FMElementFrequencyListUI.className = 'favorites-list';
+    FMElementFrequencyListUI.className = this.FAVORITE;
 
     // Update StatusManager to update UI
     StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
@@ -248,7 +252,7 @@
     };
   };
 
-  StationsList.prototype.retryCancel = (retryTime = this.CANCEL_RETRY_TIMES, cancelCB, continueCB) => {
+  StationsList.prototype.retryCancel = (retryTime = CANCEL_RETRY_TIMES, cancelCB, continueCB) => {
     retryTime--;
     if (retryTime <= 0) {
       cancelCB && cancelCB();
@@ -306,9 +310,9 @@
   StationsList.prototype.ensureScanningAborted = function () {
     setTimeout(() => {
       if (this.scanningAborted) {
-        this.scanFinished(false);
+        this.scanFinished(true);
       }
-    }, this.STATION_MAX_INTERVAL);
+    }, STATION_MAX_INTERVAL);
   };
 
   exports.StationsList = new StationsList();

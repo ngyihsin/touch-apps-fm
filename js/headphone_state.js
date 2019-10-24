@@ -40,6 +40,7 @@
     if (this.deviceHeadphoneState) {
       let fmContainer = document.getElementById('fm-container');
       fmContainer.classList.remove('hidden');
+      FMAction.speakerUpdate(false);
       if (this.deviceWithInternalAntenna) {
         if (!mozFMRadio.enabled) {
           FMRadio.enableFMRadio(FrequencyDialer.getFrequency());
@@ -72,11 +73,6 @@
           FrequencyRename.undoRename();
         }
         this.appStatus = StatusManager.status;
-      }
-
-      // Disable FMRadio no matter device with internal antenna or not
-      if (mozFMRadio.enabled) {
-        FMRadio.disableFMRadio();
       }
     }
 
