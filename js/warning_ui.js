@@ -22,6 +22,7 @@
       FMElementFMContainer.classList.add('hidden');
       FMElementFMFooter.classList.add('hidden');
       FMElementAntennaUnplugWarning.classList.remove('hidden');
+      FMAction.speakSwitch.classList.add('hidden');
       FMAction.fmPowerKey.classList.add('hidden');
     }
 
@@ -29,9 +30,8 @@
      * If current airplane mode is enabled, or current device has no valid antenna,
      * fm container element should be hidden
      */
-    hiddenState = FMRadio.airplaneModeEnabled || !HeadphoneState.deviceWithValidAntenna;
+    hiddenState = !HeadphoneState.deviceWithValidAntenna;
     let status = hiddenState ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;
-    FMElementFavoriteListWarning.hidden = true;
     if (status === StatusManager.STATUS_FAVORITE_SHOWING) {
       let favoritelist = FrequencyManager.getFavoriteFrequencyList();
       hiddenState = favoritelist && favoritelist.length > 0 ||

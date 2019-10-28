@@ -289,13 +289,13 @@
     let request = mozFMRadio.cancelSeek();
     request.onsuccess = () => {
       this.scanningAborted = true;
-      this.scanFinished(true);
+      this.scanAbortedNormal(true);
     };
 
     request.onerror = () => {
       this.retryCancel(retryTime, () => {
         this.scanningAborted = true;
-        this.scanFinished(true);
+        this.scanAbortedNormal(true);
       }, (retryTime) => {
         this.scanAbortOnBrowserBack(retryTime);
       });

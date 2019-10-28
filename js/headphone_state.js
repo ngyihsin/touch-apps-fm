@@ -50,6 +50,8 @@
       if (!this.deviceWithInternalAntenna) {
         // Just update UI if device with no internal antenna
         FrequencyDialer.updateFrequency(HistoryFrequency.getFrequency());
+        this.appStatus ? this.appStatus
+          : this.appStatus = StatusManager.STATUS_FAVORITE_SHOWING;
         StatusManager.update(this.appStatus);
         this.appStatus === StatusManager.STATUS_STATIONS_SHOWING
           ? FrequencyList.updateStationsListUI()
