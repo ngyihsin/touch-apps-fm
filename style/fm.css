@@ -263,12 +263,13 @@ div#frequency-list-container > div {
   align-items: center;
 }
 
-.frequency-list-frequency > .favorite-icon {
+.frequency-list-item > i {
   font-size: 3.2rem;
 }
 
-.frequency-list-item > i {
+.favorite-icon {
   font-size: 3.2rem;
+  margin-right: 1.5rem;
 }
 
 div#favoritelist-warning {

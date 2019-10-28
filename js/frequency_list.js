@@ -12,15 +12,22 @@
       return;
     }
     let frequencyItem = FMElementFrequencyListTemplate.content.querySelector('div');
+    let favoriteItem = FMElementFrequencyListTemplate.content.querySelector('span');
     frequencyItem.id = 'detail' + this.formatFrequencyElementId(frequencyObject.frequency);
     frequencyItem.textContent = frequencyObject.name;
-    let condition = (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING ||
-      StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) && frequencyObject.favorite;
+    let condition = StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING ||
+      StatusManager.status === StatusManager.STATUS_STATIONS_SCANING;
     if (condition) {
-      let starObiect = document.createElement('span');
-      starObiect.classList = 'favorite-icon';
-      starObiect.setAttribute('data-icon', 'favorite-on');
-      frequencyItem.appendChild(starObiect);
+      if (frequencyObject.favorite) {
+        favoriteItem.setAttribute('data-icon', 'favorite-on');
+        favoriteItem.setAttribute('data-l10n-id', 'unfavorite');
+      } else {
+        favoriteItem.setAttribute('data-icon', 'favorite-off');
+        favoriteItem.setAttribute('data-l10n-id', 'add-to-favorites');
+      }
+    } else {
+      favoriteItem.setAttribute('data-icon', 'favorite-on');
+      favoriteItem.setAttribute('data-l10n-id', 'unfavorite');
     }
     let cloneChild = document.importNode(FMElementFrequencyListTemplate.content, true);
     return cloneChild;
@@ -74,15 +81,20 @@
     }
   };
 
-  // Update current single frequency list item element
-  FrequencyList.prototype.updateCurrentFrequencyElement = function (element) {
-    if (!element) {
-      return;
+  FrequencyList.prototype.favoriteDeal = function (favorite, e) {
+    let frequency = '';
+    let element = null;
+    if (e.rangeParent.id === 'frequency-display') {
+      frequency = FrequencyDialer.getFrequency();
+      element = FocusManager.getCurrentFocusElement();
+    } else {
+      frequency = this.getFrequencyByElement(e.rangeParent);
+      element = e.rangeParent;
     }
-
-    let frequency = this.getFrequencyByElement(element);
-    if (element.id === 'frequency-display') {
-      FrequencyDialer.updateFrequency();
+    FrequencyManager.updateFrequencyFavorite(frequency, favorite);
+    if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
+      this.updateFavoriteListUI();
+      WarningUI.update();
     } else {
       let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
       if (!frequencyObject) {
@@ -90,7 +102,10 @@
       }
       element.innerHTML = '';
       element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
+      WarningUI.update();
     }
+    FrequencyDialer.updateFrequency();
+    FocusManager.update();
   };
 
   // Get the frequency of current frequency list item

@@ -29,52 +29,13 @@
   }
 
   // Handle 'add-to-favorites' clicked
-  function onAddToFavoritesClicked() {
-    if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
-      // Update current frequency as favorite to data base
-      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true);
-      // Update favorite list UI
-      FrequencyList.updateFavoriteListUI();
-      // Update frequency dialer UI
-      WarningUI.update();
-    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING ||
-      StatusManager.status === StatusManager.STATUS_STATIONS_EMPTY) {
-
-      /*
-       * Update current frequency as favorite to data base,
-       * and mark current frequency is a station
-       */
-      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), true);
-      let currentFocusedElement = FocusManager.getCurrentFocusElement();
-      FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
-    }
-    FrequencyDialer.updateFrequency();
-    FocusManager.update();
+  function onAddToFavoritesClicked(e) {
+    FrequencyList.favoriteDeal(true, e);
   }
 
   // Handle 'unfavorite' clicked
-  function onUnfavoriteClicked() {
-    if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
-      // Update current frequency as unfavorite to data base
-      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(),
-        false);
-      // Update favorite list UI
-      FrequencyList.updateFavoriteListUI();
-      WarningUI.update();
-    } else if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING ||
-      StatusManager.status === StatusManager.STATUS_STATIONS_EMPTY) {
-
-      /*
-       * Update current frequency as unfavorite to data base,
-       * and mark current frequency is a station
-       */
-      FrequencyManager.updateFrequencyFavorite(FrequencyDialer.getFrequency(), false);
-      let currentFocusedElement = FocusManager.getCurrentFocusElement();
-      FrequencyList.updateCurrentFrequencyElement(currentFocusedElement);
-    }
-    FrequencyDialer.updateFrequency();
-    FocusManager.update();
-    StatusManager.update();
+  function onUnfavoriteClicked(e) {
+    FrequencyList.favoriteDeal(false, e);
   }
 
   // Handle 'rename' clicked
