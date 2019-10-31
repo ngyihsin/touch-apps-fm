@@ -15,11 +15,11 @@
       FMStatus ? FMRadio.disableFMRadio()
         : FMRadio.enableFMRadio(FrequencyDialer.getFrequency());
     },
-    nexttrack() {
+    next() {
       FMAction.onLongClickSeek('frequency-op-seekup');
     },
 
-    prevtrack() {
+    previous() {
       FMAction.onLongClickSeek('frequency-op-seekdown');
     }
   };
