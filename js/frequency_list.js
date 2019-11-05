@@ -75,7 +75,7 @@
   FrequencyList.prototype.updateFavoriteListUI = function () {
     let favoritesList = FrequencyManager.getFavoriteFrequencyList();
     if (favoritesList) {
-      favoritesList.sort((a, b) => b.favoriteTime - a.favoriteTime);
+      favoritesList.sort((a, b) => a.frequency - b.frequency);
       this.updateFrequencyListUI(favoritesList);
       FocusManager.update();
     }
@@ -97,12 +97,11 @@
       WarningUI.update();
     } else {
       let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
-      if (!frequencyObject) {
-        return;
+      if (frequencyObject) {
+        element.innerHTML = '';
+        element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
+        WarningUI.update();
       }
-      element.innerHTML = '';
-      element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
-      WarningUI.update();
     }
     FrequencyDialer.updateFrequency();
     FocusManager.update();

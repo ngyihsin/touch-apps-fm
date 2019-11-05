@@ -22,7 +22,7 @@
       this.rename = navigator.mozL10n.get('station-renamed');
       this.items = [
         { label: navigator.mozL10n.get('favorites'), value: 'favorites', icon: 'favorite-on' },
-        { label: navigator.mozL10n.get('all'), value: 'allstations', icon: 'fm-radio' }
+        { label: navigator.mozL10n.get('all'), value: 'allstations', icon: 'fm-radio-32px' }
       ];
 
       this.dialog = document.querySelector('kai-dialog');

@@ -140,10 +140,11 @@
         SpeakerState.state = this.previousSpeakerForcedState;
       }
     } else {
+
       /**
        * When device with internal, the speaker will come out sperker
        */
-      FMAction.speakerUpdate(true)
+      FMAction.speakerUpdate(true);
     }
 
     let powerSwitch = document.getElementById('power-switch');

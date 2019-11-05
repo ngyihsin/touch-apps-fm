@@ -15,13 +15,22 @@
     // Update both frequency and favorite indicate icon if needed
     let favorite = FrequencyManager.checkFrequencyIsFavorite(this.currentFreqency);
     let favoriteObject = FrequencyManager.getCurrentFrequencyObject(this.currentFreqency);
-    FMElementFrequencyDialer.innerHTML =
-      ` ${this.currentFreqency.toFixed(1)}
+    let frequencyArr = this.currentFreqency.toFixed(1).split('');
+    let frequencyDisplay = document.createElement('div');
+    frequencyDisplay.id = 'frequency-display';
+    frequencyDisplay.innerHTML =
+      ` 
+      ${frequencyArr.map((digit) => (digit !== '.'
+          ? `<span data-icon="numeric_${digit}_rounded_bold"></span>`
+          : `<div id="point"><span></span></div>`)).join('')}
       ${favorite
-    ? '<span id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></span>'
-    : '<span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></span>'}`;
+    ? '<div id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></div>'
+    : '<div id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></div>'}
+      `;
+    FMElementFrequencyDialer.innerHTML = frequencyDisplay.outerHTML;
     if (favoriteObject && favoriteObject.name !== this.currentFreqency.toFixed(1)) {
-      let dispalyName = document.createElement('div');
+      let dispalyName = document.createElement('span');
+      dispalyName.id = 'frequency-name';
       dispalyName.innerText = favoriteObject.name;
       FMElementFrequencyDialer.appendChild(dispalyName);
     }

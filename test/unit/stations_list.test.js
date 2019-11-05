@@ -109,5 +109,4 @@ test('Add frequency scanned to stations list UI', () => {
   expect(FrequencyManager.frequencyList["101.0"].name).toBe(object.frequency.toFixed(1));
   expect(HistoryFrequency.historyFrequency).toBe(101);
   expect(FrequencyDialer.currentFreqency).toBe(101);
-  expect(FMElementFrequencyDialer.textContent.trim()).toBe('101.0');
 });

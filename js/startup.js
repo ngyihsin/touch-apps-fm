@@ -7,7 +7,7 @@
 
   function initialize() {
     window.FMElementFMContainer = document.getElementById('fm-container');
-    window.FMElementFrequencyDialer = document.getElementById('frequency-display');
+    window.FMElementFrequencyDialer = document.getElementById('frequency-header');
     window.FMElementFrequencyListUI = document.getElementById('frequency-list');
     window.FMElementAntennaUnplugWarning = document.getElementById('antenna-warning');
     window.FMElementFavoriteListWarning = document.getElementById('favoritelist-warning');

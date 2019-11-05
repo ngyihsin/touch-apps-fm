@@ -15,7 +15,7 @@
                   <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-icon="media-back"\
                     data-l10n-id="frequency-op-seekdown" role="button"></a>\
                 </div>\
-                <div id="frequency-display">\
+                <div id="frequency-header">\
                   87.5\
                   <span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites"\
                     data-icon="favorite-off"></span>\
