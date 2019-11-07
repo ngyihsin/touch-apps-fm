@@ -119,7 +119,6 @@
   FrequencyList.prototype.updateStationsListUI = function () {
     let stationslist = FrequencyManager.getStationsFrequencyList();
     if (stationslist) {
-      stationslist.sort((a, b) => a.stationTime - b.stationTime);
       this.updateFrequencyListUI(stationslist);
       FocusManager.update();
     }

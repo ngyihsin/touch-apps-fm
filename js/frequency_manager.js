@@ -128,6 +128,7 @@
         favoriteFrequencyList.push(frequencyObject);
       }
     }
+    favoriteFrequencyList.sort((a, b) => b.favoriteTime - a.favoriteTime);
     this.favoriteFrequencyList = favoriteFrequencyList;
   };
 
@@ -144,6 +145,7 @@
         stationsFrequencyList.push(frequencyObject);
       }
     }
+    stationsFrequencyList.sort((a, b) => a.stationTime - b.stationTime);
     this.stationsFrequencyList = stationsFrequencyList;
   };
 

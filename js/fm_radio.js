@@ -157,6 +157,11 @@
   };
 
   FMRadio.prototype.disableFMRadio = function () {
+    if (StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) {
+      FrequencyDialer.progressOff();
+      StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
+      StationsList.abortScanStations();
+    }
     this.saveCache();
     this.turnOffRadio();
   };

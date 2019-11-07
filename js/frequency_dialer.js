@@ -109,7 +109,7 @@
       if (this.dialerWidth === 0) {
         this.updateElementWidth();
       }
-      this.translateX = (this.minBlankFrequency - frequency) * this.space + this.appWidth / 2;
+      this.translateX = (this.minBlankFrequency - frequency) * this.space + this.appWidth / 2;    
       let dialer = document.getElementById('dialer-unit');
       dialer.style.MozTransform =
         'translateX(' + this.translateX + 'px)';
@@ -122,23 +122,24 @@
     this.dialerWidth = this.diarUnit.clientWidth;
     this.appWidth = frequencyDiar.clientWidth;
     this.space = this.dialerWidth /
-      (this.maxBlankFrequency - this.minBlankFrequency);
+      (this.maxBlankFrequency - this.minBlankFrequency);   
   };
 
   FrequencyDialer.prototype.addFavoriteDialer = function (frequencyObject) {
     let frequency = frequencyObject.frequency;
     let favoriteNum = Math.floor(frequency - this.minBlankFrequency);
-    this.diarUnit.children[favoriteNum].classList.add('favorite-icon');
+    this.diarUnit.children[favoriteNum].classList.add('favorite-unit');
+    let decimal = this.diarUnit.children[favoriteNum].classList.contains('decimal');    
     let elementHtml = `
-      <span class="favorite-diar" 
-      style="position:absolute;left:${frequency.toFixed(1).toString()
-    .split('.')[1] * 1.6 + 'px'}"></span>
-      `;
+      <span class="favorite-diar" style="position:absolute;
+      left:${frequency.toFixed(1).toString().split('.')[1] * 1.6 + 'px'};
+      top:${decimal ? '0px' : '-3px'}"></span>`;
+
     this.diarUnit.children[favoriteNum].innerHTML += elementHtml;
   };
 
   FrequencyDialer.prototype.removeFavoriteDialer = function () {
-    let favoritesList = document.getElementsByClassName('favorite-icon');
+    let favoritesList = document.getElementsByClassName('favorite-unit');
     if (favoritesList.length > 0) {
       for (let i = 0; i < favoritesList.length; i++) {
         if (favoritesList[i].className.indexOf('decimal') !== -1) {
@@ -151,7 +152,7 @@
         } else {
           favoritesList[i].innerHTML = '';
         }
-        favoritesList[i].classList.remove('favorite-icon');
+        favoritesList[i].classList.remove('favorite-unit');
         i--;
       }
     }
