@@ -111,6 +111,11 @@ body > section {
   font-size: 3.6rem;
 }
 
+.seek-option .dis-button {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 #frequency-header {
   width: 60%;
   display: flex;

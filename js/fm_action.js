@@ -303,6 +303,8 @@
         this.freDialer.classList.add('hidden');
         this.stationAction.level = 'secondary';
         this.stationAction.text = LanguageManager.abort;
+        this.fmLeftKey.setAttribute('class', 'dis-button');
+        this.fmRightKey.setAttribute('class', 'dis-button');
         this.stationAction.setAttribute('data-l10n-id', 'abort');
         FMElementFMFooter.selected = 'allstations';
         FMElementFMFooter.disabled = true;
@@ -314,6 +316,8 @@
         this.stationAction.level = 'secondary';
         this.stationAction.text = LanguageManager.scanStations;
         FMElementFMFooter.selected = 'allstations';
+        this.fmLeftKey.setAttribute('class', '');
+        this.fmRightKey.setAttribute('class', '');
         this.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         FMElementFMFooter.disabled = false;
         break;
