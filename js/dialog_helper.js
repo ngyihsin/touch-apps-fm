@@ -68,6 +68,10 @@
           this.editValue = e.target.value;
           this.editInput.subtitle = this.editValue.length + '/20';
         });
+        setTimeout(() => {
+          this.editInput.focus();
+          this.editInput.select();
+        });
       }
       this.dialog.open = true;
     },

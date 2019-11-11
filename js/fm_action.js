@@ -137,9 +137,15 @@
 
   FMAction.prototype.callFunBackSpace = function (e) {
     if (e.key === 'Backspace') {
-      FMElementAntennaUnplugWarning.classList.contains('hidden')
-        ? window.history.back() : window.close();
+      if (FMElementAntennaUnplugWarning.classList.contains('hidden')) {
+        StatusManager.status === StatusManager.STATUS_FAVORITE_RENAMING
+          ? FrequencyRename.undoRename()
+          : window.history.back();
+      } else {
+        window.close();
+      }
     }
+    e.preventDefault();
   };
 
 
