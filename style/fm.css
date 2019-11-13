@@ -1,6 +1,6 @@
 /* constant variables define*/
 .theme-media{
-  --frequencybar-height: 11rem;
+  --frequencybar-height: 13rem;
   --stationactionbar-height:9rem;
   } 
   @media only screen and (orientation: landscape) {
@@ -95,15 +95,16 @@ body > section {
   box-sizing: border-box;
   height: var(--frequencybar-height);
   width: 100%;
-  transition: background-color 680ms ease;
+  padding-top: 2rem;
+}
+
+#frequency-header {
+  height: calc(var(--frequencybar-height) - 4rem);
   display: flex;
-  font-size: 7.2rem;
-  font-weight: 700;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
-  position: relative;
 }
 
 .seek-option span {
@@ -116,26 +117,6 @@ body > section {
   pointer-events: none;
 }
 
-#frequency-header {
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#frequency-name {
-  width: 100%;
-  height: 2rem;
-  font-size: 1.4rem;
-  font-weight: 400;
-  text-align: center;
-  color: var(--color-gs60);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 1.2rem;
-}
-
 #frequency-display {
   display: flex;
   flex-direction: row;
@@ -145,14 +126,13 @@ body > section {
 
 #frequency-display > span {
   width: 3.4rem;
-  height: 5rem;
   margin-right: 0.8rem;
   font-size: 5rem; 
 }
 
 #point {
   width: 0.8rem;
-  height: 7rem;
+  height: 5rem;
   margin-left: 0.8rem;
   display: flex;
   flex-direction: column;
@@ -165,6 +145,17 @@ body > section {
   height: 0.8rem;
   border-radius: 50%;
   background-color: var(--color-gs100);
+}
+
+#frequency-name {
+  width: 100%;
+  height: 2rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-align: center;
+  color: var(--color-gs60);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #favorite-star {

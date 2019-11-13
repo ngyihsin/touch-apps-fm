@@ -9,35 +9,42 @@
             <kai-switch id="power-switch" data-l10n-id="power-switch-on" slot="header-right-slot"></kai-switch>\
           </kai-header>\
           <div id="fm-container" dir="ltr" class="dim">\
-            <div id="fm-header">\
-              <div id="frequency-bar">\
-                <div>\
-                  <a aria-label="Seek Down" id="frequency-op-seekdown" href="#seekdown" data-icon="media-back"\
-                    data-l10n-id="frequency-op-seekdown" role="button"></a>\
-                </div>\
-                <div id="frequency-header">\
-                  87.5\
-                  <span id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites"\
-                    data-icon="favorite-off"></span>\
-                </div>\
-                <div>\
-                  <a aria-label="Seek Up" id="frequency-op-seekup" href="#seekup" data-icon="media-forward"\
-                    data-l10n-id="frequency-op-seekup" role="button"></a>\
-                </div>\
+          <div id="fm-header">\
+          <div id="frequency-bar">\
+            <div id="frequency-header">\
+              <div class="seek-option">\
+                <span id="frequency-op-seekdown" data-icon="media-back" data-l10n-id="frequency-op-seekdown"></span>\
               </div>\
-              <div id="dialer-bar">\
-                <div id="dialer-container" role="slider" aria-valuemin="87.5" aria-valuemax="108" aria-controls="frequency">\
-                  <div id="frequency-indicator"></div>\
-                  <div id="frequency-dialer" class="animation-on">\
-                    <ul id="dialer-unit"></ul>\
-                  </div>\
+              <div id="frequency-display">\
+                <span data-icon="numeric_8_rounded_bold"></span>\
+                <span data-icon="numeric_7_rounded_bold"></span>\
+                <div id="point">\
+                  <span></span>\
                 </div>\
+                <span data-icon="numeric_5_rounded_bold"></span>\
+                <div id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites"\
+                  data-icon="favorite-off"></div>\
               </div>\
-              <div id="action" class="hidden">\
-                <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">\
-                </kai-pillbutton>\
+              <div class="seek-option">\
+                <span id="frequency-op-seekup" data-icon="media-forward" data-l10n-id="frequency-op-seekup"></span>\
               </div>\
             </div>\
+            <div id="frequency-name"></div>\
+          </div>\
+          <div id="dialer-bar">\
+            <div id="dialer-container" role="slider" aria-valuemin="87.5" aria-valuemax="108" aria-controls="frequency">\
+              <div id="frequency-indicator"></div>\
+              <div id="frequency-dialer" class="animation-on">\
+                <ul id="dialer-unit"></ul>\
+              </div>\
+            </div>\
+          </div>\
+          <div id="action" class="hidden">\
+            <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">\
+            </kai-pillbutton>\
+          </div>\
+          <div id="gradient"></div>\
+        </div>\
             <div id="frequency-list" class="favorites-list">\
               <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">\
               </div>\
