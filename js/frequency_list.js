@@ -97,7 +97,7 @@
       WarningUI.update();
     } else {
       let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
-      if (frequencyObject) {
+      if (frequencyObject && frequencyObject.station) {
         element.innerHTML = '';
         element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
         WarningUI.update();
