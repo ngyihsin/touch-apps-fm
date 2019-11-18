@@ -73,6 +73,8 @@
           this.dialog.secondarybtntext = this.cancel;
           this.dialog.title = this.rename;
           break;
+        default:
+          break;
       }
     }
   };

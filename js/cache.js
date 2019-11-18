@@ -14,8 +14,8 @@
       let lang = navigator.language;
       let stationAction = document.getElementById('station-action').outerHTML;
       let progress = document.getElementById('myProgress').outerHTML;
-      let rewrite = html.replace(/(\<kai-pillbutton).*\/kai-pillbutton\>/, stationAction);
-      rewrite = rewrite.replace(/(\<kai-loader).*\/kai-loader\>/, progress);
+      let rewrite = html.replace(/(<kai-pillbutton).*\/kai-pillbutton>/, stationAction);
+      rewrite = rewrite.replace(/(<kai-loader).*\/kai-loader>/, progress);
       html = window.HTML_CACHE_VERSION + (langDir ? ',' + langDir : '') +
         (lang ? ',' + lang : '') + ':' + rewrite;
       try {

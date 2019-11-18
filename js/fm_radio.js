@@ -240,9 +240,8 @@
       return;
     }
 
-    const options = Object.assign({
-      messageL10nId: l10nId,
-    }, option);
+    const options = Object.assign(
+      { messageL10nId: l10nId }, option);
 
     if (typeof Toaster === 'undefined') {
       LazyLoader.load('shared/js/toaster.js', () => {

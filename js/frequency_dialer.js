@@ -18,9 +18,9 @@
     let frequencyArr = this.currentFreqency.toFixed(1).split('');
     FMElementFrequencyDialer.innerHTML =
       ` 
-      ${frequencyArr.map((digit) => (digit !== '.'
-          ? `<span data-icon="numeric_${digit}_rounded_bold"></span>`
-          : `<div id="point"><span></span></div>`)).join('')}
+      ${frequencyArr.map((digit) => digit !== '.'
+    ? `<span data-icon="numeric_${digit}_rounded_bold"></span>`
+    : `<div id="point"><span></span></div>`).join('')}
       ${favorite
     ? '<div id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></div>'
     : '<div id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites" data-icon="favorite-off"></div>'}
@@ -45,7 +45,7 @@
     return this.currentFreqency;
   };
 
-  /** Unit diar */
+  // Unit diar
   FrequencyDialer.prototype.diarUpdate = function (value, bound, shadow) {
     if (shadow) {
       return `
@@ -128,7 +128,8 @@
     let decimal = this.diarUnit.children[favoriteNum].classList.contains('decimal');    
     let elementHtml = `
       <span class="favorite-diar" style="position:absolute;
-      left:${frequency.toFixed(1).toString().split('.')[1] * 1.6 + 'px'};
+      left:${frequency.toFixed(1).toString()
+    .split('.')[1] * 1.6 + 'px'};
       top:${decimal ? '0px' : '-3px'}"></span>`;
 
     this.diarUnit.children[favoriteNum].innerHTML += elementHtml;

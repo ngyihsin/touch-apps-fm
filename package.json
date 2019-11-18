@@ -1,11 +1,17 @@
 {
   "name": "fm",
   "version": "0.0.1",
+  "main": ".eslintrc.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "jest --no-cache --verbose --coverage"
+    "test": "jest && jest",
+    "lint": "eslint js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.kaiostech.com:touch-apps/fm.git"
   },
   "jtest": {
     "transform": {
@@ -21,10 +27,14 @@
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "eslint": "4.16.0",
-    "eslint-plugin-optimize-regex": "1.1.5"
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.9.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "6.1.0",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.3",
+    "regenerator-runtime": "^0.13.3"
   },
   "dependencies": {
     "babel-jest": "^24.7.1",

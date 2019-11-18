@@ -338,6 +338,8 @@
         FMElementFMFooter.selected = 'allstations';
         this.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         break;
+      default:
+        break;
     }
   };
 

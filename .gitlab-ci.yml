@@ -10,6 +10,12 @@ image: $CI_REGISTRY/re/kaios-build:touch
 stages:
 - build
 - test
+- lint
+lint:
+  stage: lint
+  script:
+    - yarn install 
+    - npm run lint
 
 variables:
   GAIA_DIR: 'gaia'

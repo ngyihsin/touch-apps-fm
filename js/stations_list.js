@@ -112,7 +112,8 @@
   StationsList.prototype.requestToScanStations = function () {
 
     /*
-     * Set frequency as 'frequencyLowerBound', whether success or failed, start scan stations
+     * Set frequency as 'frequencyLowerBound',
+     * whether success or failed, start scan stations
      * It is to make sure stations scanning start from the lower bound frequency
      */
     let request = mozFMRadio.setFrequency(this.previousFrequency);
