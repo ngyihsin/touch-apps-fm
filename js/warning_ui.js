@@ -27,15 +27,25 @@
     }
 
     /*
-     * If current airplane mode is enabled, or current device has no valid antenna,
+     * If current airplane mode is enabled,
+     * or current device has no valid antenna,
      * fm container element should be hidden
      */
     hiddenState = !HeadphoneState.deviceWithValidAntenna;
-    let status = hiddenState ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;
+    let status = hiddenState
+      ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;
     if (status === StatusManager.STATUS_FAVORITE_SHOWING) {
       let favoritelist = FrequencyManager.getFavoriteFrequencyList();
       hiddenState = favoritelist && favoritelist.length > 0 ||
         status !== StatusManager.STATUS_FAVORITE_SHOWING;
+      let noFavoriteMsg = LanguageManager.noFavoriteMsg;
+      if (!hiddenState) {
+        document.getElementById('noFavoritelistMsg').innerHTML =
+        noFavoriteMsg.replace(
+          '{{ star }}',
+          '<i data-icon="favorite-off"></i>'
+        );
+      }
       FMElementFavoriteListWarning.hidden = hiddenState;
     }
 
