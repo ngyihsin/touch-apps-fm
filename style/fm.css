@@ -359,10 +359,6 @@ div#favoritelist-warning-body  {
   margin-bottom: 1rem;
 }
 
-#noFavoritelistMsg > i {
-  font-size: 2.4rem;
-}
-
 #favoritelist-warning-body :last-child {
   text-align: center;
   font-size: 1.8rem;
