@@ -8,6 +8,7 @@
       this.airplaneModeHeader = navigator.mozL10n.get('airplaneModeHeader');
       this.airplaneModeMsg = navigator.mozL10n.get('airplaneModeMsg');
       this.airplaneModeButton = navigator.mozL10n.get('settings');
+      this.noFavoriteMsg = navigator.mozL10n.get('noFavoritelistMsg');
       this.noAntennaMsg = navigator.mozL10n.get('noAntennaMsg');
       this.scanStationsMsg = navigator.mozL10n.get('scan-stations-msg');
       this.scanStationsHeader = navigator.mozL10n.get('scan-stations-header');
