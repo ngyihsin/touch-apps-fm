@@ -69,6 +69,7 @@
               <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>\
             </template>\
           </div>\
+          <kai-popupmenu></kai-popupmenu>\
           <kai-categorybar id="fm-footer" class="dim" selected="favorites">\
           </kai-categorybar>\
           <div id="antenna-warning" class="warning" hidden="">\

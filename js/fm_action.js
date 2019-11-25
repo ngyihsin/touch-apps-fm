@@ -112,7 +112,7 @@
 
     this.freDialer = document.getElementById('dialer-bar');
 
-    this.optionMenu = document.querySelector('kai-optionmenu');
+    this.optionMenu = document.querySelector('kai-popupmenu');
 
     this.action = document.getElementById('action');
 
@@ -130,7 +130,7 @@
       let clickId = e.detail.selected;
       FunctionList[clickId]();
     });
-    document.addEventListener('optionmenuSelect', () => {
+    this.optionMenu.addEventListener('select', () => {
       FrequencyRename.switchToRenameModeUI();
     });
   };
@@ -274,11 +274,6 @@
   };
 
   FMAction.prototype.optionMenuShow = function (e) {
-    let id = e.rangeParent.id;
-    let element = document.getElementById(id);
-    let from = element.getBoundingClientRect().top;
-    let to = element.getBoundingClientRect().bottom;
-    this.optionMenu.position = { from, to };
     this.optionMenu.options[0].label = LanguageManager.rename;
     this.optionMenu.open = !this.optionMenu.open;
     FrequencyRename.editValue = e.rangeParent.innerText;
