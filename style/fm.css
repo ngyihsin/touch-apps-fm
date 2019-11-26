@@ -317,6 +317,7 @@ div#frequency-list-container > div {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: pre;
 }
 
 .kai-1line-listitem {

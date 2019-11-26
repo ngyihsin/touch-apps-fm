@@ -26,6 +26,7 @@
     dialog: document.querySelector('kai-dialog'),
     editInput: document.getElementById('textfield'),
     init: true,
+    NAME_INPUT_MAX_LENGTH: 20,
 
     eventListener() {
       this.init = false;
@@ -62,11 +63,13 @@
       this.dialog.secondarybtndisabled = false;
       if (this.userView) {
         this.editInput.value = FrequencyRename.editValue;
-        this.editInput.subtitle = FrequencyRename.editValue.length + '/20';
+        this.editInput.subtitle = FrequencyRename.editValue.length + '/' + 
+          this.NAME_INPUT_MAX_LENGTH;
         this.editInput.setAttribute('class', '');
         document.addEventListener('input', (e) => {
-          this.editValue = e.target.value;
-          this.editInput.subtitle = this.editValue.length + '/20';
+          this.editValue = e.detail.value;
+          this.editInput.subtitle = this.editValue.length + '/' +
+            this.NAME_INPUT_MAX_LENGTH;
         });
         setTimeout(() => {
           this.editInput.focus();

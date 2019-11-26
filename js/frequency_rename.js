@@ -39,7 +39,7 @@
     // Get renamed frequency name from input UI
     let frequencyName = Dialog.editValue;
     let frequency = FrequencyList.getFrequencyByElement(this.frequencyToRenameElement);
-    if (!frequencyName) {
+    if (!frequencyName || frequencyName.trim().length < 1) {
       frequencyName = frequency.toFixed(1);
     }
 
