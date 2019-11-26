@@ -91,6 +91,9 @@
       frequency = this.getFrequencyByElement(e.rangeParent);
       element = e.rangeParent;
     }
+    if (!favorite) {
+      FrequencyManager.updateFrequencyName(frequency, frequency.toFixed(1));
+    }
     FrequencyManager.updateFrequencyFavorite(frequency, favorite);
     if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
       this.updateFavoriteListUI();
