@@ -23,6 +23,25 @@
     -moz-user-select: text;
   }
 
+  /***  styles for RTL languages ****/
+/* The scrollbar should be on the left.
+ * But direction is explicitly set to LTR on #container
+   So we force #frequency-list to be RTL, while keeping the children LTR
+*/
+html[dir=rtl] #frequency-list {
+  direction: rtl;
+}
+
+html[dir=rtl] div#frequency-list-container div.frequency-list-item {
+  text-align: right;
+  direction: rtl;
+}
+
+html[dir="rtl"] div#favorite-star {
+  left: 5.2rem;
+}
+/******* end *******/
+
 /* constnt variables end*/
 html, body {
   padding: 0;

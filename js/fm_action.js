@@ -121,6 +121,8 @@
      */
     this.pillButtonUpdate();
     FMElementFMFooter.setAttribute('items', JSON.stringify(LanguageManager.items));
+    // RTL change
+    this.rtlChange();
 
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
@@ -133,6 +135,18 @@
     this.optionMenu.addEventListener('select', () => {
       FrequencyRename.switchToRenameModeUI();
     });
+  };
+
+  FMAction.prototype.rtlChange = function () {
+    let isRtl = 'rtl' === document.documentElement.dir;
+    
+    if (isRtl) {
+      this.fmLeftKey.setAttribute('data-l10n-id', 'frequency-op-seekup');
+      this.fmRightKey.setAttribute('data-l10n-id', 'frequency-op-seekdown');
+    } else {
+      this.fmRightKey.setAttribute('data-l10n-id', 'frequency-op-seekup');
+      this.fmLeftKey.setAttribute('data-l10n-id', 'frequency-op-seekdown');
+    }
   };
 
   FMAction.prototype.callFunBackSpace = function (e) {
@@ -195,8 +209,9 @@
 
   FMAction.prototype.callFunByLongPress = function (e) {
     e.preventDefault();
-    let clickId = e.target.id;
-    let click = document.getElementById(clickId);
+    let id = e.target.id;
+    let clickId = e.target.getAttribute('data-l10n-id');
+    let click = document.getElementById(id);
     if (!this.timeOutEvent) {
       this.timeOutEvent = setTimeout(() => {
         this.timeOutEvent = null;
