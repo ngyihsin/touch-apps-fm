@@ -189,7 +189,7 @@ body > section {
   color: var(--color-pink);
 }
 
-#frequency-list-container >.focus >.frequency-list-frequency {
+#frequency-list-container >.focus {
   color: var(--color-pink);
 }
 
@@ -350,7 +350,6 @@ div#frequency-list-container > div {
 .favorite-icon {
   font-size: 3.2rem;
   margin-right: 1.5rem;
-  color: var(--color-gs100);
 }
 
 div#favoritelist-warning {
