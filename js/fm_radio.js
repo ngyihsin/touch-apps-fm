@@ -73,13 +73,9 @@
     });
     WarningUI.update();
 
-    /*
-     * PERFORMANCE EVENT (5): moz-app-loaded
-     * Designates that the app is *completely* loaded and all relevant
-     * 'below-the-fold' content exists in the DOM, is marked visible,
-     * has its events bound and is ready for user interaction. All
-     * required startup background processing should be complete.
-     */
+
+    window.performance.mark('visuallyLoaded');
+    window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
     window.performance.mark('fullyLoaded');
     window.dispatchEvent(new CustomEvent('moz-app-loaded'));
   };
