@@ -62,6 +62,32 @@
         FMRadio.init();
       });
     }, time);
+
+    /*
+     * PERFORMANCE EVENT (2): moz-chrome-interactive
+     * Designates that the app's *core* chrome or navigation interface
+     * has its events bound and is ready for user interaction.
+     */
+    window.performance.mark('navigationInteractive');
+    window.dispatchEvent(new CustomEvent('moz-chrome-interactive'));
+
+    /*
+     * PERFORMANCE EVENT (3): moz-app-visually-complete
+     * Designates that the app is visually loaded (e.g.: all of the
+     * 'above-the-fold' content exists in the DOM and is marked as
+     * ready to be displayed).
+     */
+    window.performance.mark('visuallyLoaded');
+    window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
+
+    /*
+     * PERFORMANCE EVENT (4): moz-content-interactive
+     * Designates that the app has its events bound for the minimum
+     * set of functionality to allow the user to interact with the
+     * 'above-the-fold' content.
+     */
+    window.performance.mark('contentInteractive');
+    window.dispatchEvent(new CustomEvent('moz-content-interactive'));
   }
 
   function unload() {
@@ -70,4 +96,6 @@
 
   window.addEventListener('load', lazyload, false);
   window.addEventListener('unload', unload, false);
+  window.performance.mark('navigationLoaded');
+  window.dispatchEvent(new CustomEvent('moz-chrome-dom-loaded'));
 })();
