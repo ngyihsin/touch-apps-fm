@@ -19,8 +19,19 @@
     this.FAVORITE = 'favorites-list';
   };
 
-  // Switch from favorite list UI to station list UI
   StationsList.prototype.switchToStationListUI = function () {
+    if (!FrequencyDialer.pillButtonLoad) {
+      LazyLoader.load('app://shared.gaiamobile.org/elements/kai-pillbutton.js',
+        () => {
+          this.loadStationListUI();
+        });
+    } else {
+      this.loadStationListUI();
+    }
+  };
+
+  // Switch from favorite list UI to station list UI
+  StationsList.prototype.loadStationListUI = function () {
     if (StatusManager.status !== StatusManager.STATUS_FAVORITE_SHOWING &&
       StatusManager.status !== StatusManager.STATUS_DIALOG_FIRST_INIT) {
       // Only in favorite list UI can switch to station list UI
@@ -29,7 +40,8 @@
 
     // Change frequency list to 'stations-list' to update UI
     FMElementFrequencyListUI.className = this.STATION;
-    FMElementFavoriteListWarning.hidden = true;
+    FMElementFavoriteListWarning.classList.add('hidden');
+    FrequencyDialer.createButton();
 
     let stationslist = FrequencyManager.getStationsFrequencyList();
     if (stationslist.length === 0) {
@@ -69,6 +81,7 @@
     }
     // Change frequency list to 'favorites-list' to update UI
     FMElementFrequencyListUI.className = this.FAVORITE;
+    FrequencyDialer.deleteButton();
 
     // Update StatusManager to update UI
     StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
@@ -241,15 +254,16 @@
     }
 
     request.onerror = () => {
-      this.retryCancel(retryTime, () => {
-        if (headphone) {
-          this.scanAbortedHeadphone();
-        } else {
-          this.scanAbortedNormal();
-        }
-      }, (retryTime) => {
-        this.abortScanStations(headphone, retryTime);
-      });
+      this.retryCancel(retryTime,
+        () => {
+          if (headphone) {
+            this.scanAbortedHeadphone();
+          } else {
+            this.scanAbortedNormal();
+          }
+        }, (retryTime) => {
+          this.abortScanStations(headphone, retryTime);
+        });
     };
   };
 
@@ -294,12 +308,13 @@
     };
 
     request.onerror = () => {
-      this.retryCancel(retryTime, () => {
-        this.scanningAborted = true;
-        this.scanAbortedNormal(true);
-      }, (retryTime) => {
-        this.scanAbortOnBrowserBack(retryTime);
-      });
+      this.retryCancel(retryTime,
+        () => {
+          this.scanningAborted = true;
+          this.scanAbortedNormal(true);
+        }, (retryTime) => {
+          this.scanAbortOnBrowserBack(retryTime);
+        });
     };
   };
 

@@ -27,20 +27,20 @@
       ];
 
       this.dialog = document.querySelector('kai-dialog');
-      this.optionMenu = document.querySelector('kai-optionmenu');
       this.HeaderTitle = document.getElementById('header');
-      this.stationAction = document.getElementById('station-action');
       this.footer = document.getElementById('fm-footer');
     },
 
     updateLanguage: function updateLanguage() {
-      this.optionMenu.options[0].label = this.rename;
-      this.footer.setAttribute('items', JSON.stringify(this.items));
+      let optionMenu = document.querySelector('kai-popupmenu');
+      optionMenu ? optionMenu.options[0].label = this.rename : '';
+      this.footer.setAttribute('items',
+        JSON.stringify(this.items));
       let status = StatusManager.status;
       switch (status) {
         case StatusManager.STATUS_WARNING_SHOWING:
-          FMAction.HeaderTitle.title = this.radioTitle;
-          FMElementAntennaUnplugWarning.description = this.noAntennaMsg;
+          this.HeaderTitle.title = this.radioTitle;
+          WarningUI.antennaUnplugWarning.description = this.noAntennaMsg;
           if (this.dialog.open) {
             this.dialog.primarybtntext = this.airplaneModeButton;
             this.dialog.secondarybtntext = this.cancel;
@@ -53,15 +53,15 @@
           break;
         case StatusManager.STATUS_STATIONS_SCANING:
           this.HeaderTitle.title = this.allstationsTitle;
-          this.stationAction.text = this.abort;
+          FrequencyDialer.stationAction.text = this.abort;
           break;
         case StatusManager.STATUS_STATIONS_SHOWING:
           this.HeaderTitle.title = this.allstationsTitle;
-          this.stationAction.text = this.scanStations;
+          FrequencyDialer.stationAction.text = this.scanStations;
           break;
         case StatusManager.STATUS_STATIONS_EMPTY:
           this.HeaderTitle.title = this.allstationsTitle;
-          this.stationAction.text = this.scan;
+          FrequencyDialer.stationAction.text = this.scan;
           break;
         case StatusManager.STATUS_DIALOG_FIRST_INIT:
           this.dialog.primarybtntext = this.scan;

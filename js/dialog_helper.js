@@ -23,8 +23,6 @@
       primarybtntext: navigator.mozL10n.get('save'),
       secondarybtntext: navigator.mozL10n.get('cancel')
     },
-    dialog: document.querySelector('kai-dialog'),
-    editInput: document.getElementById('textfield'),
     init: true,
     NAME_INPUT_MAX_LENGTH: 20,
 
@@ -47,10 +45,26 @@
         primaryBtnCallback ? primaryBtnCallback : null;
       this.userView = userView ? userView : null;
       this.contents = contents;
+      if (!this.dialog) {
+        let script = [
+          'app://shared.gaiamobile.org/elements/kai-pillbutton.js',
+          'app://shared.gaiamobile.org/elements/kai-dialog.js',
+        ];
+        LazyLoader.load(script,
+          () => {
+            FrequencyDialer.pillButtonLoad = true;
+            this.createDialog(); 
+          });
+      } else {
+        this.initDialog(); 
+      }     
+    },
+
+    createDialog() {
+      this.dialog = document.createElement('kai-dialog');
+      document.body.appendChild(this.dialog);
+      this.dialog.open = false;
       this.initDialog();
-      if (this.init) {
-        this.eventListener();
-      }
     },
 
     initDialog() {
@@ -62,26 +76,34 @@
       this.dialog.primarybtndisabled = false;
       this.dialog.secondarybtndisabled = false;
       if (this.userView) {
+        this.editInput = document.createElement('kai-textfield');
+        this.editInput.maxlength = 20;
+        this.editInput.slot = "custom-view";
         this.editInput.value = FrequencyRename.editValue;
         this.editInput.subtitle = FrequencyRename.editValue.length + '/' + 
           this.NAME_INPUT_MAX_LENGTH;
         this.editInput.setAttribute('class', '');
-        document.addEventListener('input', (e) => {
-          this.editValue = e.detail.value;
-          this.editInput.subtitle = this.editValue.length + '/' +
+        this.dialog.appendChild(this.editInput);
+        document.addEventListener('input',
+          (e) => {
+            this.editValue = e.detail.value;
+            this.editInput.subtitle = this.editValue.length + '/' +
             this.NAME_INPUT_MAX_LENGTH;
-        });
+          });
         setTimeout(() => {
           this.editInput.focus();
           this.editInput.select();
         });
+      }
+      if (this.init) {
+        this.eventListener();
       }
       this.dialog.open = true;
     },
 
     hideDialog() {
       if (this.userView) {
-        this.editInput.setAttribute('class', 'hidden');
+        this.dialog.removeChild(this.editInput);
       }
       document.removeEventListener('dialogSecondaryBtnClick',
         () => {
@@ -93,7 +115,7 @@
         });
       this.secondaryBtnCallback = null;
       this.userView = null;
-      this.dialog.open = false;
+      this.dialog ? this.dialog.open = false : '';
     }
   };
 

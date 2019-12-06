@@ -8,6 +8,8 @@
     this.currentFreqency = 0.0;
     this.blankUnit = 3;
     this.space = 5;
+    this.progressLoad = false;
+    this.pillButtonLoad = false;
   };
 
   // Update current frequency dialer UI with current frequency
@@ -19,7 +21,7 @@
     FMElementFrequencyDialer.innerHTML =
       ` 
       ${frequencyArr.map((digit) => digit !== '.'
-    ? `<span data-icon="numeric_${digit}_rounded_bold"></span>`
+    ? `<span class="num" data-icon="numeric_${digit}_rounded_bold"></span>`
     : `<div id="point"><span></span></div>`).join('')}
       ${favorite
     ? '<div id="favorite-star" class="remove-to-favorites" data-l10n-id="unfavorite" data-icon="favorite-on"></div>'
@@ -49,29 +51,29 @@
   FrequencyDialer.prototype.diarUpdate = function (value, bound, shadow) {
     if (shadow) {
       return `
-      <li class="decimal shadow"></li>
-      <li class="shadow"></li>
-      <li class="shadow"></li>
-      <li class="shadow"></li>
-      <li class="shadow"></li>
+      <li class="diar-item decimal shadow"></li>
+      <li class="diar-item shadow"></li>
+      <li class="diar-item shadow"></li>
+      <li class="diar-item shadow"></li>
+      <li class="diar-item shadow"></li>
    `;
     }
     return `
-        <li class="decimal ${bound}">
-          <span>
+        <li class="diar-item decimal ${bound}">
+          <span class="diar-num">
             ${value}
           </span>
         </li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
+        <li class="diar-item"></li>
+        <li class="diar-item"></li>
+        <li class="diar-item"></li>
+        <li class="diar-item"></li>
      `;
   };
 
   FrequencyDialer.prototype.initDialerUI = function () {
     this.diarUnit = document.getElementById('dialer-unit');
-
+    
     let lower = mozFMRadio.frequencyLowerBound;
     let upper = mozFMRadio.frequencyUpperBound;
 
@@ -155,14 +157,35 @@
     }
   };
 
+  FrequencyDialer.prototype.createButton = function () {
+    this.stationAction = document.createElement('kai-pillbutton');
+    this.stationAction.id = 'station-action';
+    this.stationAction.level = "secondary";
+    FMElementHeader.appendChild(this.stationAction);
+  };
+
+  FrequencyDialer.prototype.deleteButton = function () {
+    FMElementHeader.removeChild(this.stationAction);
+  };
+
+  FrequencyDialer.prototype.createLoader = function () {
+    this.progress = document.createElement('kai-loader');
+    FMElementFrequencyListUI.appendChild(this.progress);
+  };
+
   FrequencyDialer.prototype.progressOn = function () {
-    let progress = document.getElementById('myProgress');
-    progress.classList.remove('hidden');
+    if (!this.progressLoad) {
+      LazyLoader.load('app://shared.gaiamobile.org/elements/kai-loader.js',
+        () => {
+          this.createLoader();
+        });
+    } else {
+      this.createLoader();
+    }
   };
 
   FrequencyDialer.prototype.progressOff = function () {
-    let progress = document.getElementById('myProgress');
-    progress.classList.add('hidden');
+    FMElementFrequencyListUI.removeChild(this.progress);
   };
 
   exports.FrequencyDialer = new FrequencyDialer();

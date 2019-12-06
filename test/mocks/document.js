@@ -8,8 +8,8 @@
   Start.prototype.initialize = function () {
     window.FMElementFMContainer = document.getElementById('fm-container');
     window.FMElementFrequencyDialer = document.getElementById('frequency-header');
+    window.FMElementHeader = document.getElementById('fm-header');
     window.FMElementFrequencyListUI = document.getElementById('frequency-list');
-    window.FMElementAntennaUnplugWarning = document.getElementById('antenna-warning');
     window.FMElementFavoriteListWarning = document.getElementById('favoritelist-warning');
     window.FMElementFrequencyListContainer = document.getElementById('frequency-list-container');
     window.FMElementFrequencyListTemplate = document.getElementById('frequency-list-template');

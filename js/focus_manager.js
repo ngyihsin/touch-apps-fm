@@ -20,9 +20,10 @@
       case StatusManager.STATUS_FAVORITE_RENAMING:
       case StatusManager.STATUS_STATIONS_SCANING:
       case StatusManager.STATUS_STATIONS_SHOWING:
-        [].forEach.call(FMElementFrequencyListContainer.children, (element) => {
-          elements.push(element);
-        });
+        [].forEach.call(FMElementFrequencyListContainer.children,
+          (element) => {
+            elements.push(element);
+          });
         break;
       default:
         break;

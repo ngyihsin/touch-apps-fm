@@ -12,6 +12,7 @@ require('../mocks/speakerManager');
 require('../mocks/document');
 require('../mocks/navigator/mozL10n');
 require('../mocks/remote_control');
+require('../mocks/lazyLoad');
 
 require('../../js/fm_radio');
 require('../../js/fm_action');
@@ -35,6 +36,7 @@ FMRadio.airplaneModeEnabled = false;
 Start.initialize();
 FMAction.init();
 FrequencyDialer.initDialerUI();
+FrequencyDialer.stationAction = document.getElementById('station-action');
 const scrollIntoViewMock = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 FrequencyManager.frequencyList = {
@@ -66,33 +68,11 @@ test('Switch from station list UI to favorite list UI', () => {
   StationsList.switchToFavoriteListUI();
   expect(FMElementFrequencyListUI.className).toBe('favorites-list');
   expect(StatusManager.status).toBe(StatusManager.STATUS_FAVORITE_SHOWING);
-  expect(FMAction.action.classList.contains('hidden')).toBe(true);
-  expect(FMAction.freDialer.classList.contains('hidden')).toBe(false);
   expect(document.getElementsByTagName('kai-categorybar')[0].selected).toBe('favorites');
   expect(FMElementFrequencyListContainer.children.length).toBe(1);
 });
 
 
-test('Switch from favorite list UI to station list UI', () => {
-  StatusManager.status = StatusManager.STATUS_FAVORITE_SHOWING;
-  StationsList.switchToStationListUI();
-  expect(FMElementFrequencyListUI.className).toBe('stations-list');
-  expect(StatusManager.status).toBe(StatusManager.STATUS_STATIONS_SHOWING);
-  expect(FMAction.action.classList.contains('hidden')).toBe(false);
-  expect(FMAction.freDialer.classList.contains('hidden')).toBe(true);
-  expect(FMAction.stationAction.level).toBe('secondary');
-  expect(FMAction.stationAction.getAttribute('data-l10n-id')).toBe('scan-stations');
-  expect(document.getElementsByTagName('kai-categorybar')[0].selected).toBe('allstations');
-  expect(FMElementFrequencyListContainer.children.length).toBe(3);
-});
-
-test('Start scan stations', () => {
-  StatusManager.status = StatusManager.STATUS_STATIONS_SHOWING;
-  StationsList.startScanStations();
-  expect(FMElementFrequencyListUI.classList.contains('scanning')).toBe(true);
-  expect(StatusManager.status).toBe(StatusManager.STATUS_STATIONS_SCANING);
-  expect(FMAction.stationAction.getAttribute('data-l10n-id')).toBe('abort');
-});
 
 test('Add frequency scanned to stations list UI', () => {
   FrequencyManager.frequencyList = {};

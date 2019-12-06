@@ -100,8 +100,6 @@
     this.isLongPress = false;
     this.timerLongScan = 1500;
     this.timeOutEvent = 0;
-    this.editValue = '';
-    this.frequencyToRenameElement = null;
 
     this.HeaderTitle = document.getElementById('header');
     this.speakSwitch = document.getElementById('speaker-switch');
@@ -112,14 +110,8 @@
 
     this.freDialer = document.getElementById('dialer-bar');
 
-    this.optionMenu = document.querySelector('kai-popupmenu');
-
     this.action = document.getElementById('action');
 
-    /**
-     * Due to component kill-button can't save cache so when page init, update kill button
-     */
-    this.pillButtonUpdate();
     FMElementFMFooter.setAttribute('items', JSON.stringify(LanguageManager.items));
     // RTL change
     this.rtlChange();
@@ -128,13 +120,11 @@
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     window.addEventListener('click', this.callFunByClick.bind(this), false);
     window.addEventListener('keydown', this.callFunBackSpace.bind(this));
-    document.addEventListener('categorybarSelect', (e) => {
-      let clickId = e.detail.selected;
-      FunctionList[clickId]();
-    });
-    this.optionMenu.addEventListener('select', () => {
-      FrequencyRename.switchToRenameModeUI();
-    });
+    document.addEventListener('categorybarSelect',
+      (e) => {
+        let clickId = e.detail.selected;
+        FunctionList[clickId]();
+      });
   };
 
   FMAction.prototype.rtlChange = function () {
@@ -151,7 +141,8 @@
 
   FMAction.prototype.callFunBackSpace = function (e) {
     if (e.key === 'Backspace') {
-      if (FMElementAntennaUnplugWarning.classList.contains('hidden')) {
+      if (WarningUI.antennaUnplugWarning &&
+        WarningUI.antennaUnplugWarning.classList.contains('hidden')) {
         if (StatusManager.status === StatusManager.STATUS_FAVORITE_RENAMING) {
           FrequencyRename.undoRename();
           e.preventDefault();
@@ -195,18 +186,6 @@
     }
   };
 
-  // Avoid pillnutton was destory by mozl10
-  FMAction.prototype.pillButtonUpdate = function () {
-    if (this.action.innerHTML.indexOf('span') === -1) {
-      let button = `
-      <kai-pillbutton id="station-action" data-l10n-id="scan-stations" 
-      text=${LanguageManager.scanStations} level="secondary">
-      </kai-pillbutton>`;
-      this.action.innerHTML = button;
-    }
-    this.stationAction = document.getElementById('station-action');
-  };
-
   FMAction.prototype.callFunByLongPress = function (e) {
     e.preventDefault();
     let id = e.target.id;
@@ -219,13 +198,14 @@
         this.onLongClickSeek(clickId);
       }, this.timerLongScan);
     }
-    click.addEventListener('touchend', () => {
-      clearTimeout(this.timeOutEvent);
-      if (this.timeOutEvent && !this.isLongPress) {
-        this.timeOutEvent = null;
-        this.onclickSeek(clickId);
-      }
-    });
+    click.addEventListener('touchend',
+      () => {
+        clearTimeout(this.timeOutEvent);
+        if (this.timeOutEvent && !this.isLongPress) {
+          this.timeOutEvent = null;
+          this.onclickSeek(clickId);
+        }
+      });
   };
 
   // Long press to seek
@@ -289,17 +269,26 @@
   };
 
   FMAction.prototype.optionMenuShow = function (e) {
-    this.optionMenu.options[0].label = LanguageManager.rename;
-    this.optionMenu.open = !this.optionMenu.open;
-    FrequencyRename.editValue = e.rangeParent.innerText;
-    FrequencyRename.frequencyToRenameElement = e.rangeParent;
-    FrequencyRename.previousStatus = StatusManager.status;
+    let frequencyToRenameElement = e.rangeParent;
+    let editValue = e.rangeParent.innerText;
+    if (typeof FrequencyRename === 'undefined') {
+      let script = [
+        'js/frequency_rename.js',
+        'app://shared.gaiamobile.org/elements/kai-textfield.js',
+        'app://shared.gaiamobile.org/elements/kai-popupmenu.js'
+      ];
+      LazyLoader.load(script,
+        () => {
+          FrequencyRename.init(frequencyToRenameElement, editValue);
+        });
+    } else {
+      FrequencyRename.init(frequencyToRenameElement, editValue);
+    } 
   };
 
   FMAction.prototype.onScanClicked = function () {
     // Hide dialog and update current status first
     Dialog.hideDialog();
-    // StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
     StationsList.switchToStationListUI();
   };
 
@@ -311,42 +300,38 @@
         break;
       case StatusManager.STATUS_FAVORITE_SHOWING:
         this.HeaderTitle.title = LanguageManager.favoritesTitle;
-        this.action.classList.add('hidden');
         this.freDialer.classList.remove('hidden');
         FMElementFMFooter.selected = 'favorites';
         break;
       case StatusManager.STATUS_STATIONS_SCANING:
         this.HeaderTitle.title = LanguageManager.allstationsTitle;
-        this.action.classList.remove('hidden');
         this.freDialer.classList.add('hidden');
-        this.stationAction.level = 'secondary';
-        this.stationAction.text = LanguageManager.abort;
+        FrequencyDialer.stationAction.level = 'secondary';
+        FrequencyDialer.stationAction.text = LanguageManager.abort;
         this.fmLeftKey.setAttribute('class', 'dis-button');
         this.fmRightKey.setAttribute('class', 'dis-button');
-        this.stationAction.setAttribute('data-l10n-id', 'abort');
+        FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'abort');
         FMElementFMFooter.selected = 'allstations';
         FMElementFMFooter.disabled = true;
         break;
       case StatusManager.STATUS_STATIONS_SHOWING:
         this.HeaderTitle.title = LanguageManager.allstationsTitle;
-        this.action.classList.remove('hidden', 'scan');
         this.freDialer.classList.add('hidden');
-        this.stationAction.level = 'secondary';
-        this.stationAction.text = LanguageManager.scanStations;
+        FrequencyDialer.stationAction.level = 'secondary';
+        FrequencyDialer.stationAction.text = LanguageManager.scanStations;
         FMElementFMFooter.selected = 'allstations';
         this.fmLeftKey.setAttribute('class', '');
         this.fmRightKey.setAttribute('class', '');
-        this.stationAction.setAttribute('data-l10n-id', 'scan-stations');
+        FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         FMElementFMFooter.disabled = false;
         break;
       case StatusManager.STATUS_STATIONS_EMPTY:
         this.HeaderTitle.title = LanguageManager.allstationsTitle;
-        this.action.classList.remove('hidden', 'scan');
         this.freDialer.classList.add('hidden');
-        this.stationAction.level = 'primary';
-        this.stationAction.text = LanguageManager.scan;
+        FrequencyDialer.stationAction.level = 'primary';
+        FrequencyDialer.stationAction.text = LanguageManager.scan;
         FMElementFMFooter.selected = 'allstations';
-        this.stationAction.setAttribute('data-l10n-id', 'scan-stations');
+        FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         break;
       default:
         break;

@@ -109,7 +109,8 @@
 
     // Update frequency list to local storage
     try {
-      window.localStorage.setItem(this.KEYNAME, JSON.stringify(this.frequencyList));
+      window.localStorage.setItem(this.KEYNAME,
+        JSON.stringify(this.frequencyList));
     } catch (e) {
       console.error('Failed save frequency list :' + e);
     }

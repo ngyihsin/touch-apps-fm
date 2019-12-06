@@ -7,9 +7,9 @@
 
   function initialize() {
     window.FMElementFMContainer = document.getElementById('fm-container');
+    window.FMElementHeader = document.getElementById('fm-header');
     window.FMElementFrequencyDialer = document.getElementById('frequency-display');
     window.FMElementFrequencyListUI = document.getElementById('frequency-list');
-    window.FMElementAntennaUnplugWarning = document.getElementById('antenna-warning');
     window.FMElementFavoriteListWarning = document.getElementById('favoritelist-warning');
     window.FMElementFrequencyListContainer = document.getElementById('frequency-list-container');
     window.FMElementFrequencyListTemplate = document.getElementById('frequency-list-template');
@@ -17,14 +17,9 @@
   }
 
   if (navigator.mozAudioChannelManager.headphones ||
-    mozFMRadio.antennaAvailable) {
+      mozFMRadio.antennaAvailable) {
     FMCacheRestore.hydrateHtml('fm-container');
-  } else {
-    document.getElementById('fm-container').classList.add('hidden');
-    document.querySelector('kai-categorybar').classList.add('hidden');
-    document.getElementById('power-switch').classList.add('hidden');
-    document.getElementById('antenna-warning').hidden = false;
-  }
+  } 
 
   navigator.mozL10n.ready(() => {
     LanguageManager.init();
@@ -33,15 +28,15 @@
 
   // Toggle the large-text. changed big to small then to big. so change text should executed earlier
   document.body.classList.toggle('large-text', navigator.largeTextEnabled);
-  window.addEventListener('largetextenabledchanged', () => {
-    document.body.classList.toggle('large-text', navigator.largeTextEnabled);
-  });
+  window.addEventListener('largetextenabledchanged',
+    () => {
+      document.body.classList.toggle('large-text', navigator.largeTextEnabled);
+    });
 
   function lazyload() {
     setTimeout(() => {
       let lazyFiles = [
-        'shared/js/media/remote_controls.js',
-        'js/remoteControl.js',
+        'shared/js/airplane_mode_helper.js',
         'js/headphone_state.js',
         'js/speaker_state.js',
         'js/fm_action.js',
@@ -54,13 +49,13 @@
         'js/fm_radio.js',
         'js/focus_manager.js',
         'js/dialog_helper.js',
-        'js/frequency_rename.js'
       ];
 
-      LazyLoader.load(lazyFiles, () => {
-        initialize();
-        FMRadio.init();
-      });
+      LazyLoader.load(lazyFiles,
+        () => {
+          initialize();
+          FMRadio.init();
+        });
     }, time);
 
     /*

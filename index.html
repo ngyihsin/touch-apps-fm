@@ -16,20 +16,12 @@
   <script src="app://shared.gaiamobile.org/elements/webcomponents-loader.js"></script>
   <script src="app://shared.gaiamobile.org/js/lazy_loader.js"></script>
   <script src="app://shared.gaiamobile.org/elements/base.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-dialog.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-header.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-pillbutton.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-loader.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-categorybar.js"></script>
   <script src="app://shared.gaiamobile.org/elements/kai-switch.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-popupmenu.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-textfield.js"></script>
-  <script src="app://shared.gaiamobile.org/elements/kai-emptypage.js"></script>
-  <script src="shared/js/airplane_mode_helper.js"></script>
-  <script defer src="shared/js/toaster.js"></script>
-  <script src="shared/js/l10n.js"></script>
-  <script src="js/satus_manager.js"></script>
-  <script src="js/language_manage.js"></script>
+  <script defer src="shared/js/l10n.js"></script>
+  <script defer src="js/satus_manager.js"></script>
+  <script defer src="js/language_manage.js"></script>
   <script defer src="js/startup.js"></script>
   <script defer src="js/cache.js"></script>
 
@@ -38,6 +30,14 @@
       they get copied over from shared during the build
     -->
     <!--
+      <script src="app://shared.gaiamobile.org/elements/kai-textfield.js"></script>
+      <script src="app://shared.gaiamobile.org/elements/kai-popupmenu.js"></script>
+      <script src="app://shared.gaiamobile.org/elements/kai-loader.js"></script>
+      <script src="app://shared.gaiamobile.org/elements/kai-pillbutton.js"></script>
+      <script src="app://shared.gaiamobile.org/elements/kai-dialog.js"></script>
+      <script src="app://shared.gaiamobile.org/elements/kai-emptypage.js"></script>
+      <script defer src="shared/js/airplane_mode_helper.js"></script>
+      <script defer src="shared/js/toaster.js"></script>
       <script defer src="js/remotecontrol.js"></script>
       <script defer src="js/stations_list.js"></script>
       <script defer src="js/focus_manager.js"></script>
@@ -73,12 +73,12 @@
               <span id="frequency-op-seekdown" data-icon="media-back" data-l10n-id="frequency-op-seekdown"></span>
             </div>
             <div id="frequency-display">
-              <span data-icon="numeric_8_rounded_bold"></span>
-              <span data-icon="numeric_7_rounded_bold"></span>
+              <span class="num" data-icon="numeric_8_rounded_bold"></span>
+              <span class="num" data-icon="numeric_7_rounded_bold"></span>
               <div id="point">
                 <span></span>
               </div>
-              <span data-icon="numeric_5_rounded_bold"></span>
+              <span class="num" data-icon="numeric_5_rounded_bold"></span>
               <div id="favorite-star" class="add-to-favorites" data-l10n-id="add-to-favorites"
                 data-icon="favorite-off"></div>
             </div>
@@ -96,25 +96,14 @@
             </div>
           </div>
         </div>
-        <div id="action" class="hidden">
-          <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">
-          </kai-pillbutton>
-        </div>
         <div id="gradient"></div>
       </div>
       <div id="frequency-list" class="favorites-list">
-        <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">
+        <div id="frequency-list-container" data-l10n-id="frequency-list-container">
         </div>
-        <kai-loader id="myProgress" class="hidden"></kai-loader>
         <div id="favoritelist-warning">
-          <div class="warning">
-            <div id="favoritelist-warning-body" class="p warning-body">
-              <div id="favoritelist-warning-header" data-l10n-id="noFavoritelistHeader"></div>
-              <div>
-                <span id="noFavoritelistMsg"></span>
-              </div>
-            </div>
-          </div>
+          <div id="favoritelist-warning-header" data-l10n-id="noFavoritelistHeader"></div>
+          <div id="noFavoritelistMsg"></div>
         </div>
       </div>
       <template id="frequency-list-template">
@@ -124,15 +113,10 @@
         <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>
       </template>
     </div>
-    <kai-popupmenu options='[{"label":"","value":"rename"}]'></kai-popupmenu>
     <kai-categorybar id="fm-footer" class="dim" selected="favorites"
         items='[{"label":"","value":"favorites","icon":"favorite-on"},{"label":"ALL","value":"allstations","icon":" fm-radio-32px"}]'>
     </kai-categorybar>
-    <kai-emptypage id="antenna-warning"></kai-emptypage>
   </section>
-  <kai-dialog  title="" message="" primarybtntext="" secondarybtntext="">
-    <kai-textfield id="textfield" class="hidden" maxlength=20 slot="custom-view"></kai-textfield>
-  </kai-dialog>
   <script src="js/cache_restore.js"></script>
 </body>
 </html>

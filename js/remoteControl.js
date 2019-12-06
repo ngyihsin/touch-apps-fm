@@ -3,8 +3,7 @@
 (function (exports) {
   const PLAY_STATUS_PAUSED = 'PAUSED';
   const PLAY_STATUS_PLAYING = 'PLAYING';
-  const mrc = new MediaRemoteControls();
-  // Remote Constructor
+
   const Remote = function () {
     this.enabled = false;
   };
@@ -25,11 +24,14 @@
   };
 
   Remote.prototype.init = function () {
+    if (!this.mrc) {      
+      this.mrc = new MediaRemoteControls();
+    }
     for (let command of Object.keys(commands)) {
-      mrc.addCommandListener(command, commands[command]);
+      this.mrc.addCommandListener(command, commands[command]);
     }
     this.start();
-    mrc.notifyAppInfo({
+    this.mrc.notifyAppInfo({
       origin: window.location.origin,
       icon: `${window.location.origin}/style/icons/fm_56.png`
     });
@@ -37,11 +39,15 @@
   };
 
   Remote.prototype.start = function () {
-    mrc._setupIAC();
+    this.mrc._setupIAC();
   };
 
   Remote.prototype.postMessage = function (name, data) {
-    mrc._postMessage(name, data);
+    if (!this.mrc) {      
+      this.mrc = new MediaRemoteControls();
+    }
+    this.mrc._postMessage(name,
+      data);
   };
 
   Remote.prototype.updateMetadata = function () {

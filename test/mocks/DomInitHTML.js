@@ -39,16 +39,13 @@
               </div>\
             </div>\
           </div>\
-          <div id="action" class="hidden">\
-            <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">\
-            </kai-pillbutton>\
-          </div>\
+          <kai-pillbutton id="station-action" data-l10n-id="scan-stations" text="" level="secondary">\
+          </kai-pillbutton>\
           <div id="gradient"></div>\
         </div>\
             <div id="frequency-list" class="favorites-list">\
               <div id="frequency-list-container" class="p-pri" role="listbox" data-l10n-id="frequency-list-container">\
               </div>\
-              <kai-loader id="myProgress" class="hidden"></kai-loader>\
               <div id="favoritelist-warning">\
                 <div class="warning">\
                   <div id="favoritelist-warning-body" class="p warning-body">\
@@ -69,18 +66,9 @@
               <i class="menu style-scope kai-1line-listitem" data-icon="menu" data-l10n-id="option-menu"></i>\
             </template>\
           </div>\
-          <kai-popupmenu></kai-popupmenu>\
           <kai-categorybar id="fm-footer" class="dim" selected="favorites">\
           </kai-categorybar>\
-          <div id="antenna-warning" class="warning" hidden="">\
-            <div></div>\
-            <div id="antenna-warning-body" class="warning-body" data-l10n-id="noAntennaMsg">Plugged in\
-              headset to receive radio signals.</div>\
-          </div>\
-        </section>\
-        <kai-dialog id="mydialog" title="" open="false" message="" primarybtntext="" secondarybtntext="">\
-          <kai-textfield class="hidden" slot="custom-view" id="textfield" maxlength=20></kai-textfield>\
-        </kai-dialog>'
+        </section>'
   };
   exports.DomInitHTML = DomInitHTML;
 })(window);

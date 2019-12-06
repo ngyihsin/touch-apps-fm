@@ -13,6 +13,25 @@
     this.frequencyToRenameElement = null;
   };
 
+  FrequencyRename.prototype.init = function (frequencyToRenameElement, editValue) {
+    this.previousStatus = StatusManager.status;
+    this.editValue = editValue;
+    this.frequencyToRenameElement = frequencyToRenameElement;
+    if (!this.optionMenu) {
+      let popmenu = document.createElement('kai-popupmenu');
+      popmenu.open = true;
+      popmenu.options = [{ "label": LanguageManager.rename, "value": "rename" }];
+      document.querySelector('section').appendChild(popmenu);
+      this.optionMenu = document.querySelector('kai-popupmenu');
+      this.optionMenu.addEventListener('select',
+        () => {
+          this.switchToRenameModeUI();
+        });
+    } else {
+      this.optionMenu.open = true;
+    }
+  };
+
   // Switch current frequency list UI to rename mode UI
   FrequencyRename.prototype.switchToRenameModeUI = function () {
 
@@ -20,12 +39,14 @@
      * Remember status as previous status to update status again
      * after renamed
      */
-    FMAction.optionMenu.open = false;
+    this.optionMenu.open = false;
     // Update current status to update softkeys
     StatusManager.update(StatusManager.STATUS_FAVORITE_RENAMING);
 
     Dialog.showDialog(Dialog.renameStation,
-      true, this.saveRename.bind(this), this.undoRename.bind(this));
+      true,
+      this.saveRename.bind(this),
+      this.undoRename.bind(this));
   };
 
   // Cancel current rename operation

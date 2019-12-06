@@ -14,8 +14,6 @@
     this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
     this.updateAirplaneDialog();
     AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
-    // Add theme init
-    WarningUI.themeDetect();
 
     // Initialize FMAction
     FMAction.init();
@@ -125,6 +123,20 @@
   };
 
   FMRadio.prototype.enableFMRadio = function (frequency) {
+    let script = [
+      'js/remoteControl.js',
+      'shared/js/media/remote_controls.js'
+    ];
+    if (typeof Remote === 'undefined') {
+      LazyLoader.load(script).then(() => {
+        this.turnOnRadio(frequency);
+      });
+    } else {
+      this.turnOnRadio(frequency);
+    }
+  };
+
+  FMRadio.prototype.turnOnRadio = function (frequency) {
     if (frequency < mozFMRadio.frequencyLowerBound ||
       frequency > mozFMRadio.frequencyUpperBound) {
       frequency = mozFMRadio.frequencyLowerBound;
@@ -174,9 +186,10 @@
 
   FMRadio.prototype.updateAirplaneDialog = function () {
     if (this.airplaneModeEnabled) {
-      Dialog.dialog.setAttribute('class', 'airplane-dialog');
-      Dialog.showDialog(Dialog.airplane, false,
-        FMAction.settingsClicked.bind(this), this.airplneCancel.bind(this));
+      Dialog.showDialog(Dialog.airplane,
+        false,
+        FMAction.settingsClicked.bind(this),
+        this.airplneCancel.bind(this));
     } else {
       Dialog.hideDialog();
     }
@@ -212,12 +225,13 @@
   };
 
   FMRadio.prototype.showFMRadioFirstInitDialog = function () {
-    // Show dialog and set dialog message
-    Dialog.dialog.setAttribute('class', 'first-init');
-    Dialog.showDialog(Dialog.firstInit, false,
-      FMAction.onScanClicked.bind(this), this.cancelFirst.bind(this));
     // Update status to update UI
-    StatusManager.update(StatusManager.STATUS_DIALOG_FIRST_INIT);
+    StatusManager.update(StatusManager.STATUS_DIALOG_FIRST_INIT);    
+    // Show dialog and set dialog message
+    Dialog.showDialog(Dialog.firstInit,
+      false,
+      FMAction.onScanClicked.bind(this),
+      this.cancelFirst.bind(this));
   };
 
   FMRadio.prototype.cancelFirst = function () {
@@ -244,9 +258,10 @@
       { messageL10nId: l10nId }, option);
 
     if (typeof Toaster === 'undefined') {
-      LazyLoader.load('shared/js/toaster.js', () => {
-        Toaster.showToast(options);
-      });
+      LazyLoader.load('shared/js/toaster.js',
+        () => {
+          Toaster.showToast(options);
+        });
     } else {
       Toaster.showToast(options);
     }
