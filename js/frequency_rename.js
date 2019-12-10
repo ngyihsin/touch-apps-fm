@@ -69,6 +69,7 @@
 
     // Update renamed frequency name to UI
     FrequencyDialer.update();
+    Remote.updateMetadata();
     this.undoRename();
     StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING
       ? FrequencyList.updateFavoriteListUI() : FrequencyList.updateStationsListUI();

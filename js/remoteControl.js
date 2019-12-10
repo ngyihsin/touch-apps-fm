@@ -52,7 +52,9 @@
 
   Remote.prototype.updateMetadata = function () {
     let frequency = FrequencyDialer.currentFreqency;
-    this.postMessage('nowplaying', { title: frequency });
+    let favoriteObject = FrequencyManager.getCurrentFrequencyObject(frequency);
+    let frequencyName = favoriteObject.name ? favoriteObject.name : '';
+    this.postMessage('nowplaying', { title: frequencyName, frequency: frequency });
   };
 
   Remote.prototype.updatePlaybackStatus = function () {
