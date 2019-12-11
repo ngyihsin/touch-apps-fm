@@ -73,6 +73,7 @@
 
   FrequencyDialer.prototype.initDialerUI = function () {
     this.diarUnit = document.getElementById('dialer-unit');
+    this.fmHeader = document.getElementById('fm-header');
     
     let lower = mozFMRadio.frequencyLowerBound;
     let upper = mozFMRadio.frequencyUpperBound;
@@ -161,11 +162,11 @@
     this.stationAction = document.createElement('kai-pillbutton');
     this.stationAction.id = 'station-action';
     this.stationAction.level = "secondary";
-    FMElementHeader.appendChild(this.stationAction);
+    this.fmHeader.appendChild(this.stationAction);
   };
 
   FrequencyDialer.prototype.deleteButton = function () {
-    FMElementHeader.removeChild(this.stationAction);
+    this.fmHeader.removeChild(this.stationAction);
   };
 
   FrequencyDialer.prototype.createLoader = function () {

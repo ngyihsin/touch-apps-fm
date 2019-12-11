@@ -101,7 +101,6 @@
     this.timerLongScan = 1500;
     this.timeOutEvent = 0;
 
-    this.HeaderTitle = document.getElementById('header');
     this.speakSwitch = document.getElementById('speaker-switch');
     this.fmPowerKey = document.getElementById('power-switch');
 
@@ -296,18 +295,18 @@
     let status = StatusManager.status;
     switch (status) {
       case StatusManager.STATUS_WARNING_SHOWING:
-        this.HeaderTitle.title = LanguageManager.radioTitle;
+        FMElementHeader.title = LanguageManager.radioTitle;
         break;
       case StatusManager.STATUS_FAVORITE_SHOWING:
-        this.HeaderTitle.title = LanguageManager.favoritesTitle;
+        FMElementHeader.title = LanguageManager.favoritesTitle;
         this.freDialer.classList.remove('hidden');
         FMElementFMFooter.selected = 'favorites';
         break;
       case StatusManager.STATUS_STATIONS_SCANING:
-        this.HeaderTitle.title = LanguageManager.allstationsTitle;
+        FMElementHeader.title = LanguageManager.allstationsTitle;
         this.freDialer.classList.add('hidden');
-        FrequencyDialer.stationAction.level = 'secondary';
-        FrequencyDialer.stationAction.text = LanguageManager.abort;
+        FrequencyDialer.stationAction.setAttribute('level', 'secondary');
+        FrequencyDialer.stationAction.setAttribute('text', LanguageManager.abort);
         this.fmLeftKey.setAttribute('class', 'dis-button');
         this.fmRightKey.setAttribute('class', 'dis-button');
         FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'abort');
@@ -315,10 +314,10 @@
         FMElementFMFooter.disabled = true;
         break;
       case StatusManager.STATUS_STATIONS_SHOWING:
-        this.HeaderTitle.title = LanguageManager.allstationsTitle;
+        FMElementHeader.title = LanguageManager.allstationsTitle;
         this.freDialer.classList.add('hidden');
-        FrequencyDialer.stationAction.level = 'secondary';
-        FrequencyDialer.stationAction.text = LanguageManager.scanStations;
+        FrequencyDialer.stationAction.setAttribute('level', 'secondary');
+        FrequencyDialer.stationAction.setAttribute('text', LanguageManager.scanStations);
         FMElementFMFooter.selected = 'allstations';
         this.fmLeftKey.setAttribute('class', '');
         this.fmRightKey.setAttribute('class', '');
@@ -326,10 +325,10 @@
         FMElementFMFooter.disabled = false;
         break;
       case StatusManager.STATUS_STATIONS_EMPTY:
-        this.HeaderTitle.title = LanguageManager.allstationsTitle;
+        FMElementHeader.title = LanguageManager.allstationsTitle;
         this.freDialer.classList.add('hidden');
-        FrequencyDialer.stationAction.level = 'primary';
-        FrequencyDialer.stationAction.text = LanguageManager.scan;
+        FrequencyDialer.stationAction.setAttribute('level', 'primary');
+        FrequencyDialer.stationAction.setAttribute('text', LanguageManager.scan);
         FMElementFMFooter.selected = 'allstations';
         FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         break;

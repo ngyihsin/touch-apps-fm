@@ -13,12 +13,15 @@
      * antenna warning UI should be shown
      */
     hiddenState = HeadphoneState.deviceWithValidAntenna;
+    this.status = !hiddenState
+      ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;      
     if (hiddenState) {
       FMElementFMContainer.classList.remove('hidden');
       FMElementFMFooter.classList.remove('hidden');
       this.antennaUnplugWarning
         ? this.antennaUnplugWarning.classList.add('hidden') : '';
       FMAction.fmPowerKey.classList.remove('hidden');
+      this.updateFavorWarning();
     } else if (!this.antennaUnplugWarning) {
       LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
         () => {
@@ -33,32 +36,6 @@
     } else {
       this.updateAntennaUI();
     }
-
-    /*
-     * If current airplane mode is enabled, 
-     * or current device has no valid antenna,
-     * fm container element should be hidden
-     */
-    hiddenState = !HeadphoneState.deviceWithValidAntenna;
-    let status = hiddenState
-      ? StatusManager.STATUS_WARNING_SHOWING : StatusManager.status;
-    if (status === StatusManager.STATUS_FAVORITE_SHOWING) {
-      let favoritelist = FrequencyManager.getFavoriteFrequencyList();
-      hiddenState = favoritelist && favoritelist.length > 0 ||
-        status !== StatusManager.STATUS_FAVORITE_SHOWING;
-      let noFavoriteMsg = LanguageManager.noFavoriteMsg;
-      if (!hiddenState) {
-        document.getElementById('noFavoritelistMsg').innerHTML =
-          noFavoriteMsg.replace(
-            '{{ star }}',
-            '<i data-icon="favorite-off"></i>'
-          );
-      }
-      hiddenState ? FMElementFavoriteListWarning.classList.add('hidden')
-        : FMElementFavoriteListWarning.classList.remove('hidden');
-    }
-
-    StatusManager.update(status);
   };
 
   WarningUI.prototype.themeDetect = function () {
@@ -81,11 +58,31 @@
   };
 
   WarningUI.prototype.updateAntennaUI = function () {
+    StatusManager.update(this.status);
     FMElementFMContainer.classList.add('hidden');
     FMElementFMFooter.classList.add('hidden');
     this.antennaUnplugWarning.classList.remove('hidden');
     FMAction.speakSwitch.classList.add('hidden');
     FMAction.fmPowerKey.classList.add('hidden');
+  };
+
+  WarningUI.prototype.updateFavorWarning = function () {
+    if (this.status === StatusManager.STATUS_FAVORITE_SHOWING) {
+      let favoritelist = FrequencyManager.getFavoriteFrequencyList();
+      let hiddenState = favoritelist && favoritelist.length > 0 ||
+        this.status !== StatusManager.STATUS_FAVORITE_SHOWING;
+      let noFavoriteMsg = LanguageManager.noFavoriteMsg;
+      if (!hiddenState) {
+        document.getElementById('noFavoritelistMsg').innerHTML =
+          noFavoriteMsg.replace(
+            '{{ star }}',
+            '<i data-icon="favorite-off"></i>'
+          );
+        FrequencyList.clearCurrentFrequencyList();
+      }
+      hiddenState ? FMElementFavoriteListWarning.classList.add('hidden')
+        : FMElementFavoriteListWarning.classList.remove('hidden');
+    }
   };
 
   exports.WarningUI = new WarningUI();

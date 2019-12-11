@@ -11,10 +11,12 @@
 
   FMRadio.prototype.init = function () {
     // Initialize parameter airplaneModeEnabled
-    this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
-    this.updateAirplaneDialog();
-    AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
-
+    AirplaneModeHelper.ready(() => {
+      this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
+      this.updateAirplaneDialog();
+      AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
+    });
+    
     // Initialize FMAction
     FMAction.init();
     // Initialize HeadphoneState
@@ -170,9 +172,8 @@
 
   FMRadio.prototype.disableFMRadio = function () {
     if (StatusManager.status === StatusManager.STATUS_STATIONS_SCANING) {
-      FrequencyDialer.progressOff();
       StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
-      StationsList.abortScanStations();
+      StationsList.abortScanStations(true);
     }
     this.saveCache();
     this.turnOffRadio();
