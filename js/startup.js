@@ -19,12 +19,15 @@
   if (navigator.mozAudioChannelManager.headphones ||
       mozFMRadio.antennaAvailable) {
     FMCacheRestore.hydrateHtml('fm-container');
-  } 
+  }
 
   navigator.mozL10n.ready(() => {
     LanguageManager.init();
     LanguageManager.updateLanguage();
   });
+
+  // Change volumeControlChannel to content
+  navigator.mozAudioChannelManager.volumeControlChannel = 'content';
 
   // Toggle the large-text. changed big to small then to big. so change text should executed earlier
   document.body.classList.toggle('large-text', navigator.largeTextEnabled);
