@@ -140,16 +140,17 @@
 
   FMAction.prototype.callFunBackSpace = function (e) {
     if (e.key === 'Backspace') {
-      if (WarningUI.antennaUnplugWarning &&
-        WarningUI.antennaUnplugWarning.classList.contains('hidden')) {
-        if (StatusManager.status === StatusManager.STATUS_FAVORITE_RENAMING) {
+      let status = StatusManager.status;
+      switch (status) {
+        case StatusManager.STATUS_FAVORITE_RENAMING:
           FrequencyRename.undoRename();
           e.preventDefault();
-          return;
-        }
-        window.history.back();
-      } else {
-        window.close();
+          break;
+        case StatusManager.STATUS_WARNING_SHOWING:
+          window.close();
+          break;
+        default:
+          window.history.back();
       }
     }
   };
