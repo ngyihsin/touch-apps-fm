@@ -37,8 +37,8 @@ html[dir=rtl] div#frequency-list-container div.frequency-list-item {
   direction: rtl;
 }
 
-html[dir="rtl"] div#favorite-star {
-  left: 5.2rem;
+html[dir=rtl] .favorite-icon {
+  margin: 0 0.5rem 0 1.5rem;
 }
 /******* end *******/
 
@@ -316,13 +316,11 @@ div.animation-on > div {
 }
 
 .frequency-list-item {
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 6rem;
   padding: 0 1.5rem 0 2rem;
-  box-sizing: border-box;
   font-weight: 600;
 }
 
