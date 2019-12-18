@@ -80,6 +80,7 @@
         this.editInput.maxlength = 20;
         this.editInput.slot = "custom-view";
         this.editInput.value = FrequencyRename.editValue;
+        this.editValue = FrequencyRename.editValue;
         this.editInput.subtitle = FrequencyRename.editValue.length + '/' + 
           this.NAME_INPUT_MAX_LENGTH;
         this.editInput.setAttribute('class', '');
@@ -89,6 +90,11 @@
             this.editValue = e.detail.value;
             this.editInput.subtitle = this.editValue.length + '/' +
             this.NAME_INPUT_MAX_LENGTH;
+          });
+        document.addEventListener('clear',
+          () => {
+            this.editValue = null;            
+            this.editInput.subtitle = 0 + '/' + this.NAME_INPUT_MAX_LENGTH;
           });
         setTimeout(() => {
           this.editInput.focus();
