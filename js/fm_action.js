@@ -139,7 +139,7 @@
   };
 
   FMAction.prototype.callFunBackSpace = function (e) {
-    if (e.key === 'Backspace') {
+    if (e.key === 'GoBack') {
       let status = StatusManager.status;
       switch (status) {
         case StatusManager.STATUS_FAVORITE_RENAMING:
