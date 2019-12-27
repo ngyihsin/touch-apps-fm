@@ -19,11 +19,18 @@
   if (navigator.mozAudioChannelManager.headphones ||
       mozFMRadio.antennaAvailable) {
     FMCacheRestore.hydrateHtml('fm-container');
+  } else {
+    document.getElementById('fm-container').classList.add('hidden');
+    document.querySelector('kai-categorybar').classList.add('hidden');
+    document.getElementById('power-switch').classList.add('hidden');
   }
 
   navigator.mozL10n.ready(() => {
     LanguageManager.init();
-    LanguageManager.updateLanguage();
+    if (navigator.mozAudioChannelManager.headphones ||
+      mozFMRadio.antennaAvailable) {
+      LanguageManager.updateLanguage();
+    }
   });
 
   // Change volumeControlChannel to content

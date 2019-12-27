@@ -22,39 +22,45 @@
         ? this.antennaUnplugWarning.classList.add('hidden') : '';
       FMAction.fmPowerKey.classList.remove('hidden');
       this.updateFavorWarning();
-    } else if (!this.antennaUnplugWarning) {
-      LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
-        () => {
-          this.antennaUnplugWarning = document.createElement('kai-emptypage');
-          this.antennaUnplugWarning.id = 'antenna-warning';
-          this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
-          document.querySelector('section').appendChild(this.antennaUnplugWarning);
-          // Add theme init
-          this.themeDetect();
-          this.updateAntennaUI();
-        });
     } else {
-      this.updateAntennaUI();
-    }
+      this.themeDetect().then((value) => {
+        if (!this.antennaUnplugWarning) {
+          LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
+            () => {
+              this.antennaUnplugWarning = document.createElement('kai-emptypage');
+              this.antennaUnplugWarning.id = 'antenna-warning';
+              this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
+              this.antennaUnplugWarning.src = value;
+              document.querySelector('section').appendChild(this.antennaUnplugWarning);
+              this.updateAntennaUI();
+            });
+        } else {
+          this.updateAntennaUI();
+        }
+      });
+    }     
   };
 
   WarningUI.prototype.themeDetect = function () {
-    this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
-    navigator.mozSettings.createLock().get('theme.selected')
-      .then((theme) => {
-        this.themeChange(theme['theme.selected']);
-      });
-    navigator.mozSettings.addObserver('theme.selected',
-      (theme) => {
-        this.themeChange(theme['settingValue']);
-      });
+    return new Promise((resolve) => {
+      navigator.mozSettings.createLock().get('theme.selected')
+        .then((theme) => {
+          this.themeImg = this.themeChange(theme['theme.selected']);
+          resolve(this.themeImg);
+        });
+      navigator.mozSettings.addObserver('theme.selected',
+        (theme) => {
+          this.themeImg = this.themeChange(theme['settingValue']);
+          this.antennaUnplugWarning
+            ? this.antennaUnplugWarning.src = this.themeImg : ''; 
+        });
+    });
   };
 
   WarningUI.prototype.themeChange = function (theme) {
-    let mode = (/darktheme/).test(theme)
+    return (/darktheme/).test(theme)
       ? '/style/images/img-headphone-unplugged-dark.svg'
       : '/style/images/img-headphone-unplugged-light.svg';
-    this.antennaUnplugWarning.src = mode;
   };
 
   WarningUI.prototype.updateAntennaUI = function () {
