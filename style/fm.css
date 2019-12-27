@@ -367,6 +367,10 @@ div.animation-on > div {
 #noFavoritelistMsg > i {
   font-size: 2.4rem;
 }
+
+kai-emptypage {
+  pointer-events: none;
+}
 /***** end *****/
 
 @keyframes spinner-animation {
