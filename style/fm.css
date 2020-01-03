@@ -2,12 +2,21 @@
 .theme-media{
   --frequencybar-height: 13rem;
   --stationactionbar-height:9rem;
-  } 
-  @media only screen and (orientation: landscape) {
-    .theme-media{
-      --frequencybar-height: 6.4rem;
-    }
+}
+
+:root {
+  --baseline: 1;
+}
+
+.large-text {
+  --baseline: 1.25;
+}
+ 
+@media only screen and (orientation: landscape) {
+  .theme-media{
+    --frequencybar-height: 6.4rem;
   }
+}
 
 * {
   /* By default do not allow any user text selection, only enable for certain
@@ -23,7 +32,7 @@
     -moz-user-select: text;
   }
 
-  /***  styles for RTL languages ****/
+/***  styles for RTL languages ****/
 /* The scrollbar should be on the left.
  * But direction is explicitly set to LTR on #container
    So we force #frequency-list to be RTL, while keeping the children LTR
@@ -64,7 +73,7 @@ section {
   top: 0;
   width: 100%;
   height: 100%;
-  font-size: 1.7rem;
+  font-size: calc(1.7rem * var(--baseline));
   color: var(--color-gs100);
   background-color: var(--color-gs00);
 }
@@ -166,8 +175,7 @@ section {
 
 #frequency-name {
   width: 100%;
-  height: 2rem;
-  font-size: 1.4rem;
+  font-size: calc(1.4rem * var(--baseline));
   font-weight: 400;
   text-align: center;
   color: var(--color-gs60);
@@ -354,12 +362,12 @@ div.animation-on > div {
 
 #noFavoritelistMsg {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: calc(1.8rem * var(--baseline));
 }
 
 #favoritelist-warning-header {
   text-align: center;
-  font-size: 2.2rem;
+  font-size: calc(2.2rem * var(--baseline));
   font-weight: 700;
   margin-bottom: 1rem;
 }
