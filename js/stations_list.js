@@ -64,12 +64,6 @@
 
     // Update current focus
     FocusManager.update();
-
-    /*
-     * Update warning UI
-     * in case of favorite list warning UI is showing
-     */
-    WarningUI.update();
   };
 
   // Switch from station list UI to favorite list UI
@@ -91,12 +85,6 @@
 
     // Update current focus
     FocusManager.update();
-
-    /*
-     * Update warning UI
-     * in case of favorite list warning UI is showing
-     */
-    WarningUI.update();
   };
 
   // Start scan stations

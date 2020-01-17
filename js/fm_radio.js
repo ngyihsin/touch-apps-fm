@@ -11,33 +11,26 @@
 
   FMRadio.prototype.init = function () {
     // Initialize parameter airplaneModeEnabled
-    AirplaneModeHelper.ready(() => {
-      this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
-      this.updateAirplaneDialog();
-      AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
-    });
-    
+    this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
+    AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
     // Initialize FMAction
     FMAction.init();
-    // Initialize HeadphoneState
-    HeadphoneState.init();
     // Initialize SpeakerState
     SpeakerState.init();
     // Initialize FrequencyDialerUI
     FrequencyDialer.initDialerUI();
     // Initialize HistoryFrequency
     HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
-
+  
     // Redirect FM radio callbacks
     mozFMRadio.onenabled = this.onFMRadioEnabled.bind(this);
     mozFMRadio.ondisabled = this.onFMRadioDisabled.bind(this);
     mozFMRadio.onfrequencychange =
-      StationsList.handleFrequencyChanged.bind(StationsList);
+        StationsList.handleFrequencyChanged.bind(StationsList);
   };
 
   FMRadio.prototype.onAirplaneModeStateChanged = function () {
     this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
-    StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
     this.updateAirplaneDialog();
 
     if (this.airplaneModeEnabled) {
@@ -71,7 +64,6 @@
       }
       this.saveCache();
     });
-    WarningUI.update();
 
     /*
      * PERFORMANCE EVENT (5): moz-app-loaded
@@ -187,6 +179,7 @@
 
   FMRadio.prototype.updateAirplaneDialog = function () {
     if (this.airplaneModeEnabled) {
+      this.disableFMRadio();
       Dialog.showDialog(Dialog.airplane,
         false,
         FMAction.settingsClicked.bind(this),
@@ -198,14 +191,12 @@
 
   FMRadio.prototype.updateEnablingState = function () {
     let enabled = mozFMRadio.enabled;
-    let powerSwitch = document.getElementById('power-switch');
-    let speakerSwitch = document.getElementById('speaker-switch');
-    powerSwitch.disabled = false;
+    FMPowerKey.disabled = false;
     if (enabled) {
-      powerSwitch.setAttribute('data-l10n-id', 'power-switch-off');
-      powerSwitch.setAttribute('class', 'power-switch-off');
-      powerSwitch.checked = true;
-      speakerSwitch.classList.remove('hidden');
+      FMPowerKey.setAttribute('data-l10n-id', 'power-switch-off');
+      FMPowerKey.setAttribute('class', 'power-switch-off');
+      FMPowerKey.checked = true;
+      FMspeakSwitch.classList.remove('hidden');
       let isFirstInit = window.localStorage.getItem(this.KEYNAME_FIRST_INIT);
       if (!isFirstInit) {
         this.showFMRadioFirstInitDialog();
@@ -216,13 +207,12 @@
         }
       }
     } else {
-      powerSwitch.setAttribute('data-l10n-id', 'power-switch-on');
-      powerSwitch.setAttribute('class', 'power-switch-on');
-      powerSwitch.checked = false;
-      speakerSwitch.classList.add('hidden');
+      FMPowerKey.setAttribute('data-l10n-id', 'power-switch-on');
+      FMPowerKey.setAttribute('class', 'power-switch-on');
+      FMPowerKey.checked = false;
+      FMspeakSwitch.classList.add('hidden');
     }
-    powerSwitch.dataset.enabled = enabled;
-    WarningUI.update();
+    FMPowerKey.dataset.enabled = enabled;
   };
 
   FMRadio.prototype.showFMRadioFirstInitDialog = function () {
@@ -237,7 +227,7 @@
 
   FMRadio.prototype.cancelFirst = function () {
     StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
-    WarningUI.update();
+    FrequencyList.updateFavoriteListUI();
     Dialog.hideDialog();
   };
 

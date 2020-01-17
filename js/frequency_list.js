@@ -74,11 +74,26 @@
   // Update favorite list UI
   FrequencyList.prototype.updateFavoriteListUI = function () {
     let favoritesList = FrequencyManager.getFavoriteFrequencyList();
-    if (favoritesList) {
+    if (favoritesList.length > 0) {
+      FMElementFavoriteListWarning.classList.add('hidden');
       favoritesList.sort((a, b) => a.frequency - b.frequency);
       this.updateFrequencyListUI(favoritesList);
       FocusManager.update();
+    } else {
+      FrequencyDialer.removeFavoriteDialer();
+      this.updateFavorWarning();
     }
+  };
+
+  FrequencyList.prototype.updateFavorWarning = function () {
+    let noFavoriteMsg = LanguageManager.noFavoriteMsg;
+    document.getElementById('noFavoritelistMsg').innerHTML =
+      noFavoriteMsg.replace(
+        '{{ star }}',
+        '<i data-icon="favorite-off"></i>'
+      );
+    this.clearCurrentFrequencyList();
+    FMElementFavoriteListWarning.classList.remove('hidden');
   };
 
   FrequencyList.prototype.favoriteDeal = function (favorite, e) {
@@ -97,13 +112,11 @@
     FrequencyManager.updateFrequencyFavorite(frequency, favorite);
     if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
       this.updateFavoriteListUI();
-      WarningUI.update();
     } else {
       let frequencyObject = FrequencyManager.getCurrentFrequencyObject(frequency);
       if (frequencyObject && frequencyObject.station) {
         element.innerHTML = '';
         element.appendChild(this.formatFrequencyListTemplate(frequencyObject));
-        WarningUI.update();
       }
     }
     FrequencyDialer.updateFrequency();

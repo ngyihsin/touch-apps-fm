@@ -101,9 +101,6 @@
     this.timerLongScan = 1500;
     this.timeOutEvent = 0;
 
-    this.speakSwitch = document.getElementById('speaker-switch');
-    this.fmPowerKey = document.getElementById('power-switch');
-
     this.fmLeftKey = document.getElementById('frequency-op-seekdown');
     this.fmRightKey = document.getElementById('frequency-op-seekup');
 
@@ -210,7 +207,7 @@
 
   // Long press to seek
   FMAction.prototype.onLongClickSeek = function (seekUpDirection) {
-    let seeking = !!this.fmPowerKey.getAttribute('data-seeking');
+    let seeking = !!FMPowerKey.getAttribute('data-seeking');
     this.isLongPress = false;
     // If the FM radio is seeking channel currently, cancel it and seek again.
     if (seeking) {
@@ -245,11 +242,11 @@
   };
 
   FMAction.prototype.startStationScan = function (seekUpDirection) {
-    this.fmPowerKey.dataset.seeking = true;
+    FMPowerKey.dataset.seeking = true;
     let request = seekUpDirection === 'frequency-op-seekdown'
       ? mozFMRadio.seekDown() : mozFMRadio.seekUp();
     request.onsuccess = () => {
-      this.fmPowerKey.removeAttribute('data-seeking');
+      FMPowerKey.removeAttribute('data-seeking');
     };
   };
 
@@ -259,12 +256,12 @@
   FMAction.prototype.speakerUpdate = function (state) {
     if (state) {
       SpeakerState.state = true;
-      this.speakSwitch.setAttribute('data-l10n-id', 'switchToHeadphones');
-      this.speakSwitch.setAttribute('data-icon', 'speaker-on');
+      FMspeakSwitch.setAttribute('data-l10n-id', 'switchToHeadphones');
+      FMspeakSwitch.setAttribute('data-icon', 'speaker-on');
     } else {
       SpeakerState.state = false;
-      this.speakSwitch.setAttribute('data-l10n-id', 'speaker-switch');
-      this.speakSwitch.setAttribute('data-icon', 'audio-output');
+      FMspeakSwitch.setAttribute('data-l10n-id', 'speaker-switch');
+      FMspeakSwitch.setAttribute('data-icon', 'audio-output');
     }
   };
 

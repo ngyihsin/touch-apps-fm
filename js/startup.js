@@ -14,6 +14,8 @@
     window.FMElementFrequencyListContainer = document.getElementById('frequency-list-container');
     window.FMElementFrequencyListTemplate = document.getElementById('frequency-list-template');
     window.FMElementFMFooter = document.querySelector('kai-categorybar');
+    window.FMPowerKey = document.getElementById('power-switch');
+    window.FMspeakSwitch = document.getElementById('speaker-switch');
   }
 
   if (navigator.mozAudioChannelManager.headphones ||
@@ -47,15 +49,14 @@
     setTimeout(() => {
       let lazyFiles = [
         'shared/js/airplane_mode_helper.js',
-        'js/headphone_state.js',
         'js/speaker_state.js',
+        'js/headphone_state.js',
         'js/fm_action.js',
         'js/history_frequency.js',
         'js/stations_list.js',
         'js/frequency_manager.js',
         'js/frequency_dialer.js',
         'js/frequency_list.js',
-        'js/warning_ui.js',
         'js/fm_radio.js',
         'js/focus_manager.js',
         'js/dialog_helper.js',
@@ -64,7 +65,29 @@
       LazyLoader.load(lazyFiles,
         () => {
           initialize();
-          FMRadio.init();
+          HeadphoneState.init(() => {
+            if (!HeadphoneState.deviceWithValidAntenna) {
+
+              /*
+               * PERFORMANCE EVENT (3): moz-app-visually-complete
+               * Designates that the app is visually loaded (e.g.: all of the
+               * 'above-the-fold' content exists in the DOM and is marked as
+               * ready to be displayed).
+               */
+              window.performance.mark('visuallyLoaded');
+              window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
+          
+              /*
+               * PERFORMANCE EVENT (4): moz-content-interactive
+               * Designates that the app has its events bound for the minimum
+               * set of functionality to allow the user to interact with the
+               * 'above-the-fold' content.
+               */
+              window.performance.mark('contentInteractive');
+              window.dispatchEvent(new CustomEvent('moz-content-interactive'));
+            }
+            FMRadio.init();
+          });
         });
     }, time);
 
@@ -75,24 +98,27 @@
      */
     window.performance.mark('navigationInteractive');
     window.dispatchEvent(new CustomEvent('moz-chrome-interactive'));
+    if (navigator.mozAudioChannelManager.headphones ||
+      mozFMRadio.antennaAvailable) {
+      
+      /*
+       * PERFORMANCE EVENT (3): moz-app-visually-complete
+       * Designates that the app is visually loaded (e.g.: all of the
+       * 'above-the-fold' content exists in the DOM and is marked as
+       * ready to be displayed).
+       */
+      window.performance.mark('visuallyLoaded');
+      window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
 
-    /*
-     * PERFORMANCE EVENT (3): moz-app-visually-complete
-     * Designates that the app is visually loaded (e.g.: all of the
-     * 'above-the-fold' content exists in the DOM and is marked as
-     * ready to be displayed).
-     */
-    window.performance.mark('visuallyLoaded');
-    window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
-
-    /*
-     * PERFORMANCE EVENT (4): moz-content-interactive
-     * Designates that the app has its events bound for the minimum
-     * set of functionality to allow the user to interact with the
-     * 'above-the-fold' content.
-     */
-    window.performance.mark('contentInteractive');
-    window.dispatchEvent(new CustomEvent('moz-content-interactive'));
+      /*
+       * PERFORMANCE EVENT (4): moz-content-interactive
+       * Designates that the app has its events bound for the minimum
+       * set of functionality to allow the user to interact with the
+       * 'above-the-fold' content.
+       */
+      window.performance.mark('contentInteractive');
+      window.dispatchEvent(new CustomEvent('moz-content-interactive'));
+    }
   }
 
   function unload() {

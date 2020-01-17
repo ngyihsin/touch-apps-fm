@@ -21,7 +21,6 @@ require('../../js/focus_manager');
 require('../../js/frequency_manager');
 require('../../js/headphone_state');
 require('../../js/stations_list');
-require('../../js/warning_ui');
 require('../../js/satus_manager');
 require('../../js/language_manage');
 require('../../js/dialog_helper');

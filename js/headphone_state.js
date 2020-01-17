@@ -17,21 +17,74 @@
     this.appStatus = null;
   };
 
-  HeadphoneState.prototype.init = function () {
+  HeadphoneState.prototype.init = function (callback) {
     this.audioChannelManager = navigator.mozAudioChannelManager;
     if (!this.audioChannelManager) {
       return;
     }
-
+  
     this.deviceWithInternalAntenna = mozFMRadio.antennaAvailable;
     this.updateHeadphoneAndAntennaState();
-
+  
     this.audioChannelManager.onheadphoneschange = this.onHeadphoneStateChanged.bind(this);
+    callback();
   };
 
   HeadphoneState.prototype.updateHeadphoneAndAntennaState = function () {
     this.deviceHeadphoneState = this.audioChannelManager.headphones;
     this.deviceWithValidAntenna = this.deviceHeadphoneState || this.deviceWithInternalAntenna;
+    if (!this.deviceWithValidAntenna) {
+      this.status = StatusManager.STATUS_WARNING_SHOWING;
+      this.themeDetect().then((value) => {
+        if (!this.antennaUnplugWarning) {
+          LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
+            () => {
+              this.antennaUnplugWarning = document.createElement('kai-emptypage');
+              this.antennaUnplugWarning.id = 'antenna-warning';
+              this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
+              this.antennaUnplugWarning.src = value;
+              document.querySelector('section').appendChild(this.antennaUnplugWarning);
+              this.updateAntennaUI();
+            });
+        } else {
+          this.updateAntennaUI();
+        }
+      });
+    } else {
+      FMElementFMContainer.classList.remove('hidden');
+      FMElementFMFooter.classList.remove('hidden');
+      this.antennaUnplugWarning
+        ? this.antennaUnplugWarning.classList.add('hidden') : '';
+      FMPowerKey.classList.remove('hidden');
+    }
+  };
+
+  HeadphoneState.prototype.updateWarningPage = function () {
+    if (!this.deviceWithValidAntenna) {
+      this.status = StatusManager.STATUS_WARNING_SHOWING;
+      this.themeDetect().then((value) => {
+        if (!this.antennaUnplugWarning) {
+          LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
+            () => {
+              this.antennaUnplugWarning = document.createElement('kai-emptypage');
+              this.antennaUnplugWarning.id = 'antenna-warning';
+              this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
+              this.antennaUnplugWarning.src = value;
+              document.querySelector('section').appendChild(this.antennaUnplugWarning);
+              this.updateAntennaUI();
+              dump('mark2:');
+            });
+        } else {
+          this.updateAntennaUI();
+        }
+      });
+    } else {
+      FMElementFMContainer.classList.remove('hidden');
+      FMElementFMFooter.classList.remove('hidden');
+      this.antennaUnplugWarning
+        ? this.antennaUnplugWarning.classList.add('hidden') : '';
+      FMPowerKey.classList.remove('hidden');
+    }
   };
 
   HeadphoneState.prototype.onHeadphoneStateChanged = function () {
@@ -81,8 +134,37 @@
         FMRadio.disableFMRadio();
       }
     }
+  };
 
-    WarningUI.update();
+  HeadphoneState.prototype.themeDetect = function () {
+    return new Promise((resolve) => {
+      navigator.mozSettings.createLock().get('theme.selected')
+        .then((theme) => {
+          this.themeImg = this.themeChange(theme['theme.selected']);
+          resolve(this.themeImg);
+        });
+      navigator.mozSettings.addObserver('theme.selected',
+        (theme) => {
+          this.themeImg = this.themeChange(theme['settingValue']);
+          this.antennaUnplugWarning
+            ? this.antennaUnplugWarning.src = this.themeImg : ''; 
+        });
+    });
+  };
+
+  HeadphoneState.prototype.themeChange = function (theme) {
+    return (/darktheme/).test(theme)
+      ? '/style/images/img-headphone-unplugged-dark.svg'
+      : '/style/images/img-headphone-unplugged-light.svg';
+  };
+
+  HeadphoneState.prototype.updateAntennaUI = function () {
+    StatusManager.update(this.status);
+    FMElementFMContainer.classList.add('hidden');
+    FMElementFMFooter.classList.add('hidden');
+    this.antennaUnplugWarning.classList.remove('hidden');
+    FMspeakSwitch.classList.add('hidden');
+    FMPowerKey.classList.add('hidden');
   };
 
   exports.HeadphoneState = new HeadphoneState();

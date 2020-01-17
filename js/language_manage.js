@@ -40,7 +40,7 @@
       switch (status) {
         case StatusManager.STATUS_WARNING_SHOWING:
           this.HeaderTitle.title = this.radioTitle;
-          WarningUI.antennaUnplugWarning.description = this.noAntennaMsg;
+          HeadphoneState.antennaUnplugWarning.description = this.noAntennaMsg;
           if (this.dialog.open) {
             this.dialog.primarybtntext = this.airplaneModeButton;
             this.dialog.secondarybtntext = this.cancel;

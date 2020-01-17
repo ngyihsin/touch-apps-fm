@@ -20,7 +20,6 @@ require('../../js/focus_manager');
 require('../../js/frequency_manager');
 require('../../js/headphone_state');
 require('../../js/stations_list');
-require('../../js/warning_ui');
 require('../../js/satus_manager');
 require('../../js/language_manage');
 
@@ -41,9 +40,9 @@ test('short press to seek', () => {
 
 test('toggle speaker and headphone', () => {
   FMAction.speakerUpdate(true);
-  expect(FMAction.speakSwitch.getAttribute('data-l10n-id')).toBe('switchToHeadphones');
-  expect(FMAction.speakSwitch.getAttribute('data-icon')).toBe('speaker-on');
+  expect(FMspeakSwitch.getAttribute('data-l10n-id')).toBe('switchToHeadphones');
+  expect(FMspeakSwitch.getAttribute('data-icon')).toBe('speaker-on');
   FMAction.speakerUpdate(false);
-  expect(FMAction.speakSwitch.getAttribute('data-l10n-id')).toBe('speaker-switch');
-  expect(FMAction.speakSwitch.getAttribute('data-icon')).toBe('audio-output');
+  expect(FMspeakSwitch.getAttribute('data-l10n-id')).toBe('speaker-switch');
+  expect(FMspeakSwitch.getAttribute('data-icon')).toBe('audio-output');
 });
