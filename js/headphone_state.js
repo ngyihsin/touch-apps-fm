@@ -35,21 +35,19 @@
     this.deviceWithValidAntenna = this.deviceHeadphoneState || this.deviceWithInternalAntenna;
     if (!this.deviceWithValidAntenna) {
       this.status = StatusManager.STATUS_WARNING_SHOWING;
-      this.themeDetect().then((value) => {
-        if (!this.antennaUnplugWarning) {
-          LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
-            () => {
-              this.antennaUnplugWarning = document.createElement('kai-emptypage');
-              this.antennaUnplugWarning.id = 'antenna-warning';
-              this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
-              this.antennaUnplugWarning.src = value;
-              document.querySelector('section').appendChild(this.antennaUnplugWarning);
-              this.updateAntennaUI();
-            });
-        } else {
-          this.updateAntennaUI();
-        }
-      });
+      if (!this.antennaUnplugWarning) {
+        LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
+          () => {
+            this.antennaUnplugWarning = document.createElement('kai-emptypage');
+            this.antennaUnplugWarning.id = 'antenna-warning';
+            this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
+            this.antennaUnplugWarning.src = '--fm-empty-url';
+            document.querySelector('section').appendChild(this.antennaUnplugWarning);
+            this.updateAntennaUI();
+          });
+      } else {
+        this.updateAntennaUI();
+      }
     } else {
       FMElementFMContainer.classList.remove('hidden');
       FMElementFMFooter.classList.remove('hidden');
@@ -62,22 +60,20 @@
   HeadphoneState.prototype.updateWarningPage = function () {
     if (!this.deviceWithValidAntenna) {
       this.status = StatusManager.STATUS_WARNING_SHOWING;
-      this.themeDetect().then((value) => {
-        if (!this.antennaUnplugWarning) {
-          LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
-            () => {
-              this.antennaUnplugWarning = document.createElement('kai-emptypage');
-              this.antennaUnplugWarning.id = 'antenna-warning';
-              this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
-              this.antennaUnplugWarning.src = value;
-              document.querySelector('section').appendChild(this.antennaUnplugWarning);
-              this.updateAntennaUI();
-              dump('mark2:');
-            });
-        } else {
-          this.updateAntennaUI();
-        }
-      });
+      if (!this.antennaUnplugWarning) {
+        LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
+          () => {
+            this.antennaUnplugWarning = document.createElement('kai-emptypage');
+            this.antennaUnplugWarning.id = 'antenna-warning';
+            this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
+            this.antennaUnplugWarning.src = '--fm-empty-url';
+            document.querySelector('section').appendChild(this.antennaUnplugWarning);
+            this.updateAntennaUI();
+            dump('mark2:');
+          });
+      } else {
+        this.updateAntennaUI();
+      }
     } else {
       FMElementFMContainer.classList.remove('hidden');
       FMElementFMFooter.classList.remove('hidden');
@@ -136,27 +132,6 @@
     }
   };
 
-  HeadphoneState.prototype.themeDetect = function () {
-    return new Promise((resolve) => {
-      navigator.mozSettings.createLock().get('theme.selected')
-        .then((theme) => {
-          this.themeImg = this.themeChange(theme['theme.selected']);
-          resolve(this.themeImg);
-        });
-      navigator.mozSettings.addObserver('theme.selected',
-        (theme) => {
-          this.themeImg = this.themeChange(theme['settingValue']);
-          this.antennaUnplugWarning
-            ? this.antennaUnplugWarning.src = this.themeImg : ''; 
-        });
-    });
-  };
-
-  HeadphoneState.prototype.themeChange = function (theme) {
-    return (/darktheme/).test(theme)
-      ? '/style/images/img-headphone-unplugged-dark.svg'
-      : '/style/images/img-headphone-unplugged-light.svg';
-  };
 
   HeadphoneState.prototype.updateAntennaUI = function () {
     StatusManager.update(this.status);
