@@ -22,8 +22,6 @@
       }
 
       this.speakerManagers.forcespeaker = value;
-
-      StatusManager.update();
     }
   };
 

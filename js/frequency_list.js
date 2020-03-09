@@ -78,7 +78,7 @@
       FMElementFavoriteListWarning.classList.add('hidden');
       favoritesList.sort((a, b) => a.frequency - b.frequency);
       this.updateFrequencyListUI(favoritesList);
-      FocusManager.update();
+      FocusManager.update(false);
     } else {
       FrequencyDialer.removeFavoriteDialer();
       this.updateFavorWarning();
@@ -120,7 +120,7 @@
       }
     }
     FrequencyDialer.updateFrequency();
-    FocusManager.update();
+    FocusManager.update(false);
   };
 
   // Get the frequency of current frequency list item
@@ -136,7 +136,7 @@
     let stationslist = FrequencyManager.getStationsFrequencyList();
     if (stationslist) {
       this.updateFrequencyListUI(stationslist);
-      FocusManager.update();
+      FocusManager.update(false);
     }
   };
   exports.FrequencyList = new FrequencyList();

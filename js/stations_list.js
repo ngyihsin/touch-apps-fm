@@ -63,7 +63,7 @@
     }
 
     // Update current focus
-    FocusManager.update();
+    FocusManager.update(true);
   };
 
   // Switch from station list UI to favorite list UI
@@ -84,7 +84,7 @@
     FrequencyList.updateFavoriteListUI();
 
     // Update current focus
-    FocusManager.update();
+    FocusManager.update(true);
   };
 
   // Start scan stations
@@ -135,19 +135,17 @@
     // Update current stations list UI
     FrequencyList.updateStationsListUI();
     // Make the frequency in frequency dialer UI is current palying frequency
-    this.onFrequencyChanged();
+    this.onFrequencyChanged(true);
   };
 
-  StationsList.prototype.onFrequencyChanged = function () {
+  StationsList.prototype.onFrequencyChanged = function (reset) {
     let frequency = mozFMRadio.frequency;
     // Add current frequency to history
     HistoryFrequency.add(frequency);
     // Update frequency dialer UI
     FrequencyDialer.updateFrequency(frequency);
-    // Update status to update UI
-    StatusManager.update();
     // Update current focus
-    FocusManager.update();
+    FocusManager.update(reset);
     // Update Remote data
     Remote.updateMetadata();
   };
@@ -156,7 +154,7 @@
   StationsList.prototype.handleFrequencyChanged = function () {
     if (StatusManager.status !== StatusManager.STATUS_STATIONS_SCANING &&
       !this.scanningAborted) {
-      return this.onFrequencyChanged();
+      return this.onFrequencyChanged(false);
     }
 
     // Get the frequency scanned
@@ -219,14 +217,11 @@
     // Show toast message
     FMRadio.showMessage(message);
 
+    if (needupdate) {
+      this.onFrequencyChanged(true);
+    }
     // Update StatusManager to update UI
     StatusManager.update(StatusManager.STATUS_STATIONS_SHOWING);
-
-    if (needupdate) {
-      this.onFrequencyChanged();
-      // Update current focus
-      FocusManager.update();
-    }
   };
 
   // Abort stations scanning operation

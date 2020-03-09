@@ -9,6 +9,7 @@
     this.focusList = {};
     this.previousFocusedItem = null;
     this.previousFocusedIndex = -1;
+    this.resetFocus = false;
   };
 
   // Update current list should be focued in current screen
@@ -72,7 +73,7 @@
   };
 
   // Update current focus
-  FocusManager.prototype.update = function () {
+  FocusManager.prototype.update = function (resetFocus) {
     switch (StatusManager.status) {
       case StatusManager.STATUS_FAVORITE_SHOWING:
       case StatusManager.STATUS_FAVORITE_RENAMING:
@@ -88,6 +89,7 @@
       default:
         return;
     }
+    this.resetFocus = resetFocus;
     let currentFrequency = FrequencyDialer.getFrequency();
     let stationslist = this.focus === StatusManager.STATUS_FAVORITE_SHOWING
       ? FrequencyManager.getFavoriteFrequencyList()
@@ -118,28 +120,21 @@
     }
 
     let index = 0;
-    if (this.focus === StatusManager.STATUS_STATIONS_SCANING) {
-      if (currentFocusList.elements.length === 0) {
-        return;
-      }
-      // Always focus the last item while scanning
-      index = currentFocusList.elements.length - 1;
-    } else if (this.focus === StatusManager.STATUS_STATIONS_SHOWING ||
-      this.focus === StatusManager.STATUS_FAVORITE_SHOWING) {
-      if (fixed) {
-        if (typeof fixed === 'number') {
-          currentFocusList.index = fixed;
-        }
-        index = currentFocusList.index;
-      } else {
-        index = 0;
-      }
-    }
 
+    if (fixed) {
+      if (typeof fixed === 'number') {
+        currentFocusList.index = fixed;
+      }
+      index = currentFocusList.index;
+    } else {
+      index = 0;
+    }
     // Update the specified index item to focus
     this.updateFocus(index);
     // Scroll to the focus item if needed
-    this.previousFocusedItem.scrollIntoView(false);
+    if (this.resetFocus) {
+      this.previousFocusedItem.scrollIntoView(false);
+    }
   };
 
   // Update the specified index item to focus

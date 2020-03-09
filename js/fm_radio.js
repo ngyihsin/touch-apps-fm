@@ -98,9 +98,7 @@
     }
 
     // Update status to update UI
-    if (StatusManager.status === StatusManager.STATUS_STATIONS_SHOWING) {
-      StatusManager.update();
-    } else if (StatusManager.status !== StatusManager.STATUS_DIALOG_FIRST_INIT) {
+    if (StatusManager.status !== StatusManager.STATUS_DIALOG_FIRST_INIT) {
       StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
     }
   };
@@ -112,8 +110,6 @@
     SpeakerState.state = false;
     // Hide dialog when fm disabled..
     Dialog.hideDialog();
-    // Update status to update UI
-    StatusManager.update();
   };
 
   FMRadio.prototype.enableFMRadio = function (frequency) {
