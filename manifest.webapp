@@ -36,9 +36,6 @@
       "description": "Gaia FM Radio"
     }
   },
-  "chrome": {
-    "statusbar": "overlap"
-  },
   "default_locale": "en-US",
   "icons": {
     "56": "/style/icons/fm_56.png",
