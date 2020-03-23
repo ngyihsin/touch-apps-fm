@@ -75,7 +75,7 @@
     }
     // Change frequency list to 'favorites-list' to update UI
     FMElementFrequencyListUI.className = this.FAVORITE;
-    FrequencyDialer.deleteButton();
+    FrequencyDialer.deleteButton(true);
 
     // Update StatusManager to update UI
     StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
@@ -210,7 +210,7 @@
      */
     FrequencyDialer.progressOff();
     FMElementFrequencyListUI.classList.remove('scanning');
-
+    
     // Mark flag 'scanningAborted' as false
     this.scanningAborted = false;
 
@@ -228,6 +228,7 @@
   StationsList.prototype.abortScanStations = function (headphone, retryTime) {
     // Cancel seek
     let request = mozFMRadio.cancelSeek();
+    FrequencyDialer.stationAction.disabled = true;
     if (headphone) {
       // Abort for headphone has been unplugged
       request.onsuccess = this.scanAbortedHeadphone();

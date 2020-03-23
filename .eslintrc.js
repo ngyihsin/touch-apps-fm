@@ -65,6 +65,7 @@ module.exports = {
     "prefer-object-spread": "off",
     "prefer-named-capture-group": "off",
     "no-var": "off",
+    "function-call-argument-newline": "off",
     "no-redeclare": "off",
     'no-underscore-dangle': "off",
     "no-use-before-define": ["error", { "functions": false }],

@@ -307,6 +307,7 @@
         FrequencyDialer.stationAction.setAttribute('text', LanguageManager.abort);
         this.fmLeftKey.setAttribute('class', 'dis-button');
         this.fmRightKey.setAttribute('class', 'dis-button');
+        FrequencyDialer.stationAction.disabled = false;
         FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'abort');
         FMElementFMFooter.selected = 'allstations';
         FMElementFMFooter.disabled = true;
@@ -319,6 +320,7 @@
         FMElementFMFooter.selected = 'allstations';
         this.fmLeftKey.setAttribute('class', '');
         this.fmRightKey.setAttribute('class', '');
+        FrequencyDialer.stationAction.disabled = false;
         FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         FMElementFMFooter.disabled = false;
         break;
@@ -328,6 +330,7 @@
         FrequencyDialer.stationAction.setAttribute('level', 'primary');
         FrequencyDialer.stationAction.setAttribute('text', LanguageManager.scan);
         FMElementFMFooter.selected = 'allstations';
+        FrequencyDialer.stationAction.disabled = false;
         FrequencyDialer.stationAction.setAttribute('data-l10n-id', 'scan-stations');
         break;
       default:

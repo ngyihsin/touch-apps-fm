@@ -159,14 +159,24 @@
   };
 
   FrequencyDialer.prototype.createButton = function () {
-    this.stationAction = document.createElement('kai-pillbutton');
-    this.stationAction.id = 'station-action';
-    this.stationAction.level = "secondary";
-    this.fmHeader.appendChild(this.stationAction);
+    if (this.stationAction) {
+      this.stationAction.classList.remove('hidden');
+    } else {
+      this.stationAction = document.createElement('kai-pillbutton');
+      this.stationAction.id = 'station-action';
+      this.stationAction.level = "secondary";
+      this.fmHeader.appendChild(this.stationAction);
+    }
   };
 
-  FrequencyDialer.prototype.deleteButton = function () {
-    this.fmHeader.removeChild(this.stationAction);
+  FrequencyDialer.prototype.deleteButton = function (hidden) {
+    if (this.stationAction) {
+      if (hidden) {
+        this.stationAction.classList.add('hidden');
+      } else {
+        this.fmHeader.removeChild(this.stationAction);
+      }
+    }
   };
 
   FrequencyDialer.prototype.createLoader = function () {

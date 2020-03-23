@@ -98,9 +98,10 @@
     }
 
     // Update status to update UI
-    if (StatusManager.status !== StatusManager.STATUS_DIALOG_FIRST_INIT) {
+    if (StatusManager.status === StatusManager.STATUS_DIALOG_FIRST_INIT) {
       StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
     }
+    StatusManager.update(StatusManager.status);
   };
 
   FMRadio.prototype.onFMRadioDisabled = function () {
@@ -258,6 +259,7 @@
     if (navigator.mozAudioChannelManager.headphones ||
         mozFMRadio.antennaAvailable) {
       if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
+        FrequencyDialer.deleteButton(false);
         FMCache.clear('fm-container');
         let cacheHtml = document.getElementById('fm-container');
         let codeNode = FMCache.cloneAsInertNodeAvoidingCustomElementHorrors(cacheHtml);
