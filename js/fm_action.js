@@ -105,8 +105,10 @@
     this.fmRightKey = document.getElementById('frequency-op-seekup');
 
     this.freDialer = document.getElementById('dialer-bar');
+    this.frequencyBar = document.getElementById('frequency-bar');
 
     this.action = document.getElementById('action');
+    this.footer = document.getElementById('fm-footer');
 
     FMElementFMFooter.setAttribute('items', JSON.stringify(LanguageManager.items));
     // RTL change
@@ -114,9 +116,11 @@
 
     this.fmLeftKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
     this.fmRightKey.addEventListener('touchstart', this.callFunByLongPress.bind(this), false);
-    window.addEventListener('click', this.callFunByClick.bind(this), false);
+    FMElementFrequencyListUI.addEventListener('click', this.callFunByClick.bind(this), false);
+    FMElementHeader.addEventListener('click', this.callFunByClick.bind(this), false);
+    this.frequencyBar.addEventListener('click', this.callFunByClick.bind(this), false);
     window.addEventListener('keydown', this.callFunBackSpace.bind(this));
-    document.addEventListener('categorybarSelect',
+    this.footer.addEventListener('categorybarSelect',
       (e) => {
         let clickId = e.detail.selected;
         FunctionList[clickId]();

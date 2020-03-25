@@ -28,11 +28,11 @@
 
     eventListener() {
       this.init = false;
-      document.addEventListener('dialogSecondaryBtnClick',
+      this.dialog.addEventListener('dialogSecondaryBtnClick',
         () => {
           this.secondaryBtnCallback();
         });
-      document.addEventListener('dialogPrimaryBtnClick',
+      this.dialog.addEventListener('dialogPrimaryBtnClick',
         () => {
           this.primaryBtnCallback();
         });
@@ -85,13 +85,13 @@
           this.NAME_INPUT_MAX_LENGTH;
         this.editInput.setAttribute('class', '');
         this.dialog.appendChild(this.editInput);
-        document.addEventListener('input',
+        this.editInput.addEventListener('input',
           (e) => {
             this.editValue = e.detail.value;
             this.editInput.subtitle = this.editValue.length + '/' +
             this.NAME_INPUT_MAX_LENGTH;
           });
-        document.addEventListener('clear',
+        this.editInput.addEventListener('clear',
           () => {
             this.editValue = null;            
             this.editInput.subtitle = 0 + '/' + this.NAME_INPUT_MAX_LENGTH;
@@ -111,11 +111,11 @@
       if (this.userView) {
         this.dialog.removeChild(this.editInput);
       }
-      document.removeEventListener('dialogSecondaryBtnClick',
+      this.dialog.removeEventListener('dialogSecondaryBtnClick',
         () => {
           this.secondaryBtnCallback();
         });
-      document.removeEventListener('dialogPrimaryBtnClick',
+      this.dialog.removeEventListener('dialogPrimaryBtnClick',
         () => {
           this.primaryBtnCallback();
         });

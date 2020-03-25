@@ -167,10 +167,12 @@
       this.stationAction.level = "secondary";
       this.fmHeader.appendChild(this.stationAction);
     }
+    this.stationAction.addEventListener('click', FMAction.callFunByClick.bind(this));
   };
 
   FrequencyDialer.prototype.deleteButton = function (hidden) {
     if (this.stationAction) {
+      this.stationAction.removeEventListener('click', FMAction.callFunByClick.bind(this));
       if (hidden) {
         this.stationAction.classList.add('hidden');
       } else {
