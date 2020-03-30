@@ -28,14 +28,16 @@
 
     eventListener() {
       this.init = false;
-      this.dialog.addEventListener('dialogSecondaryBtnClick',
-        () => {
-          this.secondaryBtnCallback();
-        });
-      this.dialog.addEventListener('dialogPrimaryBtnClick',
-        () => {
-          this.primaryBtnCallback();
-        });
+      this.dialog.addEventListener('click', this.dialogBtnClick.bind(this));
+    },
+
+    dialogBtnClick(event) {
+      const type = event.detail.type;
+      if ('secondary' === type) {
+        this.secondaryBtnCallback();
+      } else {
+        this.primaryBtnCallback();
+      }
     },
 
     showDialog(contents, userView, primaryBtnCallback, secondaryBtnCallback) {
@@ -111,14 +113,7 @@
       if (this.userView) {
         this.dialog.removeChild(this.editInput);
       }
-      this.dialog.removeEventListener('dialogSecondaryBtnClick',
-        () => {
-          this.secondaryBtnCallback();
-        });
-      this.dialog.removeEventListener('dialogPrimaryBtnClick',
-        () => {
-          this.primaryBtnCallback();
-        });
+      this.dialog.removeEventListener('click', this.dialogBtnClick.bind(this));
       this.secondaryBtnCallback = null;
       this.userView = null;
       this.dialog ? this.dialog.open = false : '';

@@ -120,7 +120,7 @@
     FMElementHeader.addEventListener('click', this.callFunByClick.bind(this), false);
     this.frequencyBar.addEventListener('click', this.callFunByClick.bind(this), false);
     window.addEventListener('keydown', this.callFunBackSpace.bind(this));
-    this.footer.addEventListener('categorybarSelect',
+    this.footer.addEventListener('select',
       (e) => {
         let clickId = e.detail.selected;
         FunctionList[clickId]();
