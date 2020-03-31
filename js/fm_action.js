@@ -55,7 +55,9 @@
 
   // Handle 'switchToHeadphones' clicked
   function onSwitchToHeadphonesClicked() {
-    FMAction.speakerUpdate(false);
+    if (HeadphoneState.deviceHeadphoneState) {
+      FMAction.speakerUpdate(false);
+    }
   }
 
   // Handle 'switchToSpeaker' clicked
