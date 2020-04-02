@@ -198,7 +198,8 @@
   };
 
   FrequencyDialer.prototype.progressOff = function () {
-    FMElementFrequencyListUI.removeChild(this.progress);
+    FMElementFrequencyListUI.contains(this.progress) &&
+      FMElementFrequencyListUI.removeChild(this.progress);
   };
 
   exports.FrequencyDialer = new FrequencyDialer();
