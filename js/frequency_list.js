@@ -4,7 +4,9 @@
 (function (exports) {
 
   // FrequencyList Constructor
-  const FrequencyList = function () {};
+  const FrequencyList = function () {
+    this.scrollListener = false;
+  };
 
   // Format frequency list item element innerHTML
   FrequencyList.prototype.formatFrequencyListTemplate = function (frequencyObject) {
@@ -68,6 +70,26 @@
       this.addFrequencyToListUI(frequencyObject);
       frequencyObject.favorite
         ? FrequencyDialer.addFavoriteDialer(frequencyObject) : '';
+    }
+    if (FMElementFrequencyListContainer.offsetHeight > FMElementFrequencyListUI.offsetHeight &&
+        !this.scrollListener) {      
+      this.scrollListener = true;
+      FMElementFrequencyListUI.addEventListener('scroll', this.handleScroll.bind(this));
+    } else {      
+      this.scrollListener = false;
+      FMElementFrequencyListUI.removeEventListener('scroll', this.handleScroll.bind(this));
+    }
+  };
+
+  FrequencyList.prototype.handleScroll = function () {
+    let fmHeader = document.getElementById('fm-header');
+    let gradientElement = document.getElementById('gradient');
+    let gradient = document.createElement('div');
+    gradient.id = 'gradient';
+    if (FMElementFrequencyListUI.scrollTop > 0 && !gradientElement) {
+      fmHeader.appendChild(gradient);
+    } else {
+      fmHeader.removeChild(gradient);
     }
   };
 
