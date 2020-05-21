@@ -35,7 +35,7 @@
       const type = event.detail.type;
       if ('secondary' === type) {
         this.secondaryBtnCallback();
-      } else {
+      } else if ('primary' === type) {
         this.primaryBtnCallback();
       }
     },
