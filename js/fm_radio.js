@@ -205,7 +205,9 @@
       }
     } else {
       FMPowerKey.setAttribute('data-l10n-id', 'power-switch-on');
-      FMPowerKey.setAttribute('class', 'power-switch-on');
+      HeadphoneState.deviceWithValidAntenna
+        ? FMPowerKey.setAttribute('class', 'power-switch-on')
+        : FMPowerKey.setAttribute('class', 'power-switch-on hidden');
       FMPowerKey.checked = false;
       FMspeakSwitch.classList.add('hidden');
     }

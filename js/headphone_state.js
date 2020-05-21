@@ -25,7 +25,8 @@
   
     this.deviceWithInternalAntenna = mozFMRadio.antennaAvailable;
     this.updateHeadphoneAndAntennaState();
-  
+    !this.deviceWithValidAntenna && StatusManager.update(this.status);
+
     this.audioChannelManager.onheadphoneschange = this.onHeadphoneStateChanged.bind(this);
     callback();
   };
@@ -33,6 +34,7 @@
   HeadphoneState.prototype.updateHeadphoneAndAntennaState = function () {
     this.deviceHeadphoneState = this.audioChannelManager.headphones;
     this.deviceWithValidAntenna = this.deviceHeadphoneState || this.deviceWithInternalAntenna;
+    
     if (!this.deviceWithValidAntenna) {
       this.status = StatusManager.STATUS_WARNING_SHOWING;
       if (!this.antennaUnplugWarning) {
@@ -44,32 +46,6 @@
             this.antennaUnplugWarning.src = '--fm-empty-url';
             document.querySelector('section').appendChild(this.antennaUnplugWarning);
             this.updateAntennaUI();
-          });
-      } else {
-        this.updateAntennaUI();
-      }
-    } else {
-      FMElementFMContainer.classList.remove('hidden');
-      FMElementFMFooter.classList.remove('hidden');
-      this.antennaUnplugWarning
-        ? this.antennaUnplugWarning.classList.add('hidden') : '';
-      FMPowerKey.classList.remove('hidden');
-    }
-  };
-
-  HeadphoneState.prototype.updateWarningPage = function () {
-    if (!this.deviceWithValidAntenna) {
-      this.status = StatusManager.STATUS_WARNING_SHOWING;
-      if (!this.antennaUnplugWarning) {
-        LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
-          () => {
-            this.antennaUnplugWarning = document.createElement('kai-emptypage');
-            this.antennaUnplugWarning.id = 'antenna-warning';
-            this.antennaUnplugWarning.description = LanguageManager.noAntennaMsg;
-            this.antennaUnplugWarning.src = '--fm-empty-url';
-            document.querySelector('section').appendChild(this.antennaUnplugWarning);
-            this.updateAntennaUI();
-            dump('mark2:');
           });
       } else {
         this.updateAntennaUI();
@@ -124,6 +100,7 @@
           FrequencyRename.undoRename();
         }
         this.appStatus = StatusManager.status;
+        StatusManager.update(StatusManager.STATUS_WARNING_SHOWING);
       }
       // Disable FMRadio no matter device with internal antenna or not
       if (mozFMRadio.enabled) {
@@ -134,7 +111,6 @@
 
 
   HeadphoneState.prototype.updateAntennaUI = function () {
-    StatusManager.update(this.status);
     FMElementFMContainer.classList.add('hidden');
     FMElementFMFooter.classList.add('hidden');
     this.antennaUnplugWarning.classList.remove('hidden');
