@@ -96,11 +96,6 @@
       this.disableFMRadio();
       return;
     }
-
-    // Update status to update UI
-    if (StatusManager.status === StatusManager.STATUS_DIALOG_FIRST_INIT) {
-      StatusManager.update(StatusManager.STATUS_FAVORITE_SHOWING);
-    }
     StatusManager.update(StatusManager.status);
   };
 

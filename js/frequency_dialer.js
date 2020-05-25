@@ -177,6 +177,7 @@
         this.stationAction.classList.add('hidden');
       } else {
         this.fmHeader.removeChild(this.stationAction);
+        this.stationAction = null;
       }
     }
   };
