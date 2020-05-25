@@ -71,7 +71,7 @@
 
     initDialog() {
       this.dialog.className = '';
-      this.dialog.title = this.contents.title;
+      this.dialog.dialogtitle = this.contents.title;
       this.dialog.message = this.contents.message;
       this.dialog.primarybtntext = this.contents.primarybtntext;
       this.dialog.secondarybtntext = this.contents.secondarybtntext;

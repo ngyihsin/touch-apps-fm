@@ -34,45 +34,44 @@
     updateLanguage: function updateLanguage() {
       let optionMenu = document.querySelector('kai-popupmenu');
       optionMenu ? optionMenu.options[0].label = this.rename : '';
-      this.footer.setAttribute('items',
-        JSON.stringify(this.items));
+      this.footer.setAttribute('items', JSON.stringify(this.items));
       let status = StatusManager.status;
       switch (status) {
         case StatusManager.STATUS_WARNING_SHOWING:
-          this.HeaderTitle.title = this.radioTitle;
+          this.HeaderTitle.primarytitle = this.radioTitle;
           HeadphoneState.antennaUnplugWarning.description = this.noAntennaMsg;
           if (this.dialog.open) {
             this.dialog.primarybtntext = this.airplaneModeButton;
             this.dialog.secondarybtntext = this.cancel;
-            this.dialog.title = this.airplaneModeHeader;
+            this.dialog.dialogtitle = this.airplaneModeHeader;
             this.dialog.message = this.airplaneModeMsg;
           }
           break;
         case StatusManager.STATUS_FAVORITE_SHOWING:
-          this.HeaderTitle.title = this.favoritesTitle;
+          this.HeaderTitle.primarytitle = this.favoritesTitle;
           break;
         case StatusManager.STATUS_STATIONS_SCANING:
-          this.HeaderTitle.title = this.allstationsTitle;
+          this.HeaderTitle.primarytitle = this.allstationsTitle;
           FrequencyDialer.stationAction.text = this.abort;
           break;
         case StatusManager.STATUS_STATIONS_SHOWING:
-          this.HeaderTitle.title = this.allstationsTitle;
+          this.HeaderTitle.primarytitle = this.allstationsTitle;
           FrequencyDialer.stationAction.text = this.scanStations;
           break;
         case StatusManager.STATUS_STATIONS_EMPTY:
-          this.HeaderTitle.title = this.allstationsTitle;
+          this.HeaderTitle.primarytitle = this.allstationsTitle;
           FrequencyDialer.stationAction.text = this.scan;
           break;
         case StatusManager.STATUS_DIALOG_FIRST_INIT:
           this.dialog.primarybtntext = this.scan;
           this.dialog.secondarybtntext = this.cancel;
-          this.dialog.title = this.scanStationsHeader;
+          this.dialog.dialogtitle = this.scanStationsHeader;
           this.dialog.message = this.scanStationsMsg;
           break;
         case StatusManager.STATUS_FAVORITE_RENAMING:
           this.dialog.primarybtntext = this.save;
           this.dialog.secondarybtntext = this.cancel;
-          this.dialog.title = this.rename;
+          this.dialog.dialogtitle = this.rename;
           break;
         default:
           break;

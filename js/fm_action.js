@@ -299,15 +299,15 @@
     let status = StatusManager.status;
     switch (status) {
       case StatusManager.STATUS_WARNING_SHOWING:
-        FMElementHeader.title = LanguageManager.radioTitle;
+        FMElementHeader.primarytitle = LanguageManager.radioTitle;
         break;
       case StatusManager.STATUS_FAVORITE_SHOWING:
-        FMElementHeader.title = LanguageManager.favoritesTitle;
+        FMElementHeader.primarytitle = LanguageManager.favoritesTitle;
         this.freDialer.classList.remove('hidden');
         FMElementFMFooter.selected = 'favorites';
         break;
       case StatusManager.STATUS_STATIONS_SCANING:
-        FMElementHeader.title = LanguageManager.allstationsTitle;
+        FMElementHeader.primarytitle = LanguageManager.allstationsTitle;
         this.freDialer.classList.add('hidden');
         FrequencyDialer.stationAction.setAttribute('level', 'secondary');
         FrequencyDialer.stationAction.setAttribute('text', LanguageManager.abort);
@@ -319,7 +319,7 @@
         FMElementFMFooter.disabled = true;
         break;
       case StatusManager.STATUS_STATIONS_SHOWING:
-        FMElementHeader.title = LanguageManager.allstationsTitle;
+        FMElementHeader.primarytitle = LanguageManager.allstationsTitle;
         this.freDialer.classList.add('hidden');
         FrequencyDialer.stationAction.setAttribute('level', 'secondary');
         FrequencyDialer.stationAction.setAttribute('text', LanguageManager.scanStations);
@@ -331,7 +331,7 @@
         FMElementFMFooter.disabled = false;
         break;
       case StatusManager.STATUS_STATIONS_EMPTY:
-        FMElementHeader.title = LanguageManager.allstationsTitle;
+        FMElementHeader.primarytitle = LanguageManager.allstationsTitle;
         this.freDialer.classList.add('hidden');
         FrequencyDialer.stationAction.setAttribute('level', 'primary');
         FrequencyDialer.stationAction.setAttribute('text', LanguageManager.scan);
