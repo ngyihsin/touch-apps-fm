@@ -101,6 +101,7 @@
         }
         this.appStatus = StatusManager.status;
         StatusManager.update(StatusManager.STATUS_WARNING_SHOWING);
+        Remote.stopRemote();
       }
       // Disable FMRadio no matter device with internal antenna or not
       if (mozFMRadio.enabled) {

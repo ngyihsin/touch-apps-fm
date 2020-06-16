@@ -67,5 +67,9 @@
     this.postMessage('status', playStatus);
   };
 
+  Remote.prototype.stopRemote = function () {
+    this.postMessage('stop', { origin: window.location.origin });
+  };
+
   exports.Remote = new Remote();
 })(window);
