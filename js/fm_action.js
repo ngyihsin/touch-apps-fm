@@ -143,7 +143,12 @@
 
   FMAction.prototype.callFunBackSpace = function (e) {
     if (e.key === 'GoBack') {
-      let status = StatusManager.status;
+      if (FrequencyRename.optionMenu.open) {
+        FrequencyRename.optionMenu.open = false;
+        e.preventDefault();
+        return;
+      }
+      const status = StatusManager.status;
       switch (status) {
         case StatusManager.STATUS_FAVORITE_RENAMING:
           FrequencyRename.undoRename();
