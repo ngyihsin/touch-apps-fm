@@ -143,7 +143,12 @@
 
   FMAction.prototype.callFunBackSpace = function (e) {
     if (e.key === 'GoBack') {
-      if (FrequencyRename.optionMenu.open) {
+      if (Dialog.dialog.open) {
+        Dialog.dialog.open = false;
+        e.preventDefault();
+        return;
+      }
+      if (FrequencyRename && FrequencyRename.optionMenu.open) {
         FrequencyRename.optionMenu.open = false;
         e.preventDefault();
         return;
