@@ -11,6 +11,9 @@ require('../mocks/speaker');
 require('../mocks/speakerManager');
 require('../mocks/document');
 require('../mocks/navigator/mozL10n');
+import AudioChannelClient from '../mocks/audiochannnelClient';
+global.AudioChannelClient = AudioChannelClient;
+
 
 require('../../js/fm_radio');
 require('../../js/fm_action');

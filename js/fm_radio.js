@@ -7,6 +7,7 @@
     this.KEYNAME_FIRST_INIT = 'is_first_init';
     this.airplaneModeEnabled = false;
     this.previousSpeakerForcedState = false;
+    this.audioChannelClient = new AudioChannelClient('content');
   };
 
   FMRadio.prototype.init = function () {
@@ -77,14 +78,10 @@
   };
 
   FMRadio.prototype.onFMRadioEnabled = function () {
+    this.audioChannelClient.requestChannel();
     // Update UI immediately
     this.updateEnablingState();
     this.updateDimLightState(false);
-    if (!Remote.enabled) {
-      // Init remote on first turn on radio
-      Remote.init();
-    }
-    Remote.updatePlaybackStatus();
 
     if (!HeadphoneState.deviceWithValidAntenna) {
 
@@ -97,9 +94,15 @@
       return;
     }
     StatusManager.update(StatusManager.status);
+    if (!Remote.enabled) {
+      // Init remote on first turn on radio
+      Remote.init();
+    }
+    Remote.updatePlaybackStatus();
   };
 
   FMRadio.prototype.onFMRadioDisabled = function () {
+    this.audioChannelClient.abandonChannel();
     this.updateEnablingState(false);
     this.updateDimLightState(true);
     Remote.updatePlaybackStatus();
