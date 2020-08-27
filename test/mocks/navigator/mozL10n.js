@@ -1,12 +1,12 @@
 
 window = {
-  navigator: null
+  api: null
 };
 
-window.navigator = {
-  mozL10n: null
+window.api = {
+  l10n: null
 };
 
-window.navigator.mozL10n = {
+window.api.l10n = {
   get: () => jest.fn()
 };

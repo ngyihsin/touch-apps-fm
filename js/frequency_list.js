@@ -121,12 +121,12 @@
   FrequencyList.prototype.favoriteDeal = function (favorite, e) {
     let frequency = '';
     let element = null;
-    if (e.rangeParent.id === 'frequency-display') {
+    if (e.rangeParent.id === 'favorite-star') {
       frequency = FrequencyDialer.getFrequency();
       element = FocusManager.getCurrentFocusElement();
     } else {
-      frequency = this.getFrequencyByElement(e.rangeParent);
-      element = e.rangeParent;
+      frequency = this.getFrequencyByElement(e.target.parentNode);
+      element = e.target.parentNode;
     }
     FrequencyManager.updateFrequencyFavorite(frequency, favorite);
     if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {

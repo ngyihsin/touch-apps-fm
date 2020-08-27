@@ -1,7 +1,7 @@
 require('../mocks/DomInitHTML');
 require('../mocks/localStorage');
 require('../mocks/mediaDB');
-require('../mocks/mozRadio');
+require('../mocks/fmRadio');
 require('../mocks/navigator/getDeviceStorage');
 require('../mocks/navigator/hasFeature');
 require('../mocks/navigator/mozAudioChannelManager');
@@ -60,7 +60,7 @@ FrequencyManager.frequencyList = {
 };
 test('radio on', () => {
   window.localStorage.setItem(FMRadio.KEYNAME_FIRST_INIT, true);
-  mozFMRadio.enabled = true;
+  fmRadio.enabled = true;
   FMRadio.onFMRadioEnabled();
   expect(document.getElementById('power-switch').getAttribute('data-l10n-id')).toBe('power-switch-off');
   expect(document.getElementById('power-switch').checked).toBe(true);

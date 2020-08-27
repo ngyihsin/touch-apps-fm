@@ -6,22 +6,22 @@
   const Dialog = {
     show: false,
     airplane: {
-      title: navigator.mozL10n.get('airplaneModeHeader'),
-      message: navigator.mozL10n.get('airplaneModeMsg'),
-      primarybtntext: navigator.mozL10n.get('settings'),
-      secondarybtntext: navigator.mozL10n.get('cancel')
+      title: window.api.l10n.get('airplaneModeHeader'),
+      message: window.api.l10n.get('airplaneModeMsg'),
+      primarybtntext: window.api.l10n.get('settings'),
+      secondarybtntext: window.api.l10n.get('cancel')
     },
     firstInit: {
-      title: navigator.mozL10n.get('scan-stations-header'),
-      message: navigator.mozL10n.get('scan-stations-msg'),
-      primarybtntext: navigator.mozL10n.get('scan'),
-      secondarybtntext: navigator.mozL10n.get('cancel')
+      title: window.api.l10n.get('scan-stations-header'),
+      message: window.api.l10n.get('scan-stations-msg'),
+      primarybtntext: window.api.l10n.get('scan'),
+      secondarybtntext: window.api.l10n.get('cancel')
     },
     renameStation: {
-      title: navigator.mozL10n.get('station-renamed'),
+      title: window.api.l10n.get('station-renamed'),
       message: null,
-      primarybtntext: navigator.mozL10n.get('save'),
-      secondarybtntext: navigator.mozL10n.get('cancel')
+      primarybtntext: window.api.l10n.get('save'),
+      secondarybtntext: window.api.l10n.get('cancel')
     },
     init: true,
     NAME_INPUT_MAX_LENGTH: 20,
@@ -49,8 +49,8 @@
       this.contents = contents;
       if (!this.dialog) {
         let script = [
-          'app://shared.gaiamobile.org/elements/kai-pillbutton.js',
-          'app://shared.gaiamobile.org/elements/kai-dialog.js',
+          'https://shared.local/elements/kai-pillbutton.js',
+          'https://shared.local/elements/kai-dialog.js',
         ];
         LazyLoader.load(script,
           () => {
@@ -110,13 +110,15 @@
     },
 
     hideDialog() {
-      if (this.userView) {
-        this.dialog.removeChild(this.editInput);
+      if (this.dialog) {
+        if (this.userView) {
+          this.dialog.removeChild(this.editInput);
+        }
+        this.dialog.removeEventListener('click', this.dialogBtnClick.bind(this));
+        this.secondaryBtnCallback = null;
+        this.userView = null;
+        this.dialog ? this.dialog.open = false : ''; 
       }
-      this.dialog.removeEventListener('click', this.dialogBtnClick.bind(this));
-      this.secondaryBtnCallback = null;
-      this.userView = null;
-      this.dialog ? this.dialog.open = false : '';
     }
   };
 

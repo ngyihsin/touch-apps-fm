@@ -1,7 +1,7 @@
 require('../mocks/DomInitHTML');
 require('../mocks/localStorage');
 require('../mocks/mediaDB');
-require('../mocks/mozRadio');
+require('../mocks/fmRadio');
 require('../mocks/navigator/getDeviceStorage');
 require('../mocks/navigator/hasFeature');
 require('../mocks/navigator/mozAudioChannelManager');
@@ -33,12 +33,12 @@ FMRadio.airplaneModeEnabled = false;
 Start.initialize();
 FMAction.init();
 test('short press to seek', () => {
-  mozFMRadio.enabled = true;
+  fmRadio.enabled = true;
   FMAction.isLongPress = false;
   FMAction.onclickSeek('frequency-op-seekdown');
-  expect(mozFMRadio.frequency).toBe(97.7);
+  expect(fmRadio.frequency).toBe(97.7);
   FMAction.onclickSeek('frequency-op-up');
-  expect(mozFMRadio.frequency).toBe(97.8);
+  expect(fmRadio.frequency).toBe(97.8);
 });
 
 test('toggle speaker and headphone', () => {

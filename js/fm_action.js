@@ -68,7 +68,7 @@
   // Handle 'Tab-frequency' clicked
   function onsetFrequency(e) {
     let frequency = FrequencyList.getFrequencyByElement(e.target);
-    mozFMRadio.setFrequency(frequency);
+    fmRadio.setFrequency(frequency);
   }
 
   // Handle 'option-menu clicked
@@ -187,15 +187,15 @@
   // Handle 'settings' clicked
   FMAction.prototype.settingsClicked = function () {
     try {
-      new MozActivity({
+      new WebActivity({
         name: 'configure',
         data: {
           target: 'device',
-          section: 'root'
+          section: 'connectivity-settings'
         }
       });
     } catch (e) {
-      console.error(`Failed to create an activity: ${e}`);
+      console.error('Failed to create an activity: ' + e);
     }
   };
 
@@ -227,8 +227,10 @@
     this.isLongPress = false;
     // If the FM radio is seeking channel currently, cancel it and seek again.
     if (seeking) {
-      let request = mozFMRadio.cancelSeek();
-      request.onsuccess = this.startStationScan(seekUpDirection);
+      let promise = fmRadio.cancelSeek();
+      promise.then(() => {
+        this.startStationScan(seekUpDirection);
+      });
     } else {
       this.startStationScan(seekUpDirection);
     }
@@ -236,22 +238,22 @@
 
   // Short press to seek
   FMAction.prototype.onclickSeek = function (seekUpDirection) {
-    if (mozFMRadio.enabled) {
+    if (fmRadio.enabled) {
       if (!this.isLongPress) {
-        let frequency = mozFMRadio.frequency;
+        let frequency = fmRadio.frequency;
         frequency = seekUpDirection === 'frequency-op-seekdown'
           ? frequency - 0.1 : frequency + 0.1;
         if (seekUpDirection === 'frequency-op-seekdown' &&
-          frequency < mozFMRadio.frequencyLowerBound) {
-          mozFMRadio.setFrequency(mozFMRadio.frequencyUpperBound);
+          frequency < fmRadio.frequencyLowerBound) {
+          fmRadio.setFrequency(fmRadio.frequencyUpperBound);
         } else if (seekUpDirection === 'frequency-op-seekup' &&
-          frequency > mozFMRadio.frequencyUpperBound) {
-          mozFMRadio.setFrequency(mozFMRadio.frequencyLowerBound);
+          frequency > fmRadio.frequencyUpperBound) {
+          fmRadio.setFrequency(fmRadio.frequencyLowerBound);
         } else {
-          mozFMRadio.setFrequency(frequency);
+          fmRadio.setFrequency(frequency);
         }
       } else {
-        mozFMRadio.cancelSeek();
+        fmRadio.cancelSeek();
       }
       this.isLongPress = false;
     }
@@ -259,11 +261,11 @@
 
   FMAction.prototype.startStationScan = function (seekUpDirection) {
     FMPowerKey.dataset.seeking = true;
-    let request = seekUpDirection === 'frequency-op-seekdown'
-      ? mozFMRadio.seekDown() : mozFMRadio.seekUp();
-    request.onsuccess = () => {
+    let promise = seekUpDirection === 'frequency-op-seekdown'
+      ? fmRadio.seekDown() : fmRadio.seekUp();
+    promise.then(() => {
       FMPowerKey.removeAttribute('data-seeking');
-    };
+    });
   };
 
   /*
@@ -287,8 +289,8 @@
     if (typeof FrequencyRename === 'undefined') {
       let script = [
         'js/frequency_rename.js',
-        'app://shared.gaiamobile.org/elements/kai-textfield.js',
-        'app://shared.gaiamobile.org/elements/kai-popupmenu.js'
+        'https://shared.local/elements/kai-textfield.js',
+        'https://shared.local/elements/kai-popupmenu.js'
       ];
       LazyLoader.load(script,
         () => {

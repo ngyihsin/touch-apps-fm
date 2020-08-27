@@ -5,25 +5,25 @@
 
   exports.LanguageManager = {
     init: function init() {
-      this.airplaneModeHeader = navigator.mozL10n.get('airplaneModeHeader');
-      this.airplaneModeMsg = navigator.mozL10n.get('airplaneModeMsg');
-      this.airplaneModeButton = navigator.mozL10n.get('settings');
-      this.noFavoriteMsg = navigator.mozL10n.get('noFavoritelistMsg');
-      this.noAntennaMsg = navigator.mozL10n.get('noAntennaMsg');
-      this.scanStationsMsg = navigator.mozL10n.get('scan-stations-msg');
-      this.scanStationsHeader = navigator.mozL10n.get('scan-stations-header');
-      this.scanStations = navigator.mozL10n.get('scan-stations');
-      this.scan = navigator.mozL10n.get('scan');
-      this.favoritesTitle = navigator.mozL10n.get('favorites');
-      this.radioTitle = navigator.mozL10n.get('radio');
-      this.allstationsTitle = navigator.mozL10n.get('allstations');
-      this.abort = navigator.mozL10n.get('abort');
-      this.save = navigator.mozL10n.get('save');
-      this.cancel = navigator.mozL10n.get('cancel');
-      this.rename = navigator.mozL10n.get('station-renamed');
+      this.airplaneModeHeader = window.api.l10n.get('airplaneModeHeader');
+      this.airplaneModeMsg = window.api.l10n.get('airplaneModeMsg');
+      this.airplaneModeButton = window.api.l10n.get('settings');
+      this.noFavoriteMsg = window.api.l10n.get('noFavoritelistMsg');
+      this.noAntennaMsg = window.api.l10n.get('noAntennaMsg');
+      this.scanStationsMsg = window.api.l10n.get('scan-stations-msg');
+      this.scanStationsHeader = window.api.l10n.get('scan-stations-header');
+      this.scanStations = window.api.l10n.get('scan-stations');
+      this.scan = window.api.l10n.get('scan');
+      this.favoritesTitle = window.api.l10n.get('favorites');
+      this.radioTitle = window.api.l10n.get('radio');
+      this.allstationsTitle = window.api.l10n.get('allstations');
+      this.abort = window.api.l10n.get('abort');
+      this.save = window.api.l10n.get('save');
+      this.cancel = window.api.l10n.get('cancel');
+      this.rename = window.api.l10n.get('station-renamed');
       this.items = [
-        { label: navigator.mozL10n.get('favorites'), value: 'favorites', icon: 'favorite-on' },
-        { label: navigator.mozL10n.get('all'), value: 'allstations', icon: 'fm-radio-32px' }
+        { label: window.api.l10n.get('favorites'), value: 'favorites', icon: 'favorite-on' },
+        { label: window.api.l10n.get('all'), value: 'allstations', icon: 'fm-radio-32px' }
       ];
 
       this.dialog = document.querySelector('kai-dialog');

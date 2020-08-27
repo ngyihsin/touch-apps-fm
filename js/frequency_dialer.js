@@ -75,8 +75,8 @@
     this.diarUnit = document.getElementById('dialer-unit');
     this.fmHeader = document.getElementById('fm-header');
     
-    let lower = mozFMRadio.frequencyLowerBound;
-    let upper = mozFMRadio.frequencyUpperBound;
+    let lower = fmRadio.frequencyLowerBound;
+    let upper = fmRadio.frequencyUpperBound;
 
     this.minFrequency = lower - lower % this.space;
     this.minBlankFrequency = this.minFrequency - this.blankUnit * this.space;
@@ -189,7 +189,7 @@
 
   FrequencyDialer.prototype.progressOn = function () {
     if (!this.progressLoad) {
-      LazyLoader.load('app://shared.gaiamobile.org/elements/kai-loader.js',
+      LazyLoader.load('https://shared.local/elements/kai-loader.js',
         () => {
           this.createLoader();
         });

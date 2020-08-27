@@ -1,7 +1,7 @@
 require('../mocks/DomInitHTML');
 require('../mocks/localStorage');
 require('../mocks/mediaDB');
-require('../mocks/mozRadio');
+require('../mocks/fmRadio');
 require('../mocks/navigator/getDeviceStorage');
 require('../mocks/navigator/hasFeature');
 require('../mocks/navigator/mozAudioChannelManager');

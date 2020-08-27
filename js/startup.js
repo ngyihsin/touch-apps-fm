@@ -3,7 +3,7 @@
 
 (function () {
   const time = 300;
-  window.mozFMRadio = navigator.mozFM || navigator.mozFMRadio;
+  window.fmRadio = navigator.b2g.fmRadio;
 
   function initialize() {
     window.FMElementFMContainer = document.getElementById('fm-container');
@@ -18,8 +18,8 @@
     window.FMspeakSwitch = document.getElementById('speaker-switch');
   }
 
-  if (navigator.mozAudioChannelManager.headphones ||
-      mozFMRadio.antennaAvailable) {
+  if (navigator.b2g.audioChannelManager.headphones ||
+    fmRadio.antennaAvailable) {
     FMCacheRestore.hydrateHtml('fm-container');
   } else {
     document.getElementById('fm-container').classList.add('hidden');
@@ -27,16 +27,16 @@
     document.getElementById('power-switch').classList.add('hidden');
   }
 
-  navigator.mozL10n.ready(() => {
+  window.api.l10n.change(() => {
     LanguageManager.init();
-    if (navigator.mozAudioChannelManager.headphones ||
-      mozFMRadio.antennaAvailable) {
+    if (navigator.b2g.audioChannelManager.headphones ||
+      fmRadio.antennaAvailable) {
       LanguageManager.updateLanguage();
     }
   });
 
   // Change volumeControlChannel to content
-  navigator.mozAudioChannelManager.volumeControlChannel = 'content';
+  navigator.b2g.audioChannelManager.volumeControlChannel = 'content';
 
   // Toggle the large-text. changed big to small then to big. so change text should executed earlier
   document.body.classList.toggle('large-text', navigator.largeTextEnabled);
@@ -48,7 +48,9 @@
   function lazyload() {
     setTimeout(() => {
       let lazyFiles = [
-        'shared/js/airplane_mode_helper.js',
+        'https://shared.local/js/lib_session.js',
+        'https://shared.local/js/settings_observer.js',
+        'https://shared.local/js/mediadb.js',
         'js/speaker_state.js',
         'js/headphone_state.js',
         'js/fm_action.js',
@@ -98,8 +100,8 @@
      */
     window.performance.mark('navigationInteractive');
     window.dispatchEvent(new CustomEvent('moz-chrome-interactive'));
-    if (navigator.mozAudioChannelManager.headphones ||
-      mozFMRadio.antennaAvailable) {
+    if (navigator.b2g.audioChannelManager.headphones ||
+      fmRadio.antennaAvailable) {
       
       /*
        * PERFORMANCE EVENT (3): moz-app-visually-complete

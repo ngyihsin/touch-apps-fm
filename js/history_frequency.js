@@ -21,7 +21,7 @@
 
     // Mark history frequency as the lower bound frequency if invalid
     if (!this.historyFrequency) {
-      this.historyFrequency = mozFMRadio.frequencyLowerBound;
+      this.historyFrequency = fmRadio.frequencyLowerBound;
     }
 
     if (callback && typeof callback === 'function') {

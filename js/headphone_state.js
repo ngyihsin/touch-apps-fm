@@ -18,12 +18,12 @@
   };
 
   HeadphoneState.prototype.init = function (callback) {
-    this.audioChannelManager = navigator.mozAudioChannelManager;
+    this.audioChannelManager = navigator.b2g.audioChannelManager;
     if (!this.audioChannelManager) {
       return;
     }
   
-    this.deviceWithInternalAntenna = mozFMRadio.antennaAvailable;
+    this.deviceWithInternalAntenna = fmRadio.antennaAvailable;
     this.updateHeadphoneAndAntennaState();
     !this.deviceWithValidAntenna && StatusManager.update(this.status);
 
@@ -38,7 +38,7 @@
     if (!this.deviceWithValidAntenna) {
       this.status = StatusManager.STATUS_WARNING_SHOWING;
       if (!this.antennaUnplugWarning) {
-        LazyLoader.load('app://shared.gaiamobile.org/elements/kai-emptypage.js',
+        LazyLoader.load('https://shared.local/elements/kai-emptypage.js',
           () => {
             this.antennaUnplugWarning = document.createElement('kai-emptypage');
             this.antennaUnplugWarning.id = 'antenna-warning';
@@ -66,7 +66,7 @@
       let fmContainer = document.getElementById('fm-container');
       fmContainer.classList.remove('hidden');
       if (this.deviceWithInternalAntenna) {
-        if (!mozFMRadio.enabled) {
+        if (!fmRadio.enabled) {
           FMRadio.enableFMRadio(FrequencyDialer.getFrequency());
         }
       }
@@ -101,10 +101,10 @@
         }
         this.appStatus = StatusManager.status;
         StatusManager.update(StatusManager.STATUS_WARNING_SHOWING);
-        Remote.stopRemote();
+        Remote && Remote.stopRemote();
       }
       // Disable FMRadio no matter device with internal antenna or not
-      if (mozFMRadio.enabled) {
+      if (fmRadio.enabled) {
         FMRadio.disableFMRadio();
       }
     }

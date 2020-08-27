@@ -11,9 +11,10 @@
   };
 
   FMRadio.prototype.init = function () {
-    // Initialize parameter airplaneModeEnabled
-    this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
-    AirplaneModeHelper.addEventListener('statechange', this.onAirplaneModeStateChanged.bind(this));
+    // Archive and determine whether hardware volume key exist and support record
+    this.serviceInit().then(() => {
+      this.archiveAirplaneStatus();
+    });
     // Initialize FMAction
     FMAction.init();
     // Initialize SpeakerState
@@ -24,14 +25,32 @@
     HistoryFrequency.init(this.onHistorylistInitialized.bind(this));
   
     // Redirect FM radio callbacks
-    mozFMRadio.onenabled = this.onFMRadioEnabled.bind(this);
-    mozFMRadio.ondisabled = this.onFMRadioDisabled.bind(this);
-    mozFMRadio.onfrequencychange =
+    fmRadio.onenabled = this.onFMRadioEnabled.bind(this);
+    fmRadio.ondisabled = this.onFMRadioDisabled.bind(this);
+    fmRadio.onfrequencychange =
         StationsList.handleFrequencyChanged.bind(StationsList);
   };
 
+  FMRadio.prototype.serviceInit = function () {
+    const servicesArray = ['settingsService'];
+    return new Promise((resolve) => {
+      window.libSession.initService(servicesArray).then(() => {
+        SettingsObserver.init();
+        resolve();
+      });
+    });
+  };
+
+  FMRadio.prototype.archiveAirplaneStatus = function () {
+    const AIRPLNE_STATUS = 'airplaneMode.status';
+    SettingsObserver.observe(AIRPLNE_STATUS, {}, (value) => {
+      console.log('FMRadio archiveSupportRecorder:' + value);
+      this.airplaneModeEnabled = value === 'enabled';
+      this.onAirplaneModeStateChanged();
+    });
+  };
+
   FMRadio.prototype.onAirplaneModeStateChanged = function () {
-    this.airplaneModeEnabled = AirplaneModeHelper.getStatus() === 'enabled';
     this.updateAirplaneDialog();
 
     if (this.airplaneModeEnabled) {
@@ -114,7 +133,7 @@
   FMRadio.prototype.enableFMRadio = function (frequency) {
     let script = [
       'js/remoteControl.js',
-      'shared/js/media/remote_controls.js'
+      'https://shared.local/js/media/remote_controls.js'
     ];
     if (typeof Remote === 'undefined') {
       LazyLoader.load(script).then(() => {
@@ -126,9 +145,9 @@
   };
 
   FMRadio.prototype.turnOnRadio = function (frequency) {
-    if (frequency < mozFMRadio.frequencyLowerBound ||
-      frequency > mozFMRadio.frequencyUpperBound) {
-      frequency = mozFMRadio.frequencyLowerBound;
+    if (frequency < fmRadio.frequencyLowerBound ||
+      frequency > fmRadio.frequencyUpperBound) {
+      frequency = fmRadio.frequencyLowerBound;
     }
 
     if (HeadphoneState.deviceHeadphoneState) {
@@ -150,11 +169,10 @@
 
     let powerSwitch = document.getElementById('power-switch');
     powerSwitch.disabled = true;
-    let request = mozFMRadio.enable(frequency);
-    request.onerror = () => {
+    fmRadio.enable(frequency).then(() => {}, () => {
       this.updateEnablingState();
       this.updateDimLightState(true);
-    };
+    });
   };
 
   FMRadio.prototype.disableFMRadio = function () {
@@ -169,7 +187,7 @@
   FMRadio.prototype.turnOffRadio = function () {
     // Remember previous states
     this.previousSpeakerForcedState = SpeakerState.state;
-    mozFMRadio.disable();
+    fmRadio.disable();
   };
 
   FMRadio.prototype.updateAirplaneDialog = function () {
@@ -185,7 +203,7 @@
   };
 
   FMRadio.prototype.updateEnablingState = function () {
-    let enabled = mozFMRadio.enabled;
+    let enabled = fmRadio.enabled;
     FMPowerKey.disabled = false;
     if (enabled) {
       FMPowerKey.setAttribute('data-l10n-id', 'power-switch-off');
@@ -246,7 +264,7 @@
       { messageL10nId: l10nId }, option);
 
     if (typeof Toaster === 'undefined') {
-      LazyLoader.load('shared/js/toaster.js',
+      LazyLoader.load('https://shared.local/js/toaster.js',
         () => {
           Toaster.showToast(options);
         });
@@ -256,8 +274,8 @@
   };
 
   FMRadio.prototype.saveCache = function () {
-    if (navigator.mozAudioChannelManager.headphones ||
-        mozFMRadio.antennaAvailable) {
+    if (navigator.b2g.audioChannelManager.headphones ||
+      fmRadio.antennaAvailable) {
       if (StatusManager.status === StatusManager.STATUS_FAVORITE_SHOWING) {
         FrequencyDialer.deleteButton(false);
         FMCache.clear('fm-container');

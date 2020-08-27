@@ -10,7 +10,7 @@
 
   const commands = {
     playpause() {
-      let FMStatus = mozFMRadio.enabled;
+      let FMStatus = fmRadio.enabled;
       FMStatus ? FMRadio.disableFMRadio()
         : FMRadio.enableFMRadio(FrequencyDialer.getFrequency());
     },
@@ -62,7 +62,7 @@
 
   Remote.prototype.updatePlaybackStatus = function () {
     let playStatus = '';
-    playStatus = mozFMRadio.enabled
+    playStatus = fmRadio.enabled
       ? PLAY_STATUS_PLAYING : PLAY_STATUS_PAUSED;
     this.postMessage('status', playStatus);
   };

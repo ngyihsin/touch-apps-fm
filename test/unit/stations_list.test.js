@@ -1,7 +1,7 @@
 require('../mocks/DomInitHTML');
 require('../mocks/localStorage');
 require('../mocks/mediaDB');
-require('../mocks/mozRadio');
+require('../mocks/fmRadio');
 require('../mocks/navigator/getDeviceStorage');
 require('../mocks/navigator/hasFeature');
 require('../mocks/navigator/mozAudioChannelManager');
@@ -77,7 +77,7 @@ test('Switch from station list UI to favorite list UI', () => {
 
 test('Add frequency scanned to stations list UI', () => {
   FrequencyManager.frequencyList = {};
-  mozFMRadio.setFrequency(101);
+  fmRadio.setFrequency(101);
   let object = {
     favorite: false,
     frequency: 101,

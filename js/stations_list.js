@@ -21,7 +21,7 @@
 
   StationsList.prototype.switchToStationListUI = function () {
     if (!FrequencyDialer.pillButtonLoad) {
-      LazyLoader.load('app://shared.gaiamobile.org/elements/kai-pillbutton.js',
+      LazyLoader.load('https://shared.local/elements/kai-pillbutton.js',
         () => {
           this.loadStationListUI();
         });
@@ -103,7 +103,7 @@
     this.scanningAborted = false;
 
     // Reset parameter 'previousFrequency' as frequencyLowerBound
-    this.previousFrequency = mozFMRadio.frequencyLowerBound;
+    this.previousFrequency = fmRadio.frequencyLowerBound;
 
     // Request to scan stations
     this.requestToScanStations();
@@ -117,9 +117,11 @@
      * whether success or failed, start scan stations
      * It is to make sure stations scanning start from the lower bound frequency
      */
-    let request = mozFMRadio.setFrequency(this.previousFrequency);
-    request.onsuccess = this.continueScanStations.bind(this);
-    request.onerror = this.continueScanStations.bind(this);
+    fmRadio.setFrequency(this.previousFrequency).then(() => {
+      this.continueScanStations();
+    }, () => {
+      this.continueScanStations();
+    });
   };
 
   // Clear the stations list scanned before
@@ -139,7 +141,7 @@
   };
 
   StationsList.prototype.onFrequencyChanged = function (reset) {
-    let frequency = mozFMRadio.frequency;
+    const frequency = fmRadio.frequency;
     // Add current frequency to history
     HistoryFrequency.add(frequency);
     // Update frequency dialer UI
@@ -158,7 +160,7 @@
     }
 
     // Get the frequency scanned
-    this.currentFrequency = mozFMRadio.frequency;
+    this.currentFrequency = fmRadio.frequency;
 
     if (this.previousFrequency === this.currentFrequency) {
       // Continue scanning if scanned frequency has no change
@@ -183,7 +185,7 @@
       // When press abort,radio will paly first station
       let frequency = FrequencyManager.getStationsFrequencyList()[0].frequency;
       if (frequency !== this.currentFrequency) {
-        mozFMRadio.setFrequency(frequency);
+        fmRadio.setFrequency(frequency);
         return;
       }
       this.scanFinished(true);
@@ -197,7 +199,7 @@
   // The actually station scanning operation
   StationsList.prototype.continueScanStations = function () {
     setTimeout(() => {
-      mozFMRadio.seekUp();
+      fmRadio.seekUp();
     }, 100);
   };
 
@@ -227,28 +229,25 @@
   // Abort stations scanning operation
   StationsList.prototype.abortScanStations = function (headphone, retryTime) {
     // Cancel seek
-    let request = mozFMRadio.cancelSeek();
-    FrequencyDialer.stationAction.disabled = true;
-    if (headphone) {
-      // Abort for headphone has been unplugged
-      request.onsuccess = this.scanAbortedHeadphone();
-    } else {
-      // Abort for abort UI clicked
-      request.onsuccess = this.scanAbortedNormal();
-    }
-
-    request.onerror = () => {
-      this.retryCancel(retryTime,
-        () => {
-          if (headphone) {
-            this.scanAbortedHeadphone();
-          } else {
-            this.scanAbortedNormal();
-          }
-        }, (retryTime) => {
-          this.abortScanStations(headphone, retryTime);
-        });
-    };
+    fmRadio.cancelSeek().then(() => {
+      if (headphone) {
+        // Abort for headphone has been unplugged
+        this.scanAbortedHeadphone();
+      } else {
+        // Abort for abort softkey clicked
+        this.scanAbortedNormal();
+      }
+    }, () => {
+      this.retryCancel(retryTime, () => {
+        if (headphone) {
+          this.scanAbortedHeadphone();
+        } else {
+          this.scanAbortedNormal();
+        }
+      }, (retryTime) => {
+        this.abortScanStations(headphone, retryTime);
+      });
+    });
   };
 
   StationsList.prototype.retryCancel = (retryTime = CANCEL_RETRY_TIMES, cancelCB, continueCB) => {
@@ -285,21 +284,17 @@
    */
   StationsList.prototype.scanAbortOnBrowserBack = function (retryTime) {
     // Cancel seek
-    let request = mozFMRadio.cancelSeek();
-    request.onsuccess = () => {
+    fmRadio.cancelSeek().then(() => {
       this.scanningAborted = true;
       this.scanAbortedNormal(true);
-    };
-
-    request.onerror = () => {
-      this.retryCancel(retryTime,
-        () => {
-          this.scanningAborted = true;
-          this.scanAbortedNormal(true);
-        }, (retryTime) => {
-          this.scanAbortOnBrowserBack(retryTime);
-        });
-    };
+    }, () => {
+      this.retryCancel(retryTime, () => {
+        this.scanningAborted = true;
+        this.scanAbortedNormal(true);
+      }, (retryTime) => {
+        this.scanAbortOnBrowserBack(retryTime);
+      });
+    });
   };
 
 
