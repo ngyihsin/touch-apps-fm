@@ -18,6 +18,18 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fm-empty-url: url("/style/images/img-headphone-unplugged-dark.svg");
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --fm-empty-url: url("/style/images/img-headphone-unplugged-light.svg");
+  }
+}
+
 * {
   /* By default do not allow any user text selection, only enable for certain
     parts on a per-element/region area */
